@@ -1,33 +1,23 @@
-// class Solution {
-// public:
-//     void rotate(vector<int>& nums, int k) {
-//         vector<int> vec;
-//         int n =nums.size();
-//         k = k%n;
-//         for(int i=k; i>0; i--)
-//         {
-//             vec.push_back(nums[n-i-1]);
-//         }
-
-//         for(int i=k; i>=0; i--)
-//         {
-//             nums[i+3]=nums[i];
-//         }
-
-//         for(int i=0; i<k; i++)
-//         {
-//             nums[i]= vec[i];
-//         }
-//     }
-// };
-
 class Solution {
 public:
     void rotate(vector<int>& nums, int k) {
         int n =nums.size();
-        k = k % n;
-        reverse(nums.begin(), nums.end());
-        reverse(nums.begin(), nums.begin() + k);
-        reverse(nums.begin() + k, nums.end());
+        k = k%n;
+        int d=n-k;
+        vector<int> vec;
+        for(int i=0; i<d; i++)
+        {
+            vec.push_back(nums[i]);
+        }
+        for(int i=d; i<n; i++)
+        {
+            nums[i-d]=nums[i];
+        }
+        int j=0;
+        for(int i=k; i<n; i++)
+        {
+            nums[i]=vec[j];
+            j++;
+        }
     }
 };
