@@ -14,6 +14,7 @@
 //             for(set<int> :: iterator it =st.begin(); it != st.end(); it++)
 //             {
 //                 if (st.find(*(it)+1) != st.end())
+                    // if(st.find(*(it)+1) != st.end())
 //                 {
 //                     cnt++;
 //                 }
