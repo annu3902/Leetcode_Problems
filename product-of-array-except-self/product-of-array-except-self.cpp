@@ -16,10 +16,10 @@ public:
             prefix.push_back(pre_product);
         }
 
-        for(int i=0; i<n; i++){
-            cout<<prefix[i]<<" ";
-        }
-        cout<<endl;
+        // for(int i=0; i<n; i++){
+        //     cout<<prefix[i]<<" ";
+        // }
+        // cout<<endl;
 
         int post_product = 1;
         postfix.push_back(1);
@@ -31,10 +31,10 @@ public:
         }
         reverse(postfix.begin(),postfix.end());
 
-        for(int i=0; i<n; i++){
-            cout<<postfix[i]<<" ";
-        }
-        cout<<endl;
+        // for(int i=0; i<n; i++){
+        //     cout<<postfix[i]<<" ";
+        // }
+        // cout<<endl;
 
         // vector<int> ans;
 
