@@ -7,6 +7,15 @@ public:
         int K = 2*k+1;
         vector<int> ans(n,-1);
         long long int sum =0;
+
+        if(k ==0){
+            return nums;
+        }
+
+        if(K > n){
+            return ans;
+        }
+
         while(j < n){
 
             sum += nums[j];
