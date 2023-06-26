@@ -2,14 +2,13 @@ class Solution {
 public:
     vector<int> getConcatenation(vector<int>& nums) {
         int n =nums.size();
-        vector<int> ans(2*n);
+        vector<int> ans;
         for(int i=0; i<2*n; i++)
         {
-            if(i >=0 && i <n){
-                ans[i] =nums[i];
-            }
-            else if(i >=n && i<2*n){
-                ans[i] = nums[i-n];
+            if(i<n)
+            ans.push_back(nums[i]);
+            if(i>=n){
+                ans.push_back(nums[i-n]);
             }
         }
         return ans;
