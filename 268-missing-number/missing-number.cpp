@@ -17,14 +17,27 @@ public:
         // }
         // int ans = (XOR_1 ^ XOR_2);
         // return ans;
-
-        sort(nums.begin(),nums.end());
+        set<int> st;
         for(int i=0; i<n; i++)
         {
-            if(nums[i] != i){
+            st.insert(nums[i]);
+        }
+
+        for(int i=0; i<=n; i++)
+        {
+            if(st.find(i) == st.end()){
                 return i;
             }
         }
-        return n;
+        return -1;
+
+        // sort(nums.begin(),nums.end());
+        // for(int i=0; i<n; i++)
+        // {
+        //     if(nums[i] != i){
+        //         return i;
+        //     }
+        // }
+        // return n;
     }
 };
