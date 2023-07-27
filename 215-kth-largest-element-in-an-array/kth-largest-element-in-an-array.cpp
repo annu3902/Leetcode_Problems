@@ -10,8 +10,8 @@ public:
         {
             pq.push(nums[i]);
         }
-
-        while(--k){
+        // pop (k-1) elements from the top we get the kth element //
+        for(int i =0; i<k-1; i++){
             pq.pop();
         }
         return pq.top();
