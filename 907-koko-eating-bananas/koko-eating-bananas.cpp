@@ -17,7 +17,7 @@ public:
     }
 
     int minEatingSpeed(vector<int>& piles, long long int h) {
-        int n = piles.size();
+        long long int n = piles.size();
         int maxi = *max_element(piles.begin(),piles.end());
         
         int low = 1; 
@@ -37,5 +37,17 @@ public:
             }
         }
         return ans;
+
+        // Linear Search
+    //    int ans = 0;
+    //    for(long long int i=1; i<=maxi; i++)
+    //    {
+    //        if(is_possible(piles,h,i)){
+    //            ans = i;
+    //            break;
+    //        }
+    //    }
+    //    return ans;
+       
     }
 };
