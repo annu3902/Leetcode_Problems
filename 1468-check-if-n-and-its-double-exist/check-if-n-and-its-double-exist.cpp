@@ -1,17 +1,13 @@
 class Solution {
 public:
     bool checkIfExist(vector<int>& arr) {
-      unordered_set<int> s;
-        for(auto a:arr)
-        {
-            s.insert(a);
-        }
-        for(auto s1:s)
-        {
-            if(s1 !=0 && s.find(s1*2)!=s.end()) return true;
+      unordered_set<int> st(arr.begin(),arr.end());
+        for(auto it : st){
+            if( it != 0 && st.find(2*it) != st.end()){
+                return true;
+            }
         }
         return count(arr.begin(),arr.end(),0) > 1;
-        // return false;
     }
     
 };
