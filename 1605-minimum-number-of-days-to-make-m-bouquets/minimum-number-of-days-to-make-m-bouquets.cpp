@@ -65,9 +65,9 @@ public:
         int low = *min_element(bloomDay.begin(),bloomDay.end());
         int high = *max_element(bloomDay.begin(),bloomDay.end());
         cout<<low<<" "<<high<<endl;
-        // long int x = m * k;
+        if ((long long int)m * k > n) return -1;
 
-        if(m > n/k) return -1;
+        // if(m > n/k) return -1;
        long long int ans = -1;
 
         while(low <= high){
