@@ -14,8 +14,8 @@ public:
             double x = points[i][0];
             double y = points[i][1];
 
-            double dist = sqrt(abs(pow(x,2) + pow(y,2)));
-            pq.push({dist, {points[i][0], points[i][1]}});
+            // double dist = sqrt(pow(x,2) + pow(y,2));
+            pq.push({sqrt(pow(x,2) + pow(y,2)), {points[i][0], points[i][1]}});
         }
 
         for(int i = 0; i <n-k; i++)
