@@ -5,7 +5,7 @@ public:
         vector<vector<int>> ans;
 
         //Creating a max heap
-        priority_queue <pair <double, vector<int>>> pq;
+        priority_queue <pair <double, pair<int,int>>> pq;
         int n = points.size();
         // int m =points[0].size();
 
@@ -15,7 +15,7 @@ public:
             double y = points[i][1];
 
             double dist = sqrt(abs(pow(x,2) + pow(y,2)));
-            pq.push(make_pair(dist, points[i]));
+            pq.push({dist, {points[i][0], points[i][1]}});
         }
 
         for(int i = 0; i <n-k; i++)
@@ -33,7 +33,11 @@ public:
         // }
         for(int i = 0; i<k; i++)
         {
-            ans.push_back(pq.top().second);
+            vector<int> temp;
+            temp.push_back(pq.top().second.first);
+            temp.push_back(pq.top().second.second);
+            ans.push_back(temp);
+            // ans.push_back(pq.top().second.first);
             pq.pop();
         }
 
