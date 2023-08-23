@@ -28,15 +28,29 @@ public:
         // }
         // return maxi;
 
+        // int n =prices.size();
+        // int maxi =0;
+        // int mini = prices[0];
+        // for(int i=1; i<n; i++)
+        // {
+        //     mini = min(mini, prices[i]);
+        //     int diff = prices[i] - mini;
+        //     maxi = max(maxi, diff);
+        // }
+        // return maxi;
+
         int n =prices.size();
-        int maxi =0;
-        int mini = prices[0];
-        for(int i=1; i<n; i++)
-        {
-            mini = min(mini, prices[i]);
-            int diff = prices[i] - mini;
-            maxi = max(maxi, diff);
+        int left = 0;
+        int max_profit = 0;
+
+        for(int right = 1; right<n; right++){
+            if(prices[right] < prices[left]){
+                left = right;
+            }
+
+            int diff = prices[right] - prices[left];
+            max_profit = max(max_profit, diff);
         }
-        return maxi;
+        return max_profit;
     }
 };
