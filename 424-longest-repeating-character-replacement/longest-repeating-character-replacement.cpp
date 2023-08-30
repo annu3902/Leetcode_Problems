@@ -7,12 +7,17 @@ public:
 
         for(; right < n; right++){
             cnt[s[right] - 'A']++;
-            // int maxi = *max_element(cnt.begin(), cnt.end());
+            int maxi = *max_element(cnt.begin(), cnt.end());
 
-            while((right - left + 1) - *max_element(cnt.begin(), cnt.end()) > k){
-                cnt[s[left] - 'A']--;
-                left++;
-            }
+            // while((right - left + 1) - *max_element(cnt.begin(), cnt.end()) > k){
+            //     cnt[s[left] - 'A']--;
+            //     left++;
+            // }
+
+        for(; (right - left + 1) - maxi > k; left++){
+            cnt[s[left] - 'A']--;
+            maxi =  *max_element(cnt.begin(), cnt.end());
+        }
 
             ans = max(ans, (right - left + 1));
         }
