@@ -16,7 +16,7 @@ public:
 
         for(; (right - left + 1) - maxi > k; left++){
             cnt[s[left] - 'A']--;
-            maxi =  *max_element(cnt.begin(), cnt.end());
+            // maxi =  *max_element(cnt.begin(), cnt.end());
         }
 
             ans = max(ans, (right - left + 1));
