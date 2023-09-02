@@ -7,8 +7,12 @@ public:
 
         // vector<int> dp(n+1, -1);
         if(dp[n] != -1) return dp[n];
+        int p1 = tribo(n-1, dp);
+        int p2 = tribo(n-2, dp);
+        int p3 = tribo(n-3, dp);
 
-        return dp[n] = tribo(n-1, dp) + tribo(n-2, dp) + tribo(n-3, dp);
+
+        return dp[n] = p1 + p2 + p3;
     }
 
     int tribonacci(int n) {
