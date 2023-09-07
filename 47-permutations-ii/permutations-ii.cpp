@@ -40,7 +40,7 @@ public:
         for(int i=pos; i<nums.size(); i++){
             swap(nums[i], nums[pos]);
             permutation_generator(nums, pos+1, ans);
-            // swap(nums)
+            swap(nums[i] , nums[pos]);
         }
 
     }
