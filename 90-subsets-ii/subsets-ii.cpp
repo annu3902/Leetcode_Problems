@@ -1,43 +1,34 @@
 class Solution {
 public:
 
-    vector<vector<int>> helper(vector<int>& nums, int pos, set<vector<int>> st){
-
-        // 
-        if(pos == nums.size()){
-            return {{}};
-        }
-
-
-        // calling recursion to produce the powerset for remaining
-       vector<vector<int>> partialans = helper(nums, pos+1,st);
-       vector<vector<int>> finalans;
-
-        // Saving the ans 
-       for(vector<int> x : partialans){
-           if(st.find(x) == st.end()){
-               st.insert(x);
-               finalans.push_back(x);
-           }
-       }    
-
-        // Doing my own task
-       for(vector<int> x: partialans){
-           x.push_back(nums[pos]);
-           sort(x.begin(), x.end());
-
-           if(st.find(x) == st.end()){
-               st.insert(x);
-               finalans.push_back(x);
-           }
-       }
-       return finalans;
+void helper(vector<int>& arr, int pos, vector<int>& subset, vector<vector<int>> &ans){
+    if(pos == arr.size()){
+        ans.push_back(subset);
+        return;
     }
 
-    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+    // Doing my small task first to include or exclude the element
 
-        set<vector<int>> st;
-        return helper(nums, 0, st);
+        // Include the element
+        subset.push_back(arr[pos]);
+        helper(arr, pos+1, subset, ans);
 
+        // Exclude the element
+        subset.pop_back();
+        // Surpass the element till the new element is equal to the previous one
+        while(pos+1 < arr.size() && arr[pos] == arr[pos+1]){
+            pos++;
+        }
+        helper(arr, pos+1, subset, ans);
+}
+    vector<vector<int>> subsetsWithDup(vector<int>& arr) {
+    vector<int> subset;
+    vector<vector<int>> ans;
+    sort(arr.begin(), arr.end());
+
+    helper(arr, 0, subset, ans);
+    sort(ans.begin(), ans.end());
+    return ans;
     }
 };
+
