@@ -1,59 +1,27 @@
 class Solution {
 public:
     string convertToTitle(int columnNumber) {
-        vector<char> hashh(26);
-        string ans;
+        map<int, char> mpp; 
 
-        for(int i =0; i<26; i++){
-            if(i == 0){
-                hashh[0] = 'Z';
+        mpp[0] = 'Z';
+        for(int i=1; i<26; i++){
+            mpp[i] = 64 + i; 
+        }
+
+        string ans;
+        while(columnNumber > 0){
+            int last_digit = columnNumber % 26;
+
+            if(last_digit == 0){
+                ans.push_back('Z');
+                columnNumber = (columnNumber / 26) - 1;
             }
             else{
-                hashh[i] = i-1 + 'A';
+                ans.push_back(mpp[last_digit]);
+                columnNumber = columnNumber / 26;
             }
-            // hashh[i] = 65 + i;
         }
-
-        while(columnNumber != 0){
-            int last_digit = columnNumber % 26;
-            ans.push_back(hashh[last_digit]);
-            columnNumber = (columnNumber - 1) /26;
-        }
-
-        cout<<ans<<" ";
         reverse(ans.begin(), ans.end());
-        cout<<ans<<" ";
         return ans;
     }
 };
-
-// class Solution {
-// public:
-//     string convertToTitle(int columnNumber) {
-//         vector<char> hashh(26);
-//         string ans;
-
-//         for (int i = 0; i < 26; i++) {
-//             if (i == 0) {
-//                 hashh[i] = 'Z';
-//             } else {
-//                 hashh[i] = i - 1 + 'A';
-//             }
-//         }
-
-//         while (columnNumber != 0) {
-//             int last_digit = columnNumber % 26;
-
-//             if (last_digit == 0) {
-//                 ans.push_back('Z');  // Special case for remainder 0
-//                 columnNumber = (columnNumber / 26) - 1;
-//             } else {
-//                 ans.push_back(hashh[last_digit]);
-//                 columnNumber /= 26;
-//             }
-//         }
-
-//         reverse(ans.begin(), ans.end());
-//         return ans;
-//     }
-// };
