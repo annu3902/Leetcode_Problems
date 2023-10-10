@@ -38,7 +38,7 @@
 //     }
 // };
 
-
+// Best Solution
 // class Solution {
 // public:
 //     bool isPalindrome(string s) {
@@ -64,37 +64,31 @@
 class Solution {
 public:
     bool isPalindrome(string s) {
-        string v;
-        int n = s.size();
+        string temp;
 
-        for(int i=0; i<n; i++)
-        {
-            if(s[i] >= 65 &&  s[i] <= 90){
-                s[i] += 32;
-                v.push_back(s[i]);
-            }
-            else if(s[i]>=48 && s[i] <= 57){
-                v.push_back(s[i]);
+        for(int i=0; i<s.size(); i++){
+
+            if(s[i] >= 65 && s[i] <= 90){
+                temp.push_back(tolower(s[i]));
             }
             else if(s[i] >= 97 && s[i] <= 122){
-                v.push_back(s[i]);
+                temp.push_back(s[i]);
+            }
+            else if(s[i] >= 48 && s[i] <= 57){
+                temp.push_back(s[i]);
             }
         }
-        for(int i=0; i<v.size(); i++)
-        {
-            cout<<v[i];
-        }
-        
-        // int temp = v;
-        int i = 0; 
-        int j = v.size()-1;
+
+        int i=0;
+        int j=temp.size()-1;
+
         while(i < j){
-            if(v[i] != v[j]){
+            if(temp[i] != temp[j]){
                 return false;
             }
             i++;
             j--;
         }
-        return true;
+        return true; 
    }
 };
