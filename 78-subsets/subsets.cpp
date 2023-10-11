@@ -12,12 +12,14 @@ public:
         // Ask recursion to generrate the powerset for remaining (i+1)elements
         vector<vector<int>> partialans = helper(nums, i+1);
         for(vector<int> x : partialans){
+            // sort(x.begin(), x.end());
             finalans.push_back(x);
         }
 
         // Do my small task
         for(vector<int> x : partialans){
             x.push_back(nums[i]);
+            // sort(x.begin(), x.end());
             finalans.push_back(x);
         }
         return finalans;
