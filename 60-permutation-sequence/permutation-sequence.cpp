@@ -7,7 +7,7 @@ void permutation_generator(int ind, int curr_val, int n, vector<bool> &taken, ve
         return;
     }
         
-        for(int i=1; i<=n; i++){
+        for(int i=1; i<=n; ++i){
             if(!taken[i]){
                 taken[i] = 1;
                 curr_val = curr_val*10 + i;
@@ -21,6 +21,7 @@ void permutation_generator(int ind, int curr_val, int n, vector<bool> &taken, ve
     }
 
     string getPermutation(int n, int k) {
+
         vector<bool> taken(n+1, 0);
         vector<int> sequences;
         permutation_generator(0, 0, n, taken,sequences);
