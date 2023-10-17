@@ -2,9 +2,7 @@ class Solution {
 public:
 void helper(vector<int> &nums, int target, int ind, vector<int> &subset, vector<vector<int>> &ans){
     if(target == 0){
-        vector<vector<int>> :: iterator it;
-        it = find(ans.begin() ,ans.end() , subset);
-        if(it==ans.end()) ans.push_back(subset);
+        ans.push_back(subset);
         return;
     }
 
