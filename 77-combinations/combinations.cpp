@@ -1,24 +1,22 @@
 class Solution {
 public:
+    void helper(int num, int ind, int k, int n, vector<int> & subset, vector<vector<int>> &ans){
+        if(subset.size() == k){ans.push_back(subset); return;}
 
-   void recursion(int x,int n,int k,vector<vector<int>> &ans, vector<int> &v){
-       if(x>n || k==0){
-           if(k==0){
-               ans.push_back(v);
-           }
-           return;
-       }
+        if(ind == n) return;
 
-       v.push_back(x);
-       recursion(x+1,n,k-1,ans,v);
-       v.pop_back();
-       recursion(x+1,n,k,ans,v);
+        subset.push_back(num);
+        helper(num +1, ind +1, k, n, subset, ans);
+
+        subset.pop_back();
+        helper(num +1, ind +1, k, n, subset, ans);
     }
-    vector<vector<int>> combine(int n, int k) {
-        vector<vector<int>> ans;
-        vector<int> v;
-        recursion(1,n,k,ans,v);
-        return ans;
 
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> subset;
+        vector<vector<int>> ans;
+
+        helper(1, 0, k, n, subset, ans);
+        return ans;
     }
 };
