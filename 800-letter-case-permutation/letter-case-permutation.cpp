@@ -7,24 +7,39 @@ public:
             return;
         }
 
-        for(int i = ind; i<s.size(); i++){
+        // for(int i = ind; i<s.size(); i++){
 
-            if(isalpha(s[i])){
-                temp.push_back(tolower(s[i]));
-                helper(s, i+1, temp, ans);
+        //     if(isalpha(s[i])){
+        //         temp.push_back(tolower(s[i]));
+        //         helper(s, i+1, temp, ans);
 
-                temp.pop_back();
+        //         temp.pop_back(); // Backtracking
 
-                temp.push_back(toupper(s[i]));
-                helper(s, i+1, temp, ans);
-                temp.pop_back();
-            }
+        //         temp.push_back(toupper(s[i]));
+        //         helper(s, i+1, temp, ans);
+        //         temp.pop_back();   // Backtracking
+        //     }
 
-            else{
-                temp.push_back(s[i]);
-                helper(s, i+1, temp, ans);
-                temp.pop_back();
-            }
+        //     else{
+        //         temp.push_back(s[i]);
+        //         helper(s, i+1, temp, ans);
+        //         temp.pop_back(); // Backtracking
+        //     }
+        // }
+
+        if(isalpha(s[ind])){
+            temp.push_back(tolower(s[ind]));
+            helper(s, ind+1, temp, ans);
+            temp.pop_back(); // Backtracking
+            temp.push_back(toupper(s[ind]));
+            helper(s, ind+1, temp, ans);
+            temp.pop_back();   // Backtracking
+        }
+
+        else{
+            temp.push_back(s[ind]);
+            helper(s, ind+1, temp, ans);
+            temp.pop_back(); // Backtracking
         }
     }
 
