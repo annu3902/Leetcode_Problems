@@ -53,21 +53,13 @@ public:
         // return ans;
 
         vector<int> v;
+        vector<int> :: iterator it;
         for(int i=0;i<nums1.size();i++){
-            vector<int> :: iterator it;
             it = find(nums2.begin(), nums2.end(),nums1[i]);
             if(it!=nums2.end()){
                 if(find(v.begin(),v.end(),nums1[i])==v.end()) v.push_back(nums1[i]);
             }
         }
-
-        // for(int i=0;i<nums2.size();i++){
-        //     vector<int> :: iterator it;
-        //     it = find(nums1.begin(), nums1.end(),nums2[i]);
-        //     if(it!=nums1.end()){
-        //         if(find(v.begin(),v.end(),nums2[i])==v.end()) v.push_back(nums2[i]);
-        //     }
-        // }
 
         return v;
     }
