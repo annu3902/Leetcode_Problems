@@ -61,13 +61,13 @@ public:
             }
         }
 
-        for(int i=0;i<nums2.size();i++){
-            vector<int> :: iterator it;
-            it = find(nums1.begin(), nums1.end(),nums2[i]);
-            if(it!=nums1.end()){
-                if(find(v.begin(),v.end(),nums2[i])==v.end()) v.push_back(nums2[i]);
-            }
-        }
+        // for(int i=0;i<nums2.size();i++){
+        //     vector<int> :: iterator it;
+        //     it = find(nums1.begin(), nums1.end(),nums2[i]);
+        //     if(it!=nums1.end()){
+        //         if(find(v.begin(),v.end(),nums2[i])==v.end()) v.push_back(nums2[i]);
+        //     }
+        // }
 
         return v;
     }
