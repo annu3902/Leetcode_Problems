@@ -1,43 +1,16 @@
 class Solution {
 public:
-    int missingNumber(vector<int>& nums) {
-        int n =nums.size();
-
-        // int XOR_1 =0;
-        // int XOR_2 =0;
-
-        // for(int i=0; i<n; i++)
-        // {
-        //     XOR_1 =XOR_1^ nums[i];
-        // }
-
-        // for(int i=0; i<=n; i++)
-        // {
-        //     XOR_2 = XOR_2^ i;
-        // }
-        // int ans = (XOR_1 ^ XOR_2);
-        // return ans;
-        set<int> st;
-        for(int i=0; i<n; i++)
-        {
-            st.insert(nums[i]);
+    bool linearSearch(vector<int> &nums, int key){
+        for(int x : nums){
+            if(x == key) return true;
         }
+        return false;
+    }
 
-        for(int i=0; i<=n; i++)
-        {
-            if(st.find(i) == st.end()){
-                return i;
-            }
+    int missingNumber(vector<int>& nums) {
+        for(int i =0; i<=nums.size(); i++){
+            if(linearSearch(nums, i) == 0) return i;
         }
         return -1;
-
-        // sort(nums.begin(),nums.end());
-        // for(int i=0; i<n; i++)
-        // {
-        //     if(nums[i] != i){
-        //         return i;
-        //     }
-        // }
-        // return n;
     }
 };
