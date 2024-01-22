@@ -2,24 +2,18 @@ class Solution {
 public:
     vector<int> findErrorNums(vector<int>& nums) {
         int n = nums.size();
-        map<int , int> mpp;
-        // sort(nums.begin(), nums.end());
+        sort(nums.begin(), nums.end());
+        vector<int> :: iterator it;
         vector<int> ans;
 
-        for(int i = 0; i < n; i++){
-            mpp[nums[i]]++;
-        }
-
-        for(pair<int, int> p: mpp){
-            int first = p.first;
-            int second = p.second;
-            if(second > 1) ans.push_back(first);
+        for(int i = 1; i < n; i++){
+            if(nums[i] == nums[i - 1]) ans.push_back(nums[i]);
         }
 
         for(int i = 1; i <= n; i++){
-            if(mpp.find(i) == mpp.end()) ans.push_back(i);
+            it = find(nums.begin() , nums.end() , i);
+            if(it == nums.end()) ans.push_back(i);
         }
         return ans;
-        // return{-1, -1};
     }
 };
