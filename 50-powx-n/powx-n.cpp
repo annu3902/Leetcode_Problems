@@ -1,23 +1,23 @@
 class Solution {
 public:
-    double myPow(double x, int n) {
+    double helper(double x, int n){
+        // Base Case
         if(n == 0) return 1;
-        int temp = n;
-        n = abs(n);
+        // Processing 
+        double partialAns = helper(x, n / 2);
+        partialAns *= partialAns;
 
-        double partialans = myPow(x, n/2);
-        double result = (temp >= 0) ? (partialans * partialans) : (1/partialans * 1/partialans);
+        if(n % 2 != 0) return (x * partialAns);
+        return partialAns;
+    }
 
-        if(n % 2 == 1) {
-            // double check = (result >= 1 ) ? (result*x) : (1/x * result);
-            if(temp < 0){
-                return (1/x * result);
-            }else{
-                return (x * result);
-            }
-            // return check;
-        }
-
-        return result;
+    double myPow(double x, int n) {
+        int y = abs(n);
+        double partialAns = helper(x , y);
+        if(n < 0) return (1 / partialAns);
+        return partialAns;
     }
 };
+
+
+
