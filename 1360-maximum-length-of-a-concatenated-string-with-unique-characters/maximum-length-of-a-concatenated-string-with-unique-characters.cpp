@@ -1,56 +1,122 @@
-class Solution {
-public:
+// // class Solution {
+// // public:
 
-    bool checker(string currString, vector<int> &selected){
-        vector<int> temp(26, 0);
+// // int solve(vector<string> &arr, int i, string &temp, int length, int maxi, set<char> st){
+// //     // Base Case
+// //     if(i == arr.size()){
+// //         maxi = max(maxi, length);
+// //         return maxi;
+// //     }
 
-        for(int i=0; i<currString.size(); i++){
-            char ch = currString[i];
-            if(temp[ch - 'a'] == 1) return false;
-            temp[ch - 'a'] = 1;
+// //     // Pick
+// //     bool flag = 0;
+// //     for(char c : arr[i]){
+// //         if(st.count(c)) flag = 1;
+// //     }
+
+// //     if(flag == 0){
+// //         temp += arr[i];
+// //         for(char c : st){
+// //             st.insert(c);
+// //         }
+// //         return solve(arr, i + 1, temp, length + arr[i].size(), maxi, st);
+// //     // Not Pick
+// //         for(char c : st){
+// //             st.erase(c);
+// //         }
+// //         temp.pop_back();
+// //         return solve(arr, i + 1, temp, length, maxi, st);
+// //     }
+    
+// //     else{
+// //         return solve(arr, i + 1, temp, length, maxi, st);
+// //     }
+
+// // }
+
+// //     int maxLength(vector<string>& arr) {
+// //         string temp ="";
+// //         set<char> st;
+// //         return solve(arr, 0, temp, 0, 0, st);
+// //     }
+// // };
+
+
+class Solution{
+    public:
+
+    int solve(vector<string> &arr, int pos, string temp, vector<bool> hashArr){
+        //  Base Case
+        if(pos >= arr.size()) return 0;
+        // Processing
+        int len1 = INT_MIN;
+        // Pick
+        bool flag = 0;
+        int i = 0;
+        for(i=0;i<arr[pos].size();i++){
+            if(hashArr[arr[pos][i]-'a']==0) hashArr[arr[pos][i]-'a'] =  1;
+            else break;
         }
-
-        for(int i =0; i<currString.size(); i++){
-            char ch = currString[i];
-            if(selected[ch - 'a'] == 1) 
-                return false;
+        if(i==arr[pos].size()){
+            len1 = arr[pos].size() + solve(arr, pos + 1, temp , hashArr);
         }
-        return true;
+        // Not Pick
+        for(int j=0;j<i;j++){
+           hashArr[arr[pos][j]-'a'] = 0;
+        }
+        
+        int len2 = solve(arr, pos + 1, temp, hashArr);
+        
+
+        int maxi = max(len1,len2);
+        return maxi;
     }
 
-    int helper(vector<string>& arr, int ind, vector<int> &selected, string &temp, int length){
-        // If the string has elements different from that of what we have taken then we have the possibility to select or neglect that string - and the best possible length come out from there is our ans
-        if(ind == arr.size()){
-            return length;
-        }
-
-        string st = arr[ind];
-        if(checker(st, selected) == false){
-            return helper(arr, ind + 1, selected, temp, length);
-        }
-        // else{
-            // Pick
-               for(int i=0; i<st.size(); i++){
-                   char ch = st[i];
-                   temp += ch;
-                   selected[ch - 'a'] = 1;
-               }
-            int len1 = helper(arr, ind + 1, selected, temp, length + st.size());      
-
-            // Skip
-            for(int i =0; i<st.size(); i++){
-                char ch = st[i];
-                temp.pop_back();
-                selected[ch - 'a'] = 0;
-            }
-            int len2 = helper(arr, ind + 1, selected, temp, length);
-        // }
-        return max(len1, len2);
-    }
-
-    int maxLength(vector<string>& arr) {
-        vector<int> selected(26, 0);
-        string temp;
-        return helper(arr, 0, selected, temp, 0);
+    int maxLength(vector<string> &arr){
+        vector<bool> hashArr(27 , 0);
+        string temp = "";
+        return solve(arr, 0, temp, hashArr);
     }
 };
+
+// class Solution {
+// public:
+//     int solve(vector<string> &arr, int pos, string temp, vector<bool> hashArr) {
+//         if (pos >= arr.size()) {
+//             return temp.size();
+//         }
+
+//         bool flag = false;
+//         for (char ch : arr[pos]) {
+//             if (hashArr[ch - 'a']) {
+//                 flag = true;
+//                 break;
+//             }
+//             hashArr[ch - 'a'] = true;
+//         }
+
+//         int len1 = 0, len2 = 0, len3 = 0;
+
+//         if (!flag) {
+//             string temp1 = temp + arr[pos];
+//             len1 = solve(arr, pos + 1, temp1, hashArr);
+//         }
+
+//         for (char ch : arr[pos]) {
+//             hashArr[ch - 'a'] = false;
+//         }
+
+//         len2 = solve(arr, pos + 1, temp, hashArr);
+        
+//         int maxi = max({len1, len2, len3});
+        
+//         return maxi;
+//     }
+
+//     int maxLength(vector<string> &arr) {
+//         vector<bool> hashArr(26 , false);
+//         string temp = "";
+        
+//         return solve(arr, 0, temp, hashArr);
+//     }
+// };
