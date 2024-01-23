@@ -47,22 +47,23 @@ class Solution{
 
     int solve(vector<string> &arr, int pos, string temp, vector<bool> hashArr){
         //  Base Case
-        if(pos >= arr.size()) return 0;
+        if(pos >= arr.size()) return temp.size();
         // Processing
         int len1 = INT_MIN;
         // Pick
-        bool flag = 0;
+       
         int i = 0;
         for(i=0;i<arr[pos].size();i++){
-            if(hashArr[arr[pos][i]-'a']==0) hashArr[arr[pos][i]-'a'] =  1;
+            if(hashArr[arr[pos][i] - 'a']==0) hashArr[arr[pos][i] - 'a'] =1;
             else break;
         }
-        if(i==arr[pos].size()){
-            len1 = arr[pos].size() + solve(arr, pos + 1, temp , hashArr);
+        if(i == arr[pos].size()){
+            string temp1 = temp+arr[pos];
+            len1 = solve(arr, pos + 1, temp1 , hashArr);
         }
         // Not Pick
         for(int j=0;j<i;j++){
-           hashArr[arr[pos][j]-'a'] = 0;
+            hashArr[arr[pos][j] - 'a'] = 0;
         }
         
         int len2 = solve(arr, pos + 1, temp, hashArr);
