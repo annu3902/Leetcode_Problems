@@ -26,12 +26,21 @@ public:
 
         int comp = INT_MAX;
         int res;
-        for(pair<int, int> p : arr){
-            int firstEle = p.first;
-            int secondEle = p.second;
-            if(secondEle < comp){
-                comp = secondEle;
-                res = firstEle;
+        // for(pair<int, int> p : arr){
+        //     int firstEle = p.first;
+        //     int secondEle = p.second;
+        //     if(secondEle < comp){
+        //         comp = secondEle;
+        //         res = firstEle;
+        //     }
+        // }
+        
+        int m = arr.size();
+        for(int i = 0; i < m; i++){
+            pair<int, int> element = arr[i];
+            if(element.second < comp){
+                comp = element.second;
+                res = element.first;
             }
         }
         return res;
