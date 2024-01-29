@@ -1,34 +1,49 @@
 class Solution {
 public:
-    bool isAnagram(string s, string t) 
-    {
+    bool isAnagram(string s, string t) {
+        int n = s.size();
+        int m = t.size();
+        map<char, int> mpp1;
+        map<char, int> mpp2;
 
-        // int mpp_s[26] ={0};
-        // int mpp_t[26] ={0};
+        if(n != m) return false;
 
-        // for(int i=0; i<s.size(); i++)
-        // {
-        //     int ch = s[i] - 'a';
-        //     mpp_s[ch] ++;
+        for(int i = 0; i < n; i++){
+            char sh = s[i];
+            char th  = t[i];
+            mpp1[sh]++;
+            mpp2[th]++;
+        }
+
+        // auto it1 = mpp1.begin();
+        // auto it2 = mpp2.begin();
+
+        // for(; it1 != mpp1.end(); it1++){
+
+        //     pair<char, int> p1 = *it1;
+        //     pair<char, int> p2 = *it2;
+        //     char ch1 = p1.first;
+        //     int cnt1 = p1.second;
+        //     char ch2 = p2.first;
+        //     int cnt2 = p2.second;
+
+        //     if(ch1 != ch2 ) return false;
+        //     else if(cnt1 != cnt2) return false;
+        //     // else if(ch1 != ch2) return false;
         // }
-        
-        // for(int i=0; i<t.size(); i++){
-        //     int ch = t[i] - 'a';
-        //     mpp_t[ch] ++;
-        // }
+        auto it = mpp2.begin();
+        for(pair<char, int> p : mpp1){
+            char ch = p.first;
+            int cnt = p.second;
 
-        // for(int i=0; i<26; i++)
-        // {
-        //     if(mpp_s[i] != mpp_t[i]){
-        //         return false;
-        //     }
-        // }
-        // return true;
+            pair<char, int> p2 = *it;
+            char ch2 = p2.first;
+            int cnt2 = p2.second;
 
-        sort(s.begin(), s.end());
-        sort(t.begin(), t.end());
-        
-        bool result = (s == t)? true: false;
-        return result;
+            if(ch != ch2) return false;
+            else if (ch == ch2 && cnt != cnt2) return false;
+            it++;
+        }
+        return true;
     }
 };
