@@ -8,19 +8,13 @@ public:
         cout<<maxElement<<" ";
 
         for(int i = 0; i < n; i++){
-            // if(i - 1 == 0 && nums[0] == maxElement) cnt++;
-            while(i < n && nums[i] == maxElement){
-                cnt++;
-                i++;
+            if(nums[i] == maxElement)cnt++;
+            else {
+                maxCnt = max(maxCnt, cnt);
+                cnt = 0;
             }
-
-            // if(maxCnt < cnt){
-            //     maxCnt = cnt;
-            //     cnt = 0;
-            // }
-            maxCnt = max(maxCnt, cnt);
-            cnt = 0;
         }
+        maxCnt = max(maxCnt, cnt);
         return maxCnt;
 
     }
