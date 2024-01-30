@@ -1,27 +1,26 @@
 class Solution {
 public:
-    vector<vector<int>> helper(vector<int> &nums, int pos){
-
-        if(pos == nums.size()){
-            return {{}};
+    void subsetGenerator(vector<int> & nums, int ind,  vector<int> &temp, vector<vector<int>> &ans){
+        int n = nums.size();
+        // Base Case
+        if(ind == n) {
+            ans.push_back(temp);
+            return;
         }
-
-        // Call Recursion to form the subsets of the rest
-        vector<vector<int>> partialAns = helper(nums, pos + 1);
-        vector<vector<int>> finalAns;
-
-        finalAns = partialAns;
-
-        // Doing my small task of forming the subset for the pos element
-        for(vector<int> x: partialAns){
-            x.push_back(nums[pos]);
-            finalAns.push_back(x);
-        }
-        return finalAns;
-
+        // Processing
+        
+        // Include
+        temp.push_back(nums[ind]);
+        subsetGenerator(nums, ind + 1, temp, ans);
+        // Exclude
+        temp.pop_back();
+        subsetGenerator(nums, ind + 1, temp, ans);
     }
 
     vector<vector<int>> subsets(vector<int>& nums) {
-        return helper(nums, 0);
+        vector<vector<int>> ans;
+        vector<int> temp;
+        subsetGenerator(nums, 0, temp, ans);
+        return ans;
     }
 };
