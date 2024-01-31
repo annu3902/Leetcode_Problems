@@ -1,35 +1,31 @@
 class Solution {
 public:
-    void helper(map<char, string> &mpp, string &digits, int ind, string &temp, vector<string> &ans){
-        if(digits.size() == 0) return;
-
-        if(temp.size() == digits.size()){
-            ans.push_back(temp);
+    void solve(string & digits, int index, map<char, string>& mpp, string temp, vector<string> &ans){
+        int n = digits.size();
+        // Base Case
+        if(index == n){
+            if(!temp.empty())
+                ans.push_back(temp);
             return;
         }
 
-    //     for(int i=ind; i<digits.size(); i++){
-    //         string s = mpp[digits[i]];  
-    //         for(int j=0; j<s.size(); j++){
-    //             temp.push_back(s[j]);
-    //             helper(mpp, digits, i+1, temp, ans);
-    //             temp.pop_back(); // Backtracking
-    //         }
-    //     }
-    
-        string s = mpp[digits[ind]];  
-        for(int j=0; j<s.size(); j++){
-            temp.push_back(s[j]);
-            helper(mpp, digits, ind+1, temp, ans);
+        char ch = digits[index];
+        string st = mpp[ch];
+
+        for(int i = 0; i < st.size(); i++){
+            char c = st[i];
+            // Include
+            temp.push_back(c);
+            solve(digits, index + 1, mpp, temp, ans);
+            // Exclude
             temp.pop_back();
         }
     }
 
     vector<string> letterCombinations(string digits) {
-        map<char, string> mpp;
-        string temp;
         vector<string> ans;
-        
+        string temp;
+        map<char, string> mpp;
         mpp['2'] = "abc";
         mpp['3'] = "def";
         mpp['4'] = "ghi";
@@ -37,11 +33,9 @@ public:
         mpp['6'] = "mno";
         mpp['7'] = "pqrs";
         mpp['8'] = "tuv";
-        mpp['9'] = "wxyz"; 
-        // for(int i=2; i<)
+        mpp['9'] = "wxyz";
 
-        helper(mpp, digits, 0, temp, ans);   
-        return ans;    
-        
+        solve(digits, 0, mpp, temp, ans);
+        return ans;
     }
 };
