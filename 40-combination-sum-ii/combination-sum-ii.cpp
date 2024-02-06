@@ -21,10 +21,16 @@ private:
 
                    // Processing
                     for(int i = ind; i < candidates.size(); i++){
-                        // while(i < candidates.size() && i > ind && candidates[i] == candidates[i-1]){
-                        //     i++;
-                        // }
-                        if(i != ind && candidates[i] == candidates[i-1]) continue;
+                        int flag = 0;
+                        while(i<candidates.size() && i != ind && candidates[i] == candidates[i-1]){
+                            i++;
+                            flag = 1;
+                        }
+                        if(flag==1) {
+                            i--;
+                             continue;
+                        }
+                        // if(i != ind && candidates[i] == candidates[i-1]) continue;
                         temp.push_back(candidates[i]);
                         sum += candidates[i];
                         solve(i+1, candidates, temp, ans, sum, target);
