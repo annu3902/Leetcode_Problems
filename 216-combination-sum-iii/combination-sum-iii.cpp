@@ -1,33 +1,27 @@
 class Solution {
-public:
-    void helper(int ind, int k, int n, vector<bool> &taken, vector<int> &subset, vector<vector<int>> &ans){
-
-        // Base Condition
-        if(k == 0){
-            if(n == 0) ans.push_back(subset);
+private:
+    void f(int k, int n, vector<vector<int>> & ans, vector<int> & temp, int number){
+        
+        if(k == 0 && n == 0){
+            ans.push_back(temp);
             return;
         }
+        else if(n < 0) return;
+        else if(k > 0 && n == 0) return;
+        else if(k == 0 && n > 0) return;
 
-        if(n < 0) return; // Optimization
-
-        for(int i=ind; i <= 9; i++){
-            if(i > n) break; // Optimizaion
-            if(!taken[i]){
-                taken[i] = 1;
-                subset.push_back(i);
-                helper(i +1, k-1, n-i, taken, subset, ans);
-                subset.pop_back();
-                taken[i] = 0;
-            }
+        for(int i = number; i <= 9; i++){
+            temp.push_back(i);
+            f(k-1, n-i, ans, temp, i+1);
+            temp.pop_back();
         }
-        return;
     }
-    
+
+public:
     vector<vector<int>> combinationSum3(int k, int n) {
-        vector<int> subset;
         vector<vector<int>> ans;
-        vector<bool> taken(10,0);
-        helper(1, k, n, taken, subset, ans);
+        vector<int> temp;
+        f(k, n, ans, temp, 1);
         return ans;
     }
 };
