@@ -16,24 +16,24 @@ public:
 
     int change(int amount, vector<int>& coins) {
         int n = coins.size();
-        vector<vector<int>> dp(n+1 , vector<int>(amount+1,0));
+        vector<vector<int>> dp(amount+1 , vector<int>(n+1,0));
         
         for(int i=0;i<n;i++){
-            dp[i][0]=1;
+            dp[0][i]=1;
         }
 
         int k = amount;
-        for(int index=n-1;index>=0;index--){
-            for(int amount = 1;amount<=k;amount++){
+        for(int amount = 1;amount<=k;amount++){
+            for(int index=n-1;index>=0;index--){
                 int pick = 0;
-                if(amount>=coins[index]) pick = dp[index][amount-coins[index]];
+                if(amount>=coins[index]) pick = dp[amount-coins[index]][index];
 
-                int notpick = dp[index+1][amount];
+                int notpick = dp[amount][index+1];
 
-                dp[index][amount] = pick + notpick;
+                dp[amount][index] = pick + notpick;
             }
         }
-        return dp[0][amount];
+        return dp[k][0];
     }
 };
 
