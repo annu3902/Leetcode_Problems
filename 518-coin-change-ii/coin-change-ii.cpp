@@ -1,60 +1,63 @@
 class Solution {
-private:
-    int f(int amount, vector<int> &coins, vector<vector<int>> &dp, int index){
-        int n = coins.size();
-        if(amount == 0) return 1;
-        if(amount < 0) return 0;
-        if(index == n) return 0;
+public:
 
-        if(dp[index][amount] != -1) return dp[index][amount];
-        // int ans = 0;
-        int ans = 0;
-        // for(int i = index; i < n; ++i){
-        //     ans = ans + f(amount-coins[i], coins, dp);
-        // }
-        amount -= coins[index];
-        int pick = f(amount, coins, dp, index);
+    int solve(int amount , vector<int> & coins , int index,vector<vector<int>> &dp){
+        if(amount==0) return 1;
+        if(index>=coins.size()) return 0;
+        if(dp[index][amount]!=-1) return dp[index][amount];
 
-        amount += coins[index];
-        int notPick = f(amount, coins, dp, index+1);
-        return dp[index][amount] = (pick + notPick);
+        int pick = 0;
+        if(amount>=coins[index]) pick = solve(amount-coins[index] , coins , index,dp);
+
+        int notpick = solve(amount , coins , index+1,dp);
+
+        return dp[index][amount] = pick + notpick;
     }
 
-public:
     int change(int amount, vector<int>& coins) {
         int n = coins.size();
-        vector<vector<int>> dp(n + 1, vector<int> (amount + 1, -1));
-        return f(amount, coins, dp,0);
-        // dp[0] = 1; 
-        // for(int i = 1; i <= amount; i++){
-
-        //     for(int j = 0; j < coins.size(); j++){
-        //         int ans = 0;
-        //         if(i-coins[j] >= 0){
-        //             ans = dp[i-coins[j]];
-        //         }
-        //         dp[i] += ans;
-        //     }
-        // }
-        // return dp[amount];
-    }   
+        vector<vector<int>> dp(n+1 , vector<int>(amount+1,-1));
+        return solve(amount , coins , 0,dp);
+    }
 };
+
+
+
 
 
 
 // class Solution {
 // public:
+//     int change(int amount, vector<int>& coins) {
+//         int n = coins.size();
+//         vector<int> dp(amount + 1, 0);
+//         dp[0] = 1;
 
+//         for(int i = 1; i <= amount; ++i){
+//             int ways = 0;
+//             for(int j = 0; j < coins.size(); j++){
+//                 if(i-coins[j] >= 0 && dp[i-coins[j]] > 0)
+//                     ways ++;
+//             }
+//             dp[i] = ways;
+//         }
+//         return dp[amount];
+//         // vector<int> dp(amount+1, -1);
+//         // return f(amount, coins, dp, 0);
+//     }
+// };
+
+// class Solution {
+// public:
 //     int change(int amount, vector<int>& coins) {
 //         vector<int> dp(amount + 1, 0);
 //         dp[0] = 1;
-        
-//         for (int coin : coins) {
-//             for (int i = coin; i <= amount; i++) {
-//                 dp[i] += dp[i - coin];
+
+//         for(int j = 0; j < coins.size(); j++){
+//             for(int i = coins[j]; i <= amount; ++i){
+//                 dp[i] += dp[i - coins[j]];
 //             }
 //         }
-        
 //         return dp[amount];
 //     }
 // };
