@@ -16,8 +16,24 @@ public:
 
     int change(int amount, vector<int>& coins) {
         int n = coins.size();
-        vector<vector<int>> dp(n+1 , vector<int>(amount+1,-1));
-        return solve(amount , coins , 0,dp);
+        vector<vector<int>> dp(n+1 , vector<int>(amount+1,0));
+        
+        for(int i=0;i<n;i++){
+            dp[i][0]=1;
+        }
+
+        int k = amount;
+        for(int index=n-1;index>=0;index--){
+            for(int amount = 1;amount<=k;amount++){
+                int pick = 0;
+                if(amount>=coins[index]) pick = dp[index][amount-coins[index]];
+
+                int notpick = dp[index+1][amount];
+
+                dp[index][amount] = pick + notpick;
+            }
+        }
+        return dp[0][amount];
     }
 };
 
