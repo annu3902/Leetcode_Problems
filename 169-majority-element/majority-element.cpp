@@ -1,82 +1,22 @@
-// class Solution {
-// public:
-//     int majorityElement(vector<int>& nums) {
-//         int n =nums.size();
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int cnt = 0;
+        int maxElement;
+        unordered_map<int, int> mpp;
 
-//         //*********** MOORE'S VOTING ALGORITHM **********//
-
-//         int element = nums[0];
-//         int cnt =1;
-//         int i =1;
-        
-//         while(i < n){
-//             if(cnt > 0){
-//                 if(nums[i] == element){
-//                     cnt++;
-//                 }else{
-//                     cnt--;
-//                 }
-//             }
-
-//             else{
-//                 element = nums[i];
-//                 cnt++;
-//             }
-//             i++;
-//         }
-
-//         if(cnt > 0)
-//         {
-//             int count =0;
-//             for(int i=0; i<n; i++)
-//             {
-//                 if(nums[i] == element){
-//                     count ++;
-//                 }
-//             }
-
-//             if(count > n/2){
-//                 return element;
-//             }
-//         }
-//         return -1;
-//     }
-// };
-
-class Solution{
-    public :
-    int majorityElement(vector<int>& nums){
-        int n = nums.size();
-
-        int cnt = 1;
-        int ele = nums[0];
-
-        for(int i = 1; i<n; i++){
-            if(cnt > 0){
-                if(nums[i] == ele)
-                    cnt++;
-                else{
-                    cnt--;
-                }
-            }
-            else{
-                ele = nums[i];
-                cnt++;
-            }
+        for(int x: nums){
+            mpp[x]++;
         }
 
-        if(cnt > 0){
-            int count = 0;
-            for(int i =0; i<nums.size(); i++){
-                if(nums[i] == ele){
-                    count ++;
-                }
-            }
-            if(count > n/2){
-                return ele;
+        for(pair<int, int> x : mpp){
+            int element = x.first;
+            int frequency = x.second;
+            if(x.second > cnt){
+                cnt = x.second;
+                maxElement = element;
             }
         }
-        return -1;
+        return maxElement;
     }
-
 };
