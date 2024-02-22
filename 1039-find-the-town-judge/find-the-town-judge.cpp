@@ -1,40 +1,21 @@
 class Solution {
 public:
-
-
     int findJudge(int n, vector<vector<int>>& trust) {
-        // int n=trust.size();
-        map<int, vector<int>> mpp;
+        // conditions to satisfy
+        // 1. Town judge trust no-one
+        // 2. Everyone trust town judge
 
-        for(vector<int> x:trust){
-            int first = x[0];
-            int second = x[1];
-            mpp[first].push_back(second);
+        // Solving using outdegree and indegree count
+        vector<int> out(n+1,0);
+        vector<int> in(n+1,0);
+
+        for(vector<int> x : trust){
+            out[x[0]]++;
+            in[x[1]]++;
         }
 
-        // for(auto it : mpp){
-        //     int x = it.first;
-        //     vector<int> temp = it.second;
-        //     if(temp.empty()) return x;
-        //     else{
-        //         cnt++;
-        //     }
-        // }
-
-        for(int i=1; i<=n; ++i){
-            if(mpp.count(i)) continue;
-            else{
-                int cnt=0;  
-                for(auto it : mpp){
-                    int x =it.first;
-                    vector<int> y = it.second;
-                    sort(y.begin(), y.end());
-                    if(binary_search(y.begin(), y.end(), i)){
-                        cnt++;
-                    }
-                }
-                if(cnt==n-1) return i;
-            }
+        for(int i=1; i<=n; i++){
+            if(out[i]==0 && in[i]==n-1) return i;
         }
         return -1;
     }
