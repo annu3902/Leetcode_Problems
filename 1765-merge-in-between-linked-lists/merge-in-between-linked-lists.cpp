@@ -20,10 +20,10 @@ public:
             a--;
         }
 
-        // int curr = a;
-        while(b){
+        int curr = a-1;
+        while(curr<b){
             p2=p2->next;
-            b--;
+            curr++;
         }
         ListNode * temp=list2;
         while(temp->next){
