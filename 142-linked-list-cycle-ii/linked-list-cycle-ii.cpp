@@ -9,13 +9,13 @@
 class Solution {
 public:
     ListNode *detectCycle(ListNode *head) {
-        ListNode* temp=head;
-        if(head==NULL) return head;
-        while(temp->next!=NULL && temp->val != 1e9){
+        if(head == NULL) return NULL;
+        ListNode* temp = head;
+        while(temp && temp->val != 1e9){
             temp->val=1e9;
             temp=temp->next;
         }
-        head = (temp->next == NULL)? NULL : temp;
-        return head; 
+        head = (temp == NULL) ? NULL : temp;
+        return head;
     }
 };
