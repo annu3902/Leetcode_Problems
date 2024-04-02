@@ -1,26 +1,19 @@
 class Solution {
 public:
     bool isIsomorphic(string s, string t) {
-        map<char, char> mpp1;
-        map<char, char> mpp2;
-        int left = 0;
-        int right = 0;
-        int n = s.size();
-
-        while(left < n && right < n){
-            if(mpp1.find(s[left]) != mpp1.end()){
-                if(mpp1[s[left]] != t[right] && mpp2[t[right]] != s[left]) return false;
-                // else return false;
+        int n=s.size();
+        int i = 0;
+        // int j = 0;
+        unordered_map<char, char> mpp;
+        unordered_map<char,char> mp;
+        while(i<n){
+            if(mpp.count(s[i]) || mp.count(t[i])){
+            if((mpp[s[i]] != t[i]) || mp[t[i]] != s[i]) return false;
             }
-            if(mpp2.find(t[right]) != mpp2.end()){
-                if(mpp2[t[right]] != s[left] && mpp1[s[left]] != t[right]) return false;
-                // else return false;
-            }
-
-            mpp1[s[left]] = t[right];
-            mpp2[t[right]] = s[left];
-            left++;
-            right++;
+            else
+                mpp[s[i]] = t[i];
+                mp[t[i]] = s[i];
+            i++;
         }
         return true;
     }
