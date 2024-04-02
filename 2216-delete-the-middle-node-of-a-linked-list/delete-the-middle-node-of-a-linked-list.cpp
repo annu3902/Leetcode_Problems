@@ -8,31 +8,25 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
+
+
+// Optimal Solution 
 class Solution {
 public:
-    int size(ListNode* &head){
-        ListNode* temp = head;
-        int cnt=0;
-        while(temp){
-            cnt++;
-            temp = temp->next;
-        }
-        return cnt;
-    }
-
     ListNode* deleteMiddle(ListNode* head) {
-        ListNode* temp = head;
-        int mid = floor(size(head)/2);
-        // if(size(head) == 1) return head->next;
-        int node=0;
-        while(node<mid-1){
-            temp=temp->next;
-            node++;
+        if(head->next == NULL) return head->next;
+        ListNode* fast = head;
+        ListNode* slow = head;
+        ListNode* prevSlow = NULL;
+
+        while(fast && fast->next){
+            prevSlow = slow;
+            slow = slow->next;
+            fast = fast->next->next;
         }
-        if(temp->next == NULL) return head = temp->next;
-        ListNode* temp2 = temp->next;
-        temp->next=temp2->next;
-        temp2->next=NULL;
+        prevSlow->next = slow->next;
+        slow->next=NULL;
+        delete(slow);
         return head;
     }
 };
