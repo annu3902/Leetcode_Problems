@@ -8,10 +8,8 @@ public:
         for(int i=0; i<m; ++i){
             for(int j=0; j<n; ++j){
                 if(board[i][j] == word[0]){
-                   cout<<"Hii";
                    ans = ans || solve(board,i,j,word,0);
                 }
-                // cout<<board[i][j]<<" ";
             }
         }
         return ans;
@@ -32,9 +30,10 @@ public:
 
         bool ans=0;
         for(int k=0; k<4; k++){
-           ans = ans || solve(board, i+row[k], j+col[k], word, index+1);
+        //    ans = ans || solve(board, i+row[k], j+col[k], word, index+1);
+            if(solve(board, i+row[k], j+col[k], word, index+1)) return true;
         }
         board[i][j] = word[index];
-        return ans;
+        return false;
     }
 };
