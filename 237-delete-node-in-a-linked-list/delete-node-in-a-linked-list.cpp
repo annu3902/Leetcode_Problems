@@ -19,5 +19,6 @@ public:
         }
         prev->val = curr->val;
         prev->next = NULL;
+        delete(curr);
     }
 };
