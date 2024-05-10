@@ -10,53 +10,25 @@
  */
 class Solution {
 public:
-    int size(ListNode* &head){
-        int cnt=0;
-        ListNode* temp=head;
-        while(temp){
-            temp=temp->next;
-            cnt++;
-        }
-        return cnt;
-    }
+    ListNode* reverseList(ListNode* head) {
+        if(head == NULL || head->next == NULL) return head;
+        
+        ListNode* curr = head;
+        ListNode* prev = NULL;
+        solve(head, curr, prev);
 
-    ListNode* solve(ListNode* &head, ListNode* prev, ListNode* curr){
-        if(head==NULL) return head;
-        head=curr;
-        curr=curr->next;
-        head->next=prev;
-        prev->next=NULL;
-        prev=head;
-        head=head->next;
-        return solve(head, prev, curr);
-    }
-
-    // ListNode* reverseList(ListNode* head) {
-    //     if(head == NULL || size(head) == 1) return head;
-    //     ListNode* prev=head;
-    //     ListNode* curr=prev->next;
-    //     return solve(head, prev, curr);
-    // }
-
-    ListNode* reverseList(ListNode* head){
-        if(head == NULL || size(head) == 1) return head;
-        ListNode* temp = head;
-        ListNode* prev = temp;
-        ListNode* curr = prev->next;
-        temp = temp->next;
-        bool flag=0;
-
-        while(temp){
-            curr=curr->next;
-            temp->next=prev;
-            if(flag==0){
-                prev->next=NULL;
-                flag=1;
-            }
-            prev=temp;
-            temp=curr;
-        }
-        head=prev;
         return head;
+    }
+
+
+    void solve(ListNode*& head, ListNode*& curr, ListNode*& prev){
+        // Base Case
+        if(curr == NULL){
+            head=prev;
+            return;
+        }
+
+        solve(head, curr->next, curr);
+        curr->next = prev;
     }
 };
