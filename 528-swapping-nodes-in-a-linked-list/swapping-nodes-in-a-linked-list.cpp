@@ -10,70 +10,36 @@
  */
 class Solution {
 public:
-    ListNode* swapNodes(ListNode* head, int k) {
-        // If head is nullptr or k is invalid, return head as is
-        // if (!head || k <= 0) {
-        //     return head;
-        // }
-
-        int length = getLength(head);
-        // If k is greater than the length of the list, return head as is
-        if (k > length) {
-            return head;
+    int getLength(ListNode* &head){
+        int length=0;
+        ListNode* temp=head;
+        while(temp){
+            temp=temp->next;
+            length++;
         }
+        return length;
+    }
 
-        // Get k-th node from the start
-        ListNode* prevBeg = nullptr;
-        ListNode* beg = head;
-        int cnt = 1;
-        while (cnt < k) {
-            prevBeg = beg;
-            beg = beg->next;
+    ListNode* swapNodes(ListNode* head, int k) {
+
+
+        int cnt=1;
+        ListNode* beg=head;
+        while(cnt<k){
+            beg=beg->next;
             cnt++;
         }
 
-        // Get k-th node from the end
-        int rem = length - k + 1;
-        ListNode* prevEnd = nullptr;
-        ListNode* end = head;
-        ListNode* forEnd = head->next;
-        int count = 1;
-        while (count < rem) {
-            prevEnd = end;
-            end = end->next;
-            forEnd = forEnd->next;
+        int length=getLength(head);
+        if(length==1) return head;
+        int rem=length-k+1;
+        int count=1;
+        ListNode* end=head;
+        while(count<rem){
+            end=end->next;
             count++;
         }
-
-        // Now swap the nodes
-        // Handle case when one of them is the head
-        if (prevBeg) {
-            prevBeg->next = end;
-        } else {
-            head = end; // If beg is head, adjust head pointer
-        }
-
-        if (prevEnd) {
-            prevEnd->next = beg;
-        } else {
-            head = beg; // If end is head, adjust head pointer
-        }
-
-        // Swap the next pointers of the nodes
-        ListNode* temp = beg->next;
-        beg->next = end->next;
-        end->next = temp;
-
+        swap(end->val, beg->val);
         return head;
-    }
-
-    int getLength(ListNode* &head){
-        ListNode* temp=head;
-        int length=0;
-        while(temp){
-            length++;
-            temp=temp->next;
-        }
-        return length;
     }
 };
