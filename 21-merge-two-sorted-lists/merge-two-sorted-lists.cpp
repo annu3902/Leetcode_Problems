@@ -10,24 +10,17 @@
  */
 class Solution {
 public:
-    ListNode* solve(ListNode* &list1, ListNode* &list2, ListNode* &head){
-        if(list1==NULL) return list2;
-        if(list2==NULL) return list1;
-        if(list1->val <= list2->val){
-            if(head==NULL) head = list1;
-            list1->next = solve(list1->next, list2,head);
-            return list1;
-        }
+    ListNode* mergeTwoLists(ListNode* head1, ListNode* head2) {
+        if(head1 == NULL) return head2;
+        else if(head2 == NULL) return head1;
 
-        else{
-            if(head==NULL) head = list2;
-            list2->next = solve(list2->next, list1,head);
-            return list2;
+        if(head1->val <= head2->val){
+            head1->next = mergeTwoLists(head1->next, head2);
+            return head1;
         }
-        return head;
-    }
-    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        ListNode* head = NULL;
-        return solve(list1,list2,head);
+        else{
+            head2->next = mergeTwoLists(head1, head2->next);
+        return head2;
+        }
     }
 };
