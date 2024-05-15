@@ -1,5 +1,7 @@
-class Solution {
+/*class Solution {
 public:
+    // if all the courses can be read in that can be visited or not -> Kahn's Algorithm
+
     bool canFinish(int n, vector<vector<int>>& prerequisites) {
         int edges = prerequisites.size();
 
@@ -40,4 +42,49 @@ public:
         return true;
 
     }
+};*/
+
+/* Cycle Detection using DFS */
+class Solution{
+public:
+    bool canFinish(int n, vector<vector<int>>& prerequisites){
+    
+        int m = prerequisites.size();
+        // Graph form
+        unordered_map<int, vector<int>> adj;
+
+        for(int i=0; i<m; i++){
+            int u = prerequisites[i][0];
+            int v = prerequisites[i][1];
+            adj[u].push_back(v);
+        }
+
+        vector<bool> visited(n, false);
+        vector<bool> inRecurssion(n, false);
+        int cnt=0;
+
+        for(int i=0; i<n; i++){
+            if(!visited[i] && dfs(adj, i, visited, inRecurssion)){
+                return false; // if cycle is present we can not visit all, the nodes
+            }
+        }
+        return true;
+    }
+
+    bool dfs(unordered_map<int, vector<int>> &adj, int node, vector<bool> &visited, vector<bool> &inRecurssion){
+
+        visited[node] = true;
+        inRecurssion[node] = true;
+
+        for(auto &v : adj[node]){
+            if(!visited[v] && dfs(adj, v, visited, inRecurssion)){
+                return true;
+            }
+            else if(inRecurssion[v]){
+                return true;
+            }
+        }
+        inRecurssion[node] = false;
+        return false;
+    }   
 };
