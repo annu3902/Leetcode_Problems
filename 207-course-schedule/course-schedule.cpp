@@ -1,4 +1,4 @@
-/*class Solution {
+class Solution {
 public:
     // if all the courses can be read in that can be visited or not -> Kahn's Algorithm
 
@@ -10,9 +10,9 @@ public:
         for(int i=0; i<edges; i++){
             int u = prerequisites[i][0];
             int v = prerequisites[i][1];
-            adj[u].push_back(v);
+            adj[v].push_back(u);
         // 1. inDegree Calculation
-            inDegree[v]++;
+            inDegree[u]++;
         } 
 
         // Kahn's Algorithm
@@ -37,14 +37,15 @@ public:
                 }
             }
         }
-
+        
+        cout<<cnt<<" ";
         if(cnt != n) return false;
         return true;
 
     }
-};*/
+};
 
-/* Cycle Detection using DFS */
+/* Cycle Detection using DFS 
 class Solution{
 public:
     bool canFinish(int n, vector<vector<int>>& prerequisites){
@@ -88,3 +89,4 @@ public:
         return false;
     }   
 };
+*/
