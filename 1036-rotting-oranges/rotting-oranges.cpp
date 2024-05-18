@@ -48,14 +48,15 @@ public:
 
                 }
             }
-            levels++;
+            if(!q.empty())
+                levels++;
         }
 
         for(vector<int> vec : freshLocations){
             if(grid[vec[0]][vec[1]] == 1) return -1;
         }
         
-        int ans = (levels == 0) ? 0 : levels-1;
+        int ans = (levels == 0) ? 0 : levels;
         return ans;
 
     }
