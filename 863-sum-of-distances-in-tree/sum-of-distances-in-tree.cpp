@@ -1,7 +1,10 @@
 class Solution {
 public:
+    int N;
+    vector<int> children;
     vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
         if(n == 1) return {0};
+        N=n;
 
         // Graph formation
         unordered_map<int, vector<int>> adj;
@@ -46,8 +49,8 @@ public:
         vector<int> result(n, -1);
         result[0] = sum;
 
-        vector<int> children(n, 0);
-        children[0] = dfsChild(0, -1, adj, children);
+        children.resize(n,0);
+        children[0] = dfsChild(0, -1, adj);
 
         queue<pair<int, int>> que;
         fill(visited.begin(), visited.end(), false);
@@ -85,14 +88,14 @@ public:
 
     }
 
-    int dfsChild(int node, int parent, unordered_map<int, vector<int>> &adj, vector<int> &children){
+    int dfsChild(int node, int parent, unordered_map<int, vector<int>> &adj){
         children[node] = 1;
         int totalNode = 1;
 
         for(auto &v : adj[node]){
             if(v == parent) continue;
 
-            totalNode += dfsChild(v, node, adj, children);
+            totalNode += dfsChild(v, node, adj);
         }
         return children[node] = totalNode;
     }
