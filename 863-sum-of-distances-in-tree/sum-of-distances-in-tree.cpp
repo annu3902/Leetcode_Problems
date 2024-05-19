@@ -2,6 +2,7 @@ class Solution {
 public:
     int N;
     vector<int> children;
+    int rootResult = 0;
     vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
         if(n == 1) return {0};
         N=n;
@@ -28,7 +29,7 @@ public:
         int level = 0;
 
         // Level order traversal
-        while(!q.empty()){  
+        /*while(!q.empty()){  
             int size = q.size();
             while(size--){
                 int u = q.front();
@@ -46,11 +47,12 @@ public:
             level++;
         }
 
+        result[0] = sum;*/
         vector<int> result(n, -1);
-        result[0] = sum;
 
         children.resize(n,0);
-        children[0] = dfsChild(0, -1, adj);
+        children[0] = dfsChild(0, -1, adj, rootResult);
+        result[0] = rootResult;
 
         queue<pair<int, int>> que;
         fill(visited.begin(), visited.end(), false);
@@ -88,14 +90,16 @@ public:
 
     }
 
-    int dfsChild(int node, int parent, unordered_map<int, vector<int>> &adj){
+    int dfsChild(int node, int parent, unordered_map<int, vector<int>> &adj, int currDepth){
         children[node] = 1;
         int totalNode = 1;
+        
+        rootResult += currDepth;
 
         for(auto &v : adj[node]){
             if(v == parent) continue;
 
-            totalNode += dfsChild(v, node, adj);
+            totalNode += dfsChild(v, node, adj, currDepth+1);
         }
         return children[node] = totalNode;
     }
