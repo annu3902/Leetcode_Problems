@@ -15,7 +15,6 @@ public:
         }
 
         int ans = dfs(0, -1, adj, hasApple);
-        ans = (ans == 0) ? 0 : ans-2;
         return ans;
     }
 
@@ -31,8 +30,7 @@ public:
 
         }
         
-        if(paise != 0 || hasApple[node] == true) paise += 2;
-
+        if((paise != 0 || hasApple[node] == true) && node != 0) paise += 2;
         return paise;
     }
 
