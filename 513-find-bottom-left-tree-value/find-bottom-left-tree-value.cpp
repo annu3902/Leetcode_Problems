@@ -12,27 +12,27 @@
 class Solution {
 public:
     int findBottomLeftValue(TreeNode* root) {
+        
+        if(root == NULL) return 0;
+
         if(root->left == NULL && root->right == NULL) return root->val;
 
-        queue<TreeNode*> q;
-        q.push(root);   
-        int bottomMostValue = root->val;
+        int maxDepth = -1; 
+        int result = -1;
+        solve(root, 0, maxDepth, result);
 
-        while(!q.empty()){
-            int size = q.size();
-            bottomMostValue = q.front()->val;
+        return result;
+    }
 
-            while(size--){
+    void solve(TreeNode* &root, int depth, int &maxDepth, int &result){
+        if(root == NULL) return;
 
-                TreeNode* front = q.front();
-                q.pop();
-
-                if(front->left != NULL) q.push(front->left);
-                if(front->right != NULL) q.push(front->right);
-
-            }
+        if(maxDepth < depth){
+            maxDepth = depth;
+            result = root->val;
         }
 
-        return bottomMostValue;
+        solve(root->left, depth+1, maxDepth, result);
+        solve(root->right, depth+1, maxDepth, result);
     }
 };
