@@ -12,29 +12,21 @@
 class Solution {
 public:
     vector<int> rightSideView(TreeNode* root) {
-        if(root == NULL) return {};
-
-        queue<TreeNode*> q;
-        q.push(root);
         vector<int> result;
 
-        while(!q.empty()){
+        dfs(root, 1, result);
+        return result;  
+    }
 
-            int size = q.size();
-            TreeNode* front = NULL;
+    void dfs(TreeNode* root, int level, vector<int> &result){
 
-            while(size--){
-                front = q.front();
-                q.pop();
+        if(root == NULL) return;
 
-                if(front -> left != NULL) q.push(front->left);
-
-                if(front -> right != NULL) q.push(front->right);
-                
-            }
-
-            result.push_back(front->val);
+        if(result.size() < level){
+            result.push_back(root -> val);
         }
-        return result;
+        
+        dfs(root -> right, level + 1, result);
+        dfs(root -> left, level + 1, result);
     }
 };
