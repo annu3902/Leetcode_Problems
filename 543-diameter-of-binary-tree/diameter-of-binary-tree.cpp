@@ -10,21 +10,28 @@
  * };
  */
 class Solution {
-private:
-    int ans = -INT_MAX;
-    int diameter(TreeNode* root) {
-        if(!root)
-            return 0;
-        int left = diameter(root->left);
-        int right = diameter(root->right);
-        ans = max(ans, left+right);
-        return max(left, right) + 1;
-    }
 public:
+
     int diameterOfBinaryTree(TreeNode* root) {
-        if(!root)
-            return 0;
-        diameter(root);
-        return ans;
+    if(root->left == NULL && root->right == NULL) return 0;
+        int maxLength = 0;
+        solve(root, maxLength);
+        return maxLength - 1;
     }
+
+    int solve(TreeNode* root, int &maxLength){
+
+        if(root == nullptr) return 0;
+
+        int left_bacche_ka_length = solve(root->left, maxLength);
+
+        int right_bacche_ka_length = solve(root->right, maxLength);
+
+        int niche_ans_mil_gya = left_bacche_ka_length + right_bacche_ka_length + 1;
+
+        maxLength = max({maxLength, left_bacche_ka_length, right_bacche_ka_length, niche_ans_mil_gya});
+
+        return max(left_bacche_ka_length, right_bacche_ka_length) + 1; 
+
+    } 
 };
