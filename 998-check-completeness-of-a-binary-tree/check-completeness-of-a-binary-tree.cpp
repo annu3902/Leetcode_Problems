@@ -12,43 +12,37 @@
 class Solution {
 public:
     bool isCompleteTree(TreeNode* root) {
-        queue<TreeNode*> q;
-        q.push(root);
-        bool flag = false;
+        if(root -> left == NULL && root -> right == NULL)return true;
 
-        while(!q.empty()){
-            int size = q.size();
+        //1. Finding the total node cnt;
+        // calling the preorder traversal;
+        // Number of calls gives the total node cnt
 
-            while(size--){
-                TreeNode* front = q.front();
-                q.pop();
+        int totalNodes = preorder(root);
 
-                if(front -> left != NULL){
-                    if(flag == false)
-                        q.push(front->left);
-                    else{
-                        return false;
-                    }
-                }
-                else{
-                    flag = true;
-                }
-                if(front -> right != NULL){
-                    if(flag == false)
-                        q.push(front->right);
-                    else{
-                        return false;
-                    }
-                }
-                else{
-                    flag = true;
-                }
-
-            }
-
-        }
-
-        return true;
-
+        //2. nodes m index value assign krte h
+        return check(root, totalNodes, 1);
     }
+
+    int preorder(TreeNode* root){
+        if(root == NULL) return 0;
+
+        int cnt = 1;
+        cnt += preorder(root->left);
+        cnt += preorder(root->right);
+
+        return cnt;
+    }
+    
+    bool check(TreeNode* root, int totalNodes, int currIndex){
+        if(root == NULL) return true;
+
+        if(currIndex > totalNodes) return false;
+
+        bool left_part = check(root -> left, totalNodes, 2*currIndex);
+        bool right_part = check(root -> right, totalNodes, 2*currIndex + 1);
+
+        return left_part & right_part;
+    }
+
 };
