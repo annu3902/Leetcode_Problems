@@ -18,8 +18,18 @@ public:
         root->left = pruneTree(root->left);
         root->right = pruneTree(root->right);
 
-        if(root -> left == NULL && root -> right == NULL && root -> val == 0) return NULL;
+        if(isOnePresent(root)) return root;
 
-        return root;
+        return NULL;
+    }
+
+    bool isOnePresent(TreeNode* root){
+
+        if(root == NULL) return false;
+
+        if(root -> val == 1) return true;
+
+        return (isOnePresent(root->left) || isOnePresent(root->right));
+
     }
 };
