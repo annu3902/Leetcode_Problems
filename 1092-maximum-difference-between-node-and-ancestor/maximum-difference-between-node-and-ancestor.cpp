@@ -11,44 +11,30 @@
  */
 class Solution {
 public:
-    int maxDiff = INT_MIN; 
     int maxAncestorDiff(TreeNode* root) {
-        
-        dfs(root);
+        // Efficient Solution
+        pair<int, int> p = {root->val, root->val};
 
-        return maxDiff;
-
+        return dfs(root, p);
     }
 
-    void dfs(TreeNode* root){
 
-        if(root == NULL) return;
+    int dfs(TreeNode* root, pair<int, int> p){
 
-        if(root->left){
-            TreeNode* child = root->left;
-            diffFinder(root, child);
-            dfs(root->left);
+        if(!root){
+            int maxiVal = p.first; 
+            int miniVal = p.second; 
+            cout<<maxiVal<<" "<<miniVal<<endl;
+            return {maxiVal - miniVal};
         }
 
-        if(root->right){
-            TreeNode* child = root->right;
-            diffFinder(root, child);
-            diffFinder(root, child);
-            dfs(root->right);
-        }
+        p.first = max(p.first, root->val);
+        p.second = min(p.second, root->val);
 
-    }
+        int leftAns = dfs(root->left, p);
+        int rightAns = dfs(root->right, p);
 
-    void diffFinder(TreeNode* root, TreeNode* child){
-        if(child == NULL) return;
-
-        int diff = abs(root->val - child->val);
-
-        if(diff > maxDiff) maxDiff = diff;
-
-        if(child->left) diffFinder(root, child->left);
-
-        if(child->right) diffFinder(root, child->right);
+        return max(leftAns, rightAns);
     }
 
 };
