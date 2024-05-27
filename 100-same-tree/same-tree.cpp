@@ -17,11 +17,13 @@ public:
         else if(p == NULL && q != NULL) return false;
         else if(p != NULL && q == NULL) return false;
 
+        if(p->val != q->val) return false;
+
         bool leftPart = isSameTree(p->left, q->left);
         bool rightPart = isSameTree(p->right, q->right);
 
-        if(leftPart == true && rightPart == true && p->val == q->val) return true;
+        // if(leftPart == true && rightPart == true && p->val == q->val) return true;
 
-        return false;
+        return leftPart && rightPart;
     }
 };
