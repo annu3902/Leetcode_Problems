@@ -1,19 +1,48 @@
 class Solution {
 public:
-        int subarraysWithKDistinct(vector<int>& A, int K) {
-        return atMostK(A, K) - atMostK(A, K - 1);
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        
+        int n = nums.size();
+
+        int count1 = slidingWindow(nums, k);
+
+        int count2 = slidingWindow(nums, k-1);
+    
+        return (count1-count2);
     }
-    int atMostK(vector<int>& A, int K) {
-        int i = 0, res = 0;
-        unordered_map<int, int> count;
-        for (int j = 0; j < A.size(); ++j) {
-            if (!count[A[j]]++) K--;
-            while (K < 0) {
-                if (!--count[A[i]]) K++;
+
+    int slidingWindow(vector<int> &nums, int k){
+
+        int n = nums.size();
+
+        int i=0;
+        int j=0;
+        unordered_map<int, int> mpp;
+        int countSubarrays = 0;
+
+        while(j < n){
+
+            mpp[nums[j]]++;
+
+            while(mpp.size() > k){
+
+                mpp[nums[i]]--;
+                if(mpp[nums[i]] == 0){
+                    mpp.erase(nums[i]);
+                }
+
                 i++;
             }
-            res += j - i + 1;
+
+            if(mpp.size() <= k){
+                countSubarrays += (j-i+1); // counting the subarays having the unique elements less than or equals to k
+            }
+
+            j++;
+
         }
-        return res;
+
+        return countSubarrays;
     }
+
 };
