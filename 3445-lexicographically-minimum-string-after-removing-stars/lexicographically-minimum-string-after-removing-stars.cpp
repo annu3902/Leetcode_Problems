@@ -18,7 +18,6 @@ public:
                         continue;
                     }
                     else{
-                        cout<<"Hii ";
                         st.insert(vec[k].back());   
                         vec[k].pop_back();
                         break;
