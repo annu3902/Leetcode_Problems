@@ -29,10 +29,6 @@ public:
 
         string ans="";
 
-        for(auto it : st){
-            cout<<it<<" ";
-        }
-
         for(int i=0; i<n; i++){
             if(s[i] == '*') continue;
 
@@ -43,7 +39,6 @@ public:
             }
 
         }
-
         return ans;
         
     }
