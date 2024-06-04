@@ -1,29 +1,51 @@
 class Solution {
 public:
-    // int dp[];
+
+    // int dp[2501][2501];
     int lengthOfLIS(vector<int>& nums) {
         int n = nums.size();
-        vector<vector<int>> dp(n+1, vector<int> (n+1, -1));
+        // memset(dp, -1, sizeof(dp));
 
-        return solve(nums, 0, -1, dp);
-    }
+        vector<int> dp(n, 1);
 
-    int solve(vector<int> &nums, int index, int prevIndex, vector<vector<int>> &dp){
-        if(index == nums.size()) return 0;
+        for(int i=1; i<n; i++){
 
-        else if(dp[index][prevIndex+1] != -1) return dp[index][prevIndex + 1];
+            for(int j=0; j<i; j++){
+                if(nums[j] < nums[i]){
+                    // dp[i] -> Longest increasing subsequence ending at the index i.
+                    dp[i] = max(dp[i], 1 + dp[j]);
+                }
+            }
 
-        if(prevIndex >= 0 && nums[index] <= nums[prevIndex]){
-            return dp[index+1][prevIndex+1] = solve(nums, index +1, prevIndex, dp);
         }
 
-        else{
-        // skip the element
-            int ans1 = solve(nums, index + 1, prevIndex, dp);
-            // pick the element
-            int ans2 = 1 + solve(nums, index + 1, index, dp);
+        return *max_element(dp.begin(), dp.end());
 
-            return dp[index][prevIndex + 1] = max(ans1, ans2);
-        }
     }
+    
+
+    // Recursion + MEmoization
+    // int solve(vector<int> &nums, int index, int prevIndex){
+    //     if(index == nums.size()) return 0;
+
+    //     else if(prevIndex != -1 && dp[index][prevIndex] != -1) return dp[index][prevIndex];
+
+    //     if(prevIndex >= 0 && nums[index] <= nums[prevIndex]){
+    //         return dp[index+1][prevIndex] = solve(nums, index +1, prevIndex);
+    //     }
+
+    //     else{
+    //     // skip the element
+    //         int ans1 = solve(nums, index + 1, prevIndex);
+    //         // pick the element
+    //         int ans2 = 0;
+    //         if(prevIndex == -1 || nums[prevIndex] < nums[index])
+    //             ans2 = 1 + solve(nums, index + 1, index);
+
+    //         if(prevIndex != -1) 
+    //             dp[index][prevIndex] = max(ans1, ans2);
+
+    //         return max(ans1, ans2);
+    //     }
+    // }
 };
