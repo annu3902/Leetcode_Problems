@@ -11,22 +11,25 @@ public:
         }
         memset(dp, -1, sizeof(dp));
 
-        return solve(nums, 0, 0, nums[0]);
+        return solve(nums, 0, 0);
     }
 
-    bool solve(vector<int> &nums, int index, int k, int currSum){
-        if(index == nums.size()-1) return true;
-        else if(mpp.find(currSum) == mpp.end()) return false;
+    bool solve(vector<int> &nums, int index, int k){
+        if(index == n-1) return true;
 
-        else if(dp[index][k] != -1) return dp[index][k];
+        if(mpp.find(nums[index] + k) == mpp.end()) return false;
 
-        index = mpp[currSum];
+        if(dp[index][k] != -1) return dp[index][k];
+
+        // cout<<1<<" ";
+        index = mpp[nums[index] + k] ;
         bool ans2 = false;
         bool ans1 = false;
-
-        if(k>0) ans1 = solve(nums, index, k, currSum + k);
-        if(k-1>0) ans2 = solve(nums, index, k-1, currSum + k-1);
-        bool ans3 = solve(nums, index, k+1, currSum + k+1);
+        bool ans3 = false;
+ 
+        if(k > 0) ans1 = solve(nums, index, k);
+        if(k-1 > 0) ans2 = solve(nums, index, k-1);
+        if(k+1 > 0) ans3 = solve(nums, index, k+1);
 
         return dp[index][k] = ans1 || ans2 || ans3;
     }
