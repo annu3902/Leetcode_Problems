@@ -11,8 +11,8 @@ public:
            dp[i] = {1,1};
         }
 
-        int maxCnt = 0;
-        int maxLength = 0;
+        // int maxCnt = 0;
+        // int maxLength = 0;
 
         for(int i=0; i<n; i++){
 
@@ -29,17 +29,38 @@ public:
                 }
             }
 
-            if(dp[i].first == maxLength){
-                maxCnt += dp[i].second;
-            }
+            // if(dp[i].first == maxLength){
+            //     maxCnt += dp[i].second;
+            // }
 
-            else if(maxLength < dp[i].first){
-                maxLength = dp[i].first;
-                maxCnt = dp[i].second;
-            }
+            // else if(maxLength < dp[i].first){
+            //     maxLength = dp[i].first;
+            //     maxCnt = dp[i].second;
+            // }
         }
 
-        return maxCnt;
+        int maxLength =0;
+        int ans =0;
+        for(auto & it : dp){
+
+            int length = it.first;
+            int freq = it.second;
+
+            if(length > maxLength){
+                maxLength = length;
+                ans = freq;
+            }
+            else if(length == maxLength){
+                ans += freq;
+            }
+
+        }
+
+        return ans;
+
+
+
+        // return maxCnt;
 
         // int cnt= 0;
 
