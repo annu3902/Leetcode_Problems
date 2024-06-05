@@ -1,41 +1,36 @@
 class Solution {
 public:
-    void solve(string & digits, int index, map<char, string>& mpp, string temp, vector<string> &ans){
-        int n = digits.size();
-        // Base Case
-        if(index == n){
-            if(!temp.empty())
-                ans.push_back(temp);
+    vector<string> letterCombinations(string digits) {
+        unordered_map<char, string> mp;
+
+        mp['2'] = "abc";
+        mp['3'] = "def";
+        mp['4'] = "ghi";
+        mp['5'] = "jkl";
+        mp['6'] = "mno";
+        mp['7'] = "pqrs";
+        mp['8'] = "tuv";
+        mp['9'] = "wxyz";
+
+        vector<string> result;
+        if(digits.empty()) return result;
+
+        string temp;
+        dfs(mp, 0, digits, temp, result);
+        return result;
+    }
+
+    void dfs(unordered_map<char,string>& mp, int index, string& digits, string & temp, vector<string> &result){
+
+        if(index >= digits.size()){
+            result.push_back(temp);
             return;
         }
 
-        char ch = digits[index];
-        string st = mpp[ch];
-
-        for(int i = 0; i < st.size(); i++){
-            char c = st[i];
-            // Include
-            temp.push_back(c);
-            solve(digits, index + 1, mpp, temp, ans);
-            // Exclude
+        for(auto character : mp[digits[index]]){
+            temp.push_back(character);
+            dfs(mp, index+1, digits, temp, result);
             temp.pop_back();
         }
-    }
-
-    vector<string> letterCombinations(string digits) {
-        vector<string> ans;
-        string temp;
-        map<char, string> mpp;
-        mpp['2'] = "abc";
-        mpp['3'] = "def";
-        mpp['4'] = "ghi";
-        mpp['5'] = "jkl";
-        mpp['6'] = "mno";
-        mpp['7'] = "pqrs";
-        mpp['8'] = "tuv";
-        mpp['9'] = "wxyz";
-
-        solve(digits, 0, mpp, temp, ans);
-        return ans;
     }
 };
