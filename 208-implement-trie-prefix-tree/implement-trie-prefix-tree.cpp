@@ -12,11 +12,7 @@ public:
         };
     };
     
-    TrieNode* root;
-
-    Trie(){
-        root = new TrieNode();
-    }
+    TrieNode* root = new TrieNode();
 
     void insert(string word) {
         TrieNode* crawler = root;
