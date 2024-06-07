@@ -1,32 +1,22 @@
 class Solution {
 public:
-int dp[301];
     bool wordBreak(string s, vector<string>& wordDict) {
+        int n = s.size();
         unordered_set<string> st(begin(wordDict), end(wordDict));
-        memset(dp, -1, sizeof(dp));
+        // Bottom up
+        // dp[i] -> i size ka string can be segmented or not from start?
+        // dp[0]  -> 0 size ka string can always be segmented;
 
-        return dfs(s, 0, st);
+        vector<bool> dp(n+1, false);
+        dp[0] = true;
 
-    }
-
-    bool dfs(string s, int index, unordered_set<string> & st){
-
-        if(index >= s.size()) return true;
-
-        if(dp[index] != -1) return dp[index];
-
-        bool ans = false;
-        for(int i=index; i<s.size(); i++){
-            string temp = s.substr(index, i-index+1);
-
-            if(st.count(temp) && dfs(s, i+1, st)){
-                ans = true;
-                dp[index] = ans;
-                return ans;
+        for(int i=1; i<=n; i++){
+            for(int j=0; j<i; j++){
+                if(dp[j] == true && st.count(s.substr(j, i - j))){
+                    dp[i] = true;
+                }
             }
         }
-
-        return dp[index] = false;
+        return dp[n];
     }
-
 };
