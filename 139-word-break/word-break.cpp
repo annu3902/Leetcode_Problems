@@ -1,20 +1,63 @@
 class Solution {
 public:
-    bool wordBreak(string s, vector<string>& wordDict) {
-        int n = s.size();
-        unordered_set<string> st(begin(wordDict), end(wordDict));
-        // Bottom up
-        // dp[i] -> i size ka string can be segmented or not from start?
-        // dp[0]  -> 0 size ka string can always be segmented;
+    class trieNode{
+        public:
+        trieNode* children[26];
+        bool isEnd;
 
-        vector<bool> dp(n+1, false);
+        trieNode(){
+            this->isEnd = false;
+            for(int i=0; i<26; i++){
+                this->children[i] = NULL;
+            }
+        }
+    };
+
+    trieNode* root;
+
+    void insert(string word){
+        trieNode* crawler = root;
+        for(int i=0; i<word.length(); i++){
+            int index = word[i] - 'a';
+
+            if(crawler->children[index] == NULL){
+                crawler->children[index] = new trieNode();
+            }
+
+            crawler = crawler->children[index];
+        }
+        crawler->isEnd = true;
+    }
+
+    bool search(int start, const string& word, vector<bool>& dp) {
+        trieNode* crawler = root;
+        for (int i = start; i < word.size(); i++) {
+            int index = word[i] - 'a';
+            if (crawler->children[index] == NULL) return false;
+            crawler = crawler->children[index];
+            if (crawler->isEnd && dp[start]) {
+                dp[i + 1] = true;
+            }
+        }
+        return dp[word.size()];
+    }
+
+    bool wordBreak(string s, vector<string>& wordDict) {
+        root = new trieNode();
+        int n = s.size();
+
+        // Insertion in trie
+        for(string &word : wordDict){
+            insert(word);
+        }
+
+        // dp[i] -> i length ka word can be segmented ?
+        vector<bool> dp(n+1, 0);
         dp[0] = true;
 
-        for(int i=1; i<=n; i++){
-            for(int j=0; j<i; j++){
-                if(dp[j] == true && st.count(s.substr(j, i - j))){
-                    dp[i] = true;
-                }
+        for(int i=0; i<n; i++){
+            if(dp[i] == true){
+                search(i, s, dp);
             }
         }
         return dp[n];
