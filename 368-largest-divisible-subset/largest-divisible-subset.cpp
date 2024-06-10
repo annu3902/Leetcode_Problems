@@ -4,41 +4,43 @@ public:
         int n =nums.size();
         sort(nums.begin(), nums.end());
 
-        unordered_map<int, vector<int>> mp;
+        vector<int> longestLength(n, 1);
+        vector<int> prevIndex(n, -1);
+        int maxLength = 1;
+        int maxIndex = 0;
 
-        for(int i = 0; i < n; i++){
-            mp[i].push_back(nums[i]);
-        }
-
-        int maxSize = 0;
-        vector<int> ans;
-
-        for(int i = 0; i<n; i++){
-
+        // Bottom Up
+        for(int i = 1; i<n; i++){
             for(int j = 0; j<i; j++){
                 if(nums[i] % nums[j] == 0){
-                    vector<int> temp = mp[j];
-                    temp.push_back(nums[i]);
-                    if(temp.size() > mp[i].size()){
-                        mp[i] = temp;
+
+                    if(longestLength[i] < 1 + longestLength[j]){
+                        longestLength[i] = 1 + longestLength[j];
+                        prevIndex[i] = j;
+                        
+                    }
+                    if(maxLength < longestLength[i]){
+                        maxLength = longestLength[i];
+                        maxIndex = i;
                     }
                 }
             }
-            if(maxSize < mp[i].size()){
-                maxSize = mp[i].size();
-                ans = mp[i];
-            }
+
+           
+        }
+        vector<int> ans;
+
+        // ans.push_back(nums[maxIndex]);
+        // int currIndex = prevIndex[maxIndex];
+        int currIndex = maxIndex;
+
+        while(currIndex != -1){
+            ans.push_back(nums[currIndex]);
+            currIndex = prevIndex[currIndex];
         }
 
-        // int maxSize = 0;
-        // vector<int> ans;
-        // for(pair<int, vector<int>> it : mp){
-        //     if(maxSize < it.second.size()){
-        //         maxSize = it.second.size();
-        //         ans = it.second;
-        //     }
-        // }
-
+        reverse(ans.begin(), ans.end());
         return ans;
+
     }
 };
