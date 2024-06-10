@@ -1,19 +1,32 @@
 class Solution {
 public:
+int dp[101][101];
     int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
-        int m=obstacleGrid.size();
-        int n=obstacleGrid[0].size();
-        if(obstacleGrid[0][0] == 1) return 0;
-        
-        vector<vector<int>> uniquePathdp(m,vector<int>(n,0));
-        uniquePathdp[0][0]=1;
+        memset(dp, -1, sizeof(dp));
+        int m = obstacleGrid.size();
+        int n = obstacleGrid[0].size();
 
-        for(int i=0; i<m; ++i){
-            for(int j=0; j<n; ++j){
-                if(i>=1 && obstacleGrid[i][j]!=1) uniquePathdp[i][j] += uniquePathdp[i-1][j];
-                if(j>=1 && obstacleGrid[i][j]!=1) uniquePathdp[i][j] += uniquePathdp[i][j-1];
-            }
+        if(obstacleGrid[m-1][n-1] == 1) return 0;
+
+        return dfs(obstacleGrid, 0, 0, m, n);
+    }
+
+    int dfs(vector<vector<int>> &obstacleGrid, int i, int j, int m, int n){
+
+        if(i==m-1 && j==n-1) return 1;
+
+        if(i >= m || j >= n) return 0;
+
+        if(dp[i][j] != -1) return dp[i][j];
+
+        int op1 = 0;
+        int op2 = 0;
+        if(obstacleGrid[i][j] == 0){
+            op1 = dfs(obstacleGrid, i, j+1, m, n);
+            op2 = dfs(obstacleGrid, i+1, j, m, n);
         }
-        return uniquePathdp[m-1][n-1];
+
+        return dp[i][j] = (op1 + op2);
+
     }
 };
