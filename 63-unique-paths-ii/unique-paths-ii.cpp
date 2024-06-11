@@ -8,18 +8,24 @@ public:
 
         if(obstacleGrid[m-1][n-1] == 1) return 0;
         
-        vector<vector<long long>> dp(m+1, vector<long long> (n+1, 0));
-        dp[m-1][n-1] = 1;
+        // vector<vector<long long>> dp(m+1, vector<long long> (n+1, 0));
+        // dp[m-1][n-1] = 1; 
+        vector<long long> curr(n+1, 0);
+        vector<long long> prev(n+1, 0);
+
+        curr[n-1] = 1;
 
         for(int i=m-1; i>=0; i--){
             for(int j=n-1; j>=0; j--){
                 if(i == m-1 && j== n-1) continue;
                 if(obstacleGrid[i][j] == 0)
-                    dp[i][j] = dp[i][j+1] + dp[i+1][j];
+                    curr[j] = curr[j+1] + prev[j];
             }
+            prev = curr;
+            fill(curr.begin(), curr.end(), 0);
         }
 
-        return dp[0][0];
+        return prev[0];
     }
 
     /*int dfs(vector<vector<int>> &obstacleGrid, int i, int j, int m, int n){
