@@ -1,35 +1,26 @@
 class Solution {
 public:
     vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2) {
-        unordered_map<int, int> mp;
+        int n = arr2.size();
+        map<int, int> mp;
 
-        for(int i = 0; i < arr2.size(); i++){
-            mp[arr2[i]] = 0;
+        for(int i=0; i<n; i++){
+            mp[arr2[i]] = i;
         }
 
-        vector<int> notPresent;
         for(int i=0; i<arr1.size(); i++){
-            if(mp.find(arr1[i]) != mp.end()){
-                mp[arr1[i]]++;
-            }
-            else{
-                notPresent.push_back(arr1[i]);
-            }
+            if(mp.count(arr1[i])) continue;
+            mp[arr1[i]] = INT_MAX;
         }
 
-        vector<int> result;
-        for(int i=0; i < arr2.size(); i++){
-            for(int j=0; j<mp[arr2[i]]; j++){
-                result.push_back(arr2[i]);
-            }
-        }
+        auto lambda = [&](int num1, int num2){
+            if(mp[num1] == mp[num2]) return (num1 < num2);
 
-        sort(begin(notPresent), end(notPresent));
+            return (mp[num1] < mp[num2]);
+        };
 
-        for(int i=0; i<notPresent.size(); i++){
-            result.push_back(notPresent[i]);
-        }
+        sort(begin(arr1), end(arr1), lambda);
 
-        return result;       
+        return arr1;
     }
 };
