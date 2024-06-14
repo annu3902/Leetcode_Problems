@@ -8,7 +8,7 @@ int dp[502][502];
         memset(dp, -1, sizeof(dp));
         // dp[i][j] -> minimum number of operations required to convert string1 of length i to string2 of length j.
 
-        return solve(word1, word2, m, n);
+        return dfs(word1, word2, 0, 0);
     }
 
     // Top to down Recursion
@@ -16,9 +16,9 @@ int dp[502][502];
 
         if(i == word1.length() && j == word2.length()) return 0;
 
-        else if(j == word2.size()) return 1 + dfs(word1, word2, i+1, j);
+        else if(j == word2.size()) return (word1.size()-i);
 
-        else if(i == word1.size()) return 1 + dfs(word1, word2, i, j+1);
+        else if(i == word1.size()) return (word2.size()-j);
 
         else if(dp[i][j] != -1) return dp[i][j];
 
