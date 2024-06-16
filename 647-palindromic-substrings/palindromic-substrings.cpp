@@ -26,6 +26,6 @@ int dp[1000][1000];
             return dp[start][end] = checkPalindrome(start+1, end-1, s);
         }
 
-        return false;
+        return dp[start][end] = false;
     }
 };
