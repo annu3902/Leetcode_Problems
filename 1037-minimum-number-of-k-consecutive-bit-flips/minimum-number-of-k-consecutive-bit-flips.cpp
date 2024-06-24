@@ -12,7 +12,7 @@ public:
                 currFlip--;
             }
 
-            if((nums[i] == 0 && (currFlip % 2 == 0)) || (nums[i] == 1 && (currFlip % 2 == 1))){
+            if(((nums[i] == 0) && (currFlip & 1) == 0) || ((nums[i] == 1) && (currFlip & 1) == 1)){
                 if(i+k <= n){
                     result++;
                     currFlip++;
