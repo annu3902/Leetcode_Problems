@@ -1,34 +1,30 @@
 class Solution {
 public:
     int removeStones(vector<vector<int>>& stones) {
-        int n=stones.size();
-            int cntGangs=0;
-            vector<bool> visited(n, false);
+        int groups = 0;
+        int n = stones.size();
 
-            for(int i=0; i<n; i++){
-                if(!visited[i]){
-                    dfs(i, visited, stones);
-                    cntGangs++;
-                }
-
-            }
-        int removedStones = n - cntGangs;
-        return removedStones;
-    }
-
-void dfs(int index, vector<bool> &visited, vector<vector<int>> &stones){
-        visited[index] = true;
-
-        for(int i=0; i<stones.size(); i++){
-            int row = stones[i][0];
-            int col = stones[i][1];
+        vector<bool> visited(stones.size(), false);
+        for(int i=0; i<n; i++){
             if(!visited[i]){
-                if(stones[index][0] == row || stones[index][1] == col){
-                    dfs(i, visited, stones);
-                }
+                dfs(stones, visited, i);
+                groups++;
             }
         }
-        
-        return;
+
+        return (n - groups);
+    }
+
+    void dfs(vector<vector<int>> &stones, vector<bool> &visited, int u){
+
+        visited[u] = true;
+        int row = stones[u][0];
+        int col = stones[u][1];
+
+        for(int v=0; v<stones.size(); v++){
+            if(!visited[v] && (stones[v][0] == row || stones[v][1] == col)){
+                dfs(stones, visited, v);
+            }
+        }
     }
 };
