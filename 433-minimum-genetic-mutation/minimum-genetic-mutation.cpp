@@ -1,42 +1,48 @@
 class Solution {
 public:
-    int minMutation(string start, string end, vector<string>& bank) {
-        
-        // start ---> end
-        unordered_set<string> bankSet(bank.begin(), bank.end()); // O(1) --> Access time
-        unordered_set<string> visited;
+    int minMutation(string startGene, string endGene, vector<string>& bank) {
+        // string to string conversion -> BFS Problem
+        unordered_set<string> mp;
+        for(auto s : bank){
+            mp.insert(s);
+        }
 
+        unordered_set<string> visited;
         queue<string> q;
-        q.push(start);
-        visited.insert(start);
-        int level=0;
+        q.push(startGene);
+
+        visited.insert(startGene);
+
+        int level = 0;
 
         while(!q.empty()){
+            int size = q.size();
 
-            int n=q.size();
-            while(n--){
+            while(size--){
+                string currString = q.front();
 
-                string curr = q.front();
                 q.pop();
-
-                if(curr == end) return level;
+                if(currString == endGene) return level;
 
                 for(char ch : "ACGT"){
-                    
-                    for(int i=0; i<curr.size(); i++){
-                        string neighbour = curr;
-                        neighbour[i] = ch;
-
-                        if(visited.find(neighbour) == visited.end() && bankSet.find(neighbour) != bankSet.end()){
-                            q.push(neighbour);
-                            visited.insert(neighbour);
+                    for(int i=0; i<currString.size(); i++){
+                        string s = currString;
+                        s[i] = ch;
+                        
+                        if(visited.count(s) == 0 && mp.count(s)){
+                            q.push(s);
+                            visited.insert(s);
                         }
                     }
                 }
 
             }
+
             level++;
+
         }
-    return -1;
+
+        return -1;
+
     }
 };
