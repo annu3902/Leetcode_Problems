@@ -1,59 +1,46 @@
 class Solution {
 public:
     bool possibleBipartition(int n, vector<vector<int>>& edges) {
-        
-        unordered_map<int, vector<int>> adj;
-
-        for(int i=0; i<edges.size(); i++){
-            // edges[0] = {1,2}
-            int u = edges[i][0];
-            int v = edges[i][1];
-
-            adj[u].push_back(v);
-            adj[v].push_back(u);
-        }
-
-
-        queue<pair<int, int>> q;
         vector<int> color(n+1, -1);
 
-
-    for(int i=1; i<=n; i++){
-        if(color[i] == -1){
-            q.push({i,0});
+        unordered_map<int, vector<int>> adj;
+        for(vector<int> edge : edges){
+            adj[edge[0]].push_back(edge[1]);
+            adj[edge[1]].push_back(edge[0]);
         }
+
+
+        for(int i=1; i<=n; i++){
+            if(color[i] == -1 && bfs(adj, color, i) == false){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool bfs(unordered_map<int,vector<int>> &adj, vector<int> &color, int u){
+
+        queue<pair<int, int>> q;
+        q.push({u, 0});
 
         while(!q.empty()){
-            int size = q.size();
+            pair<int, int> frontNode = q.front();
+            int u = frontNode.first;
+            int clr = frontNode.second;
+            q.pop();
 
-            // while(size--){
-
-                pair<int,int> front = q.front();
-                int u = front.first;
-                int currColor = front.second;
-
-                color[u] = currColor;
-                q.pop();
-                cout<<u<<" ";
-
-                currColor = 1 - color[u];
-
-                for(auto &v: adj[u]){
-                    if(color[v] == color[u]) return false;
-
-                    else if(color[v] == -1){
-
-                        q.push({v, currColor});
-                        color[v] = currColor;
-
-                    }
-
+            for(auto &v : adj[u]){
+                if(color[v] == -1){
+                    color[v] = 1-clr;
+                    q.push({v, color[v]});
                 }
-            // }
 
+                else if(color[v] == clr) return false;
+            }
         }
-    }
-        return true;   
+
+        return true;
 
     }
 };
