@@ -1,40 +1,53 @@
 class Solution {
 public:
+    vector<vector<int>> directions = {{0,-1}, {0,1}, {-1,0}, {1,0}};
+
     int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
         int m = maze.size();
         int n = maze[0].size();
 
-        queue<pair<int, int>> q;
-        q.push({entrance[0], entrance[1]});
-        maze[entrance[0]][entrance[1]] = '+';
-        vector<vector<int>> directions = {{-1,0}, {1, 0}, {0, -1}, {0, 1}};
-        int level = 0;
+        queue<vector<int>> q;
+        q.push(entrance);
 
+        int entranceRow = entrance[0];
+        int entranceCol = entrance[1];
+
+        int level = 0;
         while(!q.empty()){
             int size = q.size();
-            level++;
 
             while(size--){
 
-                pair<int, int> front = q.front();
+                vector<int> frontNode = q.front();
                 q.pop();
+                int row = frontNode[0];
+                int col = frontNode[1];
 
-                for(vector<int> dir : directions){
-                    int i = front.first + dir[0];
-                    int j = front.second + dir[1];
+                if(row == 0 || row == m-1 || col == 0 || col == n-1){
+                    if(row != entranceRow || col != entranceCol) return level;
+                }
 
-                    if(i >= 0 && i<=m-1 && j >= 0 && j <= n-1 && maze[i][j] == '.'){
-                        if(i==0 || i==m-1 || j==0 || j==n-1){
-                            return level;
-                        }
+                maze[row][col] = '+';
 
-                        q.push({i,j});
-                        maze[i][j] = '+';
+                for(vector<int> &vec : directions){
+                    int newRow = row + vec[0];
+                    int newCol = col + vec[1];
+
+                    if(newRow >= 0 && newRow <= m-1 && newCol >= 0 && newCol <= n-1 && maze[newRow][newCol] == '.'){
+                        q.push({newRow, newCol});
+                        maze[newRow][newCol] = '+';
                     }
+
+                    // else if()
                 }
 
             }
+
+            level++;
+
         }
+
         return -1;
+
     }
 };
