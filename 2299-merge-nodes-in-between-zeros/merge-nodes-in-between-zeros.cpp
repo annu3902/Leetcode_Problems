@@ -11,32 +11,24 @@
 class Solution {
 public:
     ListNode* mergeNodes(ListNode* head) {
-        ListNode* temp = head->next;
-        ListNode* newHead = NULL;
-        ListNode* crawler = newHead;
+        ListNode* newHead = head;
+        ListNode* temp = newHead;
+        ListNode* crawler = head->next;
 
-        int sum = 0;
-        while(temp){
-            if(temp->val != 0){
-                sum += temp->val;
-            } 
-            else{
-                if(newHead == nullptr){
-                    newHead = new ListNode(sum);
-                    crawler = newHead;
-                }
+        while(crawler){
+            int sum = 0;
 
-                else{
-                    ListNode *newNode = new ListNode(sum);
-                    crawler -> next = newNode;
-                    crawler = crawler -> next;
-                }
-                sum = 0;
+            while(crawler && crawler->val != 0){
+                sum += crawler->val;
+                crawler = crawler -> next;
             }
+            temp->next->val = sum;
             temp = temp->next;
+
+            crawler = crawler -> next;
         }
 
-        return newHead;
-
+        temp->next = NULL;
+        return newHead->next;
     }
 };
