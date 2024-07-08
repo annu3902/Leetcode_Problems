@@ -34,19 +34,24 @@ public:
         parent.resize(n);
         iota(begin(parent), end(parent), 0);
         rank.resize(n, 0);
+        int ans = n;
 
         for(vector<int> &connection : connections){
             int x = connection[0];
             int y = connection[1];
-            unionSet(x,y);
+            if(find(x) != find(y)){
+                unionSet(x, y);
+                ans--;
+            }
         }
+        return ans-1;
 
-        unordered_set<int> st;
-        for(int i=0; i<n; i++){
-            parent[i] = find(i);
-            st.insert(parent[i]);
-        }
+        // unordered_set<int> st;
+        // for(int i=0; i<n; i++){
+        //     parent[i] = find(i);
+        //     st.insert(parent[i]);
+        // }
         
-        return st.size() - 1;
+        // return st.size() - 1;
     }
 };
