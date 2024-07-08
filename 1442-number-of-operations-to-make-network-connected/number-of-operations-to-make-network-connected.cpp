@@ -1,38 +1,52 @@
 class Solution {
 public:
+    vector<int> parent;
+    vector<int> rank;
+
+    int find(int x){
+        if(parent[x] == x) return x;
+        return parent[x] = find(parent[x]);
+    }
+
+    void unionSet(int x, int y){
+        int parent_x = find(x);
+        int parent_y = find(y);
+
+        // if(parent_x != parent_y){
+            if(rank[parent_x] == rank[parent_y]){
+                parent[parent_y] = parent_x;
+                rank[parent_x]++;
+            }
+
+            else if(rank[parent_x] > rank[parent_y]){
+                parent[parent_y] = parent_x;
+            }
+
+            else {
+                parent[parent_x] = parent_y;
+            }
+    }
+
     int makeConnected(int n, vector<vector<int>>& connections) {
         int edges = connections.size();
         if(edges < n-1) return -1;
 
-        unordered_map<int,vector<int>> adj;
-        for(vector<int> & connection : connections){
-            int u = connection[0];
-            int v = connection[1];
-            adj[u].push_back(v);
-            adj[v].push_back(u);
+        parent.resize(n);
+        iota(begin(parent), end(parent), 0);
+        rank.resize(n, 0);
+
+        for(vector<int> &connection : connections){
+            int x = connection[0];
+            int y = connection[1];
+            unionSet(x,y);
         }
 
-        vector<bool> visited(n, 0);
-        int cnt=0;
-
-        for(int u=0; u<n; u++){
-            if(!visited[u]){
-                dfs(adj, visited, u, -1);
-                cnt++;
-            }
+        unordered_set<int> st;
+        for(int i=0; i<n; i++){
+            parent[i] = find(i);
+            st.insert(parent[i]);
         }
-        return cnt-1;
-    }
-
-    void dfs(unordered_map<int,vector<int>> &adj, vector<bool> &visited, int u, int parent){
-        visited[u] = true;
-
-        for(auto &v :adj[u]){
-            if(v == parent) continue;
-            else if(visited[v]) continue;
-            else if(!visited[v]){
-                dfs(adj, visited, v, u);
-            }
-        }
+        
+        return st.size() - 1;
     }
 };
