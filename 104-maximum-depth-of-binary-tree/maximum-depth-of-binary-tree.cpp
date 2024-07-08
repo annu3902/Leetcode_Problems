@@ -11,20 +11,12 @@
  */
 class Solution {
 public:
-
-    int inOrderTraversal(TreeNode* root){
+    int maxDepth(TreeNode* root) {
         if(root == NULL) return 0;
 
-        int cnt = 1;
-        int left_ka_baccha = inOrderTraversal(root->left);
-        int right_ka_baccha = inOrderTraversal(root->right);
+        int leftHeight = maxDepth(root->left);
+        int rightHeight = maxDepth(root->right);
 
-        return (cnt + max(left_ka_baccha, right_ka_baccha));
-
-    }
-
-    int maxDepth(TreeNode* root) {
-        // depth of recursion jitni hogi utne hi levels ya height hoga
-        return inOrderTraversal(root);
+        return (1 + max(leftHeight, rightHeight));
     }
 };
