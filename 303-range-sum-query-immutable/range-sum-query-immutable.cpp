@@ -1,7 +1,8 @@
 class NumArray {
 public:
     vector<int> prefixSum;
-    NumArray(vector<int>& nums) : prefixSum(nums) {
+    NumArray(vector<int>& nums){
+        prefixSum = nums;
         for(int i=1; i<prefixSum.size(); i++){
             prefixSum[i] += prefixSum[i-1];
         }
