@@ -16,14 +16,15 @@ public:
             return;
         }
 
-        if(num >= 10) return; 
+        // if(num >= 10) return; 
 
-        sum += num;
-        temp.push_back(num);
-        solve(num+1, k, n, sum, temp, result);
+        for(int i=num; i<10; i++){
+            sum += i;
+            temp.push_back(i);
+            solve(i+1, k, n, sum, temp, result);
 
-        sum -= num;
-        temp.pop_back();
-        solve(num+1, k, n, sum, temp, result);
+            sum -= i;
+            temp.pop_back();
+        }
     }
 };
