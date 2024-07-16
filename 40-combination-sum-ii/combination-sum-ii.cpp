@@ -4,35 +4,20 @@ private:
                vector<vector<int>>& ans, int sum, int target){
                    // Base Case;
                    if(sum > target) {
-                       for(int x : temp){
-                           cout<<x<<" ";
-                       }
-                       cout<<endl;
                        return;
                    }
                    if(sum == target){
-                       for(int x : temp){
-                           cout<<x<<" ";
-                       }
-                       cout<<endl;
                         ans.push_back(temp);
-                       return;
+                        return;
                    }
 
                    // Processing
                     for(int i = ind; i < candidates.size(); i++){
-                        int flag = 0;
-                        while(i<candidates.size() && i != ind && candidates[i] == candidates[i-1]){
-                            i++;
-                            flag = 1;
-                        }
-                        if(flag==1) {
-                            i--;
-                             continue;
-                        }
-                        // if(i != ind && candidates[i] == candidates[i-1]) continue;
+                        if(candidates[i] > target) break;
+                        if(i != ind && candidates[i] == candidates[i-1]) continue;
                         temp.push_back(candidates[i]);
                         sum += candidates[i];
+
                         solve(i+1, candidates, temp, ans, sum, target);
                         sum -= candidates[i];
                         temp.pop_back();
