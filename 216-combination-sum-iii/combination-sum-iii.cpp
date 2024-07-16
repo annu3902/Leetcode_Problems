@@ -1,27 +1,29 @@
 class Solution {
-private:
-    void f(int k, int n, vector<vector<int>> & ans, vector<int> & temp, int number){
-        
-        if(k == 0 && n == 0){
-            ans.push_back(temp);
-            return;
-        }
-        else if(n < 0) return;
-        else if(k > 0 && n == 0) return;
-        else if(k == 0 && n > 0) return;
-
-        for(int i = number; i <= 9; i++){
-            temp.push_back(i);
-            f(k-1, n-i, ans, temp, i+1);
-            temp.pop_back();
-        }
-    }
-
 public:
     vector<vector<int>> combinationSum3(int k, int n) {
-        vector<vector<int>> ans;
         vector<int> temp;
-        f(k, n, ans, temp, 1);
-        return ans;
+        vector<vector<int>> result;
+
+        solve(1, k, n, 0, temp, result);
+        return result;
+    }
+
+    void solve(int num, int k, int n, int sum, vector<int> &temp, vector<vector<int>> &result){
+        if(temp.size() == k){
+            if(sum == n){
+                result.push_back(temp);
+            }
+            return;
+        }
+
+        if(num >= 10) return; 
+
+        sum += num;
+        temp.push_back(num);
+        solve(num+1, k, n, sum, temp, result);
+
+        sum -= num;
+        temp.pop_back();
+        solve(num+1, k, n, sum, temp, result);
     }
 };
