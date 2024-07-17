@@ -1,34 +1,40 @@
 class Solution {
 public:
     vector<vector<string>> partition(string s) {
-        vector<vector<string> > ret;
-        if(s.empty()) return ret;
-        
-        vector<string> path;
-        dfs(0, s, path, ret);
-        
-        return ret;
+        vector<string> temp;
+        vector<vector<string>> result;
+
+        dfs(s, 0, temp, result);
+        return result;
     }
-    
-    void dfs(int index, string& s, vector<string>& path, vector<vector<string> >& ret) {
-        if(index == s.size()) {
-            ret.push_back(path);
+
+    bool isPalindrome(string s){
+        int left = 0;
+        int right = s.size()-1;
+
+        while(left <= right){
+            if(s[left] != s[right]) return false;
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+
+    void dfs(string s, int index, vector<string>& temp, vector<vector<string>>& result){
+        if(index >= s.size()){
+            result.push_back(temp);
             return;
         }
-        for(int i = index; i < s.size(); ++i) {
-            if(isPalindrome(s, index, i)) {
-                path.push_back(s.substr(index, i - index + 1));
-                dfs(i+1, s, path, ret);
-                path.pop_back();
+
+        for(int i=index; i<s.size(); i++){
+            string st = s.substr(index, i-index+1);
+            if(isPalindrome(st)){
+                temp.push_back(st);
+                dfs(s, i+1, temp, result);
+                temp.pop_back();
             }
         }
-    }
-    
-    bool isPalindrome(const string& s, int start, int end) {
-        while(start <= end) {
-            if(s[start++] != s[end--])
-                return false;
-        }
-        return true;
+
     }
 };
