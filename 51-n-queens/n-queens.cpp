@@ -1,5 +1,8 @@
 class Solution {
 public:
+    vector<bool> rightDiagonal;
+    vector<bool> leftDiagonal;
+
     vector<vector<string>> solveNQueens(int n) {
         // No 2 queens must be on same row or coloumn 
         // No 2 Queen be on the same diagonal
@@ -15,6 +18,8 @@ public:
         }
 
         vector<bool> column(n, 0);
+        rightDiagonal.resize(2*n-1, 0);
+        leftDiagonal.resize(2*n-1, 0);
 
         dfs(0, n, board, column, result);
         return result;
@@ -44,6 +49,17 @@ public:
         return true;
     }
 
+    bool optimizedDiagonalCheck(int row, int col, vector<string> &board){
+        int n = board.size();
+        int rightD = row + col;
+        int leftD = col - row + (n-1);
+
+        if(rightDiagonal[rightD] == 1) return false;
+        else if(leftDiagonal[leftD] == 1) return false;
+
+        return true;
+    }
+
     void dfs(int row, int n, vector<string> &board, vector<bool> &column, vector<vector<string>> &result){
             // Base Case
             if(row >= n){
@@ -56,14 +72,19 @@ public:
                     continue;
                 }
 
-                else if(checkOnDiagonal(row, col, board)){
+                else if(optimizedDiagonalCheck(row, col, board)){
                     board[row][col] = 'Q';
                     column[col] = 1;
+                    rightDiagonal[row + col] = 1;
+                    leftDiagonal[col - row + (n-1)] = 1;
+
                     dfs(row+1, n, board, column, result);
 
                     // Backtracking
                     board[row][col] = '.';
-                    column[col] = 0;                    
+                    column[col] = 0;  
+                    rightDiagonal[row + col] = 0;                  
+                    leftDiagonal[col - row + (n-1)] = 0;                  
                 }
             }
 
