@@ -1,48 +1,28 @@
 class Solution {
 public:
-// int dp[101][101];
     int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
-        // memset(dp, -1, sizeof(dp));
         int m = obstacleGrid.size();
         int n = obstacleGrid[0].size();
 
         if(obstacleGrid[m-1][n-1] == 1) return 0;
-        
-        // vector<vector<long long>> dp(m+1, vector<long long> (n+1, 0));
-        // dp[m-1][n-1] = 1; 
-        vector<long long> curr(n+1, 0);
-        vector<long long> prev(n+1, 0);
 
-        curr[n-1] = 1;
+        vector<vector<int>> dp(m, vector<int> (n, -1));
 
-        for(int i=m-1; i>=0; i--){
-            for(int j=n-1; j>=0; j--){
-                if(i == m-1 && j== n-1) continue;
-                if(obstacleGrid[i][j] == 0)
-                    curr[j] = curr[j+1] + prev[j];
-            }
-            prev = curr;
-            fill(curr.begin(), curr.end(), 0);
-        }
-
-        return prev[0];
+        return f(m-1, n-1, obstacleGrid, dp);
     }
 
-    /*int dfs(vector<vector<int>> &obstacleGrid, int i, int j, int m, int n){
+    int f(int i, int j, vector<vector<int>> &obstacleGrid, vector<vector<int>>& dp){
+        if(i == 0 && j == 0) return dp[0][0] = 1;
 
-        if(i==m-1 && j==n-1) return 1;
-
-        if(i >= m || j >= n) return 0;
+        if(i < 0 || j < 0) return 0;
 
         if(dp[i][j] != -1) return dp[i][j];
+        int left = 0;
+        int up = 0;
 
-        int op1 = 0;
-        int op2 = 0;
-        if(obstacleGrid[i][j] == 0){
-            op1 = dfs(obstacleGrid, i, j+1, m, n);
-            op2 = dfs(obstacleGrid, i+1, j, m, n);
-        }
+        if(i >= 1 && obstacleGrid[i-1][j] == 0) up = f(i-1, j, obstacleGrid, dp);
+        if(j >= 1 && obstacleGrid[i][j-1] == 0) left = f(i, j-1, obstacleGrid, dp);
 
-        return dp[i][j] = (op1 + op2);
-    }*/
+        return dp[i][j] = up + left;
+    }   
 };
