@@ -1,54 +1,43 @@
 class Solution {
 public:
     int maximumGain(string s, int x, int y) {
-        
-        int decision = (x >= y) ? 1 : 0;
+        int n = s.size();
+        if(n == 1) return 0;
 
-        stack<int> st;
-        
-        int count1 = solve(decision, s, x, y);
-        int count2 = solve(1-decision, s, x, y);
+        string maxStr = (x >= y) ? "ab" : "ba";
+        int maxInt = (x >= y )? x : y;
+        string minStr = (x < y )? "ab" : "ba";
+        int minInt = (x < y) ? x : y;
 
-        return count1 + count2;
+        int count1 = solve(s, maxStr, maxInt);
+        int count2 = solve(s, minStr, minInt);
 
+        cout<<count1<<" "<<count2<<" ";
+
+        return (count1 + ((count2 > 0) ? count2 : 0));       
     }
 
-    int solve(int decision, string& s, int x, int y){
+    int solve(string &s, string& select, int x){
         int n = s.size();
-        int ans = 0;
+        string intermediate = "";
+        intermediate.push_back(s[0]);
 
-        stack<char> st;
-        int i = 0;
-        // decision = 1 ->"ab";
-        // decision = 0 ->"ba";
+        // int i = 0;
+        int j = 1;
 
-        while(i < s.size()){
-            if(!st.empty() && st.top() == 'a' && decision == 1 && s[i]=='b'){ 
-                st.pop();
-                ans += x;
-                i++;
-                continue;
+        while(j < n){
+            if(!intermediate.empty() && intermediate.back() == select[0] && s[j] == select[1]){
+                j++;
+                intermediate.pop_back();
             }
-
-            else if(!st.empty() && st.top() == 'b' && decision == 0 && s[i]=='a'){
-                st.pop();
-                ans += y;
-                i++;
-                continue;
+            else{
+                intermediate.push_back(s[j]);
+                j++;
             }
-
-            st.push(s[i]);
-            i++;
         }
 
-        s.clear();
-        while(!st.empty()){
-            s.push_back(st.top());
-            st.pop();
-        }
-
-        reverse(begin(s), end(s));
-
+        int ans = (n - intermediate.size())/2 * x;
+        s = intermediate;
         return ans;
     }
 };
