@@ -22,12 +22,7 @@ public:
             else continue;
         }
 
-
-        // for(auto it : mp){
-        //     cout<<it.first<<" "<<it.second<<" "<<endl;
-        // }
-
-        int i = 0;
+        /*int i = 0;
         while(i >= 0 && i < s.size()){
             if(s[i] == '(' || s[i] == ')'){
                 int x = mp[i];
@@ -51,6 +46,21 @@ public:
                     i--;
                 }
             }
+        }*/
+
+        // Using for loop
+        int flag = 1;
+
+        for(int i=0; i<s.size(); i += flag){
+
+            if(s[i] == '(' || s[i] == ')'){
+                i = mp[i];
+                flag = -flag;
+            }
+            else{
+                result.push_back(s[i]);
+            }
+
         }
 
         return result;
