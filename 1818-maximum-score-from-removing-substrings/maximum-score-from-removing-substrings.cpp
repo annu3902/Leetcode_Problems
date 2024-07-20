@@ -12,32 +12,27 @@ public:
         int count1 = solve(s, maxStr, maxInt);
         int count2 = solve(s, minStr, minInt);
 
-        cout<<count1<<" "<<count2<<" ";
-
-        return (count1 + ((count2 > 0) ? count2 : 0));       
+        return (count1 + count2);     
     }
 
     int solve(string &s, string& select, int x){
         int n = s.size();
-        string intermediate = "";
-        intermediate.push_back(s[0]);
-
-        // int i = 0;
-        int j = 1;
-
+        
+        int i=0; int j=0;
         while(j < n){
-            if(!intermediate.empty() && intermediate.back() == select[0] && s[j] == select[1]){
-                j++;
-                intermediate.pop_back();
-            }
-            else{
-                intermediate.push_back(s[j]);
-                j++;
-            }
-        }
 
-        int ans = (n - intermediate.size())/2 * x;
-        s = intermediate;
+            s[i] = s[j];
+            i++;
+            if(i-2>=0 && s[i-2] == select[0] && s[i-1] == select[1]){
+                i -= 2;
+            }
+
+            j++;
+
+        }
+        s.erase(s.begin()+i, s.end());
+
+        int ans = (n - i)/2 * x;
         return ans;
     }
 };
