@@ -1,72 +1,62 @@
 class Solution {
 public:
     vector<int> survivedRobotsHealths(vector<int>& positions, vector<int>& healths, string directions) {
-            vector<int> ans;
-            int n = positions.size();
-            map<pair<int, int>, pair<int, int>> mp;
+        int n = positions.size();
+        
+        vector<int> index(n);
+        iota(begin(index), end(index), 0);
 
-            for(int i=0; i<n; i++){
-                int position = positions[i];
-                int health = healths[i];
-                int flag = (directions[i] == 'R') ? 0 : 1 ;
-                
-                mp[{position, i}] = {health, flag};
-            }   
+        auto lambda = [&](int &i, int &j){
+            return positions[i] < positions[j];
+        };
 
-            int direction = 0;
-            stack <pair <pair<int, int>, pair<int, int> > > st;
+        sort(begin(index), end(index), lambda);
 
-            for(auto it : mp){
+        stack<int> st;
+        vector<int> result;
 
-                int position = it.first.first;
-                int idx = it.first.second;
+        int i=0;
+        while(i < n){
+            int currIdx = index[i];
+            if(directions[currIdx] == 'R'){
+                st.push(index[i]);
+                i++;
+                continue;
+            }
 
-                int health = it.second.first;
-                int flag = it.second.second;
-
-                // cout<<position<<" "<<idx<<" "<<health<<" "<<flag<<endl;
-
-                if(flag == 0){
-                    st.push({{position, idx}, {health, flag}});
-                    continue;
+            while(!st.empty() && directions[st.top()] == 'R' && healths[currIdx] > 0){
+                if(healths[currIdx] > healths[st.top()]){
+                    healths[st.top()] = 0;
+                    healths[currIdx] -= 1;
+                    st.pop();
                 }
 
-                while(!st.empty() && health > 0 && st.top().second.second == 0){
-                    if(health == st.top().second.first){
-                        health = 0;
-                        st.pop();
-                    }
-                    else if(health > st.top().second.first){
-                        health -= 1;
-                        st.pop();
-                    }
-                    else{
-                        health = 0;
-                        st.top().second.first -= 1;
-                    }
+                else if(healths[currIdx] < healths[st.top()]){
+                    healths[currIdx] = 0;
+                    healths[st.top()]-=1;
+                    break;
                 }
 
-                if(health > 0){
-                    direction = flag;
-                    st.push({{position, idx},{health, flag}});
-                } 
+                else{
+                    healths[currIdx] = 0;
+                    healths[st.top()] = 0;
+                    st.pop();
+                    break;
+                }
             }
 
-           map<int, int> mp2;  
-
-            while(!st.empty()){
-                int idx = st.top().first.second;
-                int health = st.top().second.first;
-                cout<<idx<<" "<<health<<endl;
-
-                mp2[idx] = health;
-                st.pop();
+            if(healths[currIdx] > 0){
+                st.push(currIdx);
             }
+            i++;
 
-            for(auto &it : mp2){
-                ans.push_back(it.second);
-            }
+        }
 
-        return ans;
+        for(auto & health : healths){
+            if(health > 0) result.push_back(health);
+        }
+
+        return result;
+
     }
 };
