@@ -1,54 +1,72 @@
 class Solution {
 public:
     vector<int> survivedRobotsHealths(vector<int>& positions, vector<int>& healths, string directions) {
-        int n = positions.size();
-        vector<vector<int>> robots;
+            vector<int> ans;
+            int n = positions.size();
+            map<pair<int, int>, pair<int, int>> mp;
 
-        for (int i = 0; i < n; ++i) {
-            robots.push_back({positions[i], healths[i], directions[i], i});
-        }
+            for(int i=0; i<n; i++){
+                int position = positions[i];
+                int health = healths[i];
+                int flag = (directions[i] == 'R') ? 0 : 1 ;
+                
+                mp[{position, i}] = {health, flag};
+            }   
 
-        sort(robots.begin(), robots.end());
+            int direction = 0;
+            stack <pair <pair<int, int>, pair<int, int> > > st;
 
-        vector<vector<int>> stack;
+            for(auto it : mp){
 
-        for (auto& robot : robots) {
-            if (robot[2] == 'R' || stack.empty() || stack.back()[2] == 'L') {
-                stack.push_back(robot);
-                continue;
-            }
+                int position = it.first.first;
+                int idx = it.first.second;
 
-            if (robot[2] == 'L') {
-                bool add = true;
-                while (!stack.empty() && stack.back()[2] == 'R' && add) {
-                    int last_health = stack.back()[1];
-                    if (robot[1] > last_health) {
-                        stack.pop_back();
-                        robot[1] -= 1;
-                    } else if (robot[1] < last_health) {
-                        stack.back()[1] -= 1;
-                        add = false;
-                    } else {
-                        stack.pop_back();
-                        add = false;
+                int health = it.second.first;
+                int flag = it.second.second;
+
+                // cout<<position<<" "<<idx<<" "<<health<<" "<<flag<<endl;
+
+                if(flag == 0){
+                    st.push({{position, idx}, {health, flag}});
+                    continue;
+                }
+
+                while(!st.empty() && health > 0 && st.top().second.second == 0){
+                    if(health == st.top().second.first){
+                        health = 0;
+                        st.pop();
+                    }
+                    else if(health > st.top().second.first){
+                        health -= 1;
+                        st.pop();
+                    }
+                    else{
+                        health = 0;
+                        st.top().second.first -= 1;
                     }
                 }
 
-                if (add) {
-                    stack.push_back(robot);
-                }
+                if(health > 0){
+                    direction = flag;
+                    st.push({{position, idx},{health, flag}});
+                } 
             }
-        }
 
-        vector<int> result;
-        sort(stack.begin(), stack.end(), [](vector<int>& a, vector<int>& b) {
-            return a[3] < b[3];
-        });
+           map<int, int> mp2;  
 
-        for (auto& robot : stack) {
-            result.push_back(robot[1]);
-        }
+            while(!st.empty()){
+                int idx = st.top().first.second;
+                int health = st.top().second.first;
+                cout<<idx<<" "<<health<<endl;
 
-        return result;
+                mp2[idx] = health;
+                st.pop();
+            }
+
+            for(auto &it : mp2){
+                ans.push_back(it.second);
+            }
+
+        return ans;
     }
 };
