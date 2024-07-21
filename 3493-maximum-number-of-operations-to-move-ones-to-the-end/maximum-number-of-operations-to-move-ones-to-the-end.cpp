@@ -4,18 +4,17 @@ public:
         int n = s.size();
         int count = 0;
         int sum = 0;
-
-        for(int i=1; i<n; i++){
-            if(s[i-1] == '1') count++;
-            
-            else if(s[i] == '0' && s[i-1] == '0') continue;
-
+        int flag = 0;
+        for(int i=0; i<n; i++){
+            if(s[i] == '1') {
+                flag = 1;
+                count++;
+            }
             else{
-                sum += count;
+                if(flag == 1)sum += count;
+                flag = 0;
             }
         }
-        if(s.back() == '0') sum += count;
-
         return sum;
     }
 };
