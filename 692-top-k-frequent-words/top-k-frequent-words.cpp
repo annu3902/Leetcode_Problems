@@ -1,24 +1,24 @@
 class Solution {
 public:
     vector<string> topKFrequent(vector<string>& words, int k) {
-        // vector <string> ans;
-        vector<string> ans;
-        map<string,int> mpp;
-        for(int i=0; i<words.size(); i++){
-            mpp[words[i]]++;
+        map<string, int> mp;
+        for(string &word : words){
+            mp[word]++;
         }
 
-        multimap<int,string, greater<int>> mp;
-        for(auto it : mpp){
-            mp.insert(make_pair(it.second,it.first));
+        multimap<int, string, greater<int>> mp2;
+
+        for(auto it : mp){
+            mp2.insert({it.second, it.first});
         }
-        int cnt =0;
-        for(auto x : mp){
-            if(cnt< k){
-                ans.push_back(x.second);
-                cnt++;
-            }
+
+        vector<string> ans;
+
+        for(auto it = mp2.begin(); it != mp2.end() && k > 0; it++){
+            ans.push_back((it->second));
+            k--;
         }
+
         return ans;
     }
 };
