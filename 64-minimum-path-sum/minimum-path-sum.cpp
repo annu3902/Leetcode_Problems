@@ -3,19 +3,19 @@ public:
     int minPathSum(vector<vector<int>>& points) {
         int m = points.size();
         int n = points[0].size();
-        vector<vector<int>> dp(m, vector<int> (n, 0));
-        
-        dp[0][0] = points[0][0];
+        // vector<vector<int>> dp(m, vector<int> (n, 0));
+        vector<int> prev(n, 0);
+        prev[0] = points[0][0];
 
         for(int row=0; row<m; row++){
+            vector<int> curr(n, 0);
             for(int col=0; col<n; col++){
                 if(row == 0 && col == 0) continue;
-                dp[row][col] = points[row][col] + min(((row>=1) ? dp[row-1][col]: 1e9), ((col>=1) ? dp[row][col-1] : 1e9));
+                curr[col] = points[row][col] + min(((row>=1) ? prev[col] : 1e9), ((col>=1 ? curr[col-1] : 1e9)));
             }
+            prev = curr;
         }
-
-        return dp[m-1][n-1];
-
+        return prev[n-1] + points[0][0];
     }
 
   // Memoization
