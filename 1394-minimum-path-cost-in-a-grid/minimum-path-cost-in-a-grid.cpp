@@ -14,29 +14,30 @@ public:
 
         // Tabulation
         vector<vector<int>> dp(m, vector<int>(n, 0));
+
+        // Space Optimization 
+        vector<int> prev(n, 0);
         for(int col=0; col<n; col++){
-            dp[m-1][col] = grid[m-1][col];
+            prev[col] = grid[m-1][col];
         }
 
         for(int i=m-2; i>=0; i--){
+            vector<int> curr(n, 0);
             for(int j=0; j<n; j++){
 
                 int mini = 1e9;
                 int u = grid[i][j];
                 for(int k=0; k<n; k++){
-                    mini = min(u + moveCost[u][k] + dp[i+1][k], mini);
+                    mini = min(u + moveCost[u][k] + prev[k], mini);
                 }
 
-                dp[i][j] = mini;
+                curr[j] = mini;
             }
+            prev = curr;
         }
 
-        int mini = 1e9;
-        for(int j=0; j<n; j++){
-            mini = min(mini, dp[0][j]);
-        }
-
-        return mini;
+        return *min_element(begin(prev), end(prev));
+        // return mini;
     }
 
     // Memoization
