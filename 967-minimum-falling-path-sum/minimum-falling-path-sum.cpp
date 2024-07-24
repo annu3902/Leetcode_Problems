@@ -4,25 +4,27 @@ public:
         int n = matrix.size();
         vector<vector<int>> dp(n, vector<int> (n, 0));
 
+        // Space Optimization
+        vector<int> prev(n, 0);
         for(int j=0; j<n; j++){
-            dp[n-1][j] = matrix[n-1][j];
+            prev[j] = matrix[n-1][j];
         }
 
         for(int i=n-2; i>=0; i--){
 
+            vector<int> curr(n, 0);
             for(int j=0; j<n; j++){
-                dp[i][j] = 1e9;
+                curr[j] = 1e9;
                 for(int p=0; p<3; p++){
-                    int sum = 1e9;
-                    if(j+p-1 >= 0 && j+p-1 < n) sum = dp[i+1][j+p-1];
-                    dp[i][j] = min(dp[i][j] , sum + matrix[i][j]);
+                    curr[j] = min(curr[j] , ((j+p-1 >= 0 && j+p-1 < n) ?  prev[j+p-1] : static_cast<int>(1e9))  + matrix[i][j]);
                 }
 
             }
 
+            prev = curr;
         }
 
-        return *min_element(begin(dp[0]), end(dp[0]));
+        return *min_element(begin(prev), end(prev));
 
         // int mini =1e9;
         // for(int j=0; j<n; j++){
