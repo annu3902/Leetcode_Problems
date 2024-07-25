@@ -5,15 +5,28 @@ public:
 
         int sum = accumulate(begin(nums), end(nums), 0);
 
-        if(sum & 1 != 0) return false;
+        if((sum & 1) != 0) return false;
 
         int target = sum/2;
 
-        vector<vector<int>> dp(n, vector<int> (target+1, -1));
-        return dfs(n-1, target, nums, dp);
+        vector<vector<bool>> dp(n, vector<bool> (target+1, 0));
+
+        for(int i=0; i<n; i++){
+            dp[i][0] = true;
+        }
+
+        if(target == nums[0]) dp[0][nums[0]] = true;
+
+        for(int i=1; i<n; i++){
+            for(int j=1; j<=target; j++){
+                dp[i][j] = dp[i-1][j] || ((j >= nums[i]) ? dp[i-1][j-nums[i]] : 0);
+            }
+        }
+
+        return dp[n-1][target];
     }
 
-    bool dfs(int i, int target, vector<int>& nums, vector<vector<int>>& dp){
+    /*bool dfs(int i, int target, vector<int>& nums, vector<vector<int>>& dp){
 
         if(target == 0) return true;
 
@@ -27,5 +40,5 @@ public:
         bool notPick = dfs(i-1, target, nums, dp);
 
         return dp[i][target] = pick || notPick;
-    }
+    }*/
 };
