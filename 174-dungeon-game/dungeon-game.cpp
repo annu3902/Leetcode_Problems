@@ -5,34 +5,24 @@ public:
         int n=dungeon[0].size();
 
         // Tabulation
-        // vector<vector<int>> dp(m,vector<int>(n, 0));
+        vector<vector<int>> dp(m,vector<int>(n, 0));
         // 0 health is showing that i am easily sail at this value
+        dp[m-1][n-1] = min(0, dungeon[m-1][n-1]);
 
-        /*for(int i=m-1; i>=0; i--){
+        for(int i=m-1; i>=0; i--){
             for(int j=n-1; j>=0; j--){
-                if(i == m-1 && j == n-1){
-                    dp[i][j] = min(0, dungeon[i][j]);
-                }
+                if(i == m-1 && j == n-1) continue;
 
-                else if(i == m-1){
-                    dp[i][j] = min(0, dungeon[i][j] + dp[i][j+1]);
-                }
+                dp[i][j] = min(0, dungeon[i][j] + max(((j+1 < n) ? dp[i][j+1] : static_cast<int> (-1e9)), ((i+1 < m) ?dp[i+1][j] :static_cast<int> (-1e9))));
 
-                else if(j == n-1){
-                    dp[i][j] = min(0, dungeon[i][j] + dp[i+1][j]);
-                }
-
-                else{
-                    dp[i][j] = min(0, dungeon[i][j] + max(dp[i][j+1], dp[i+1][j]));
-                }
             }
         }
 
-        return abs(dp[0][0]) + 1;*/
+        return abs(dp[0][0]) + 1;
 
-        vector<vector<int>> dp(m, vector<int> (n, -1));
+        /*vector<vector<int>> dp(m, vector<int> (n, -1));
 
-        return abs(dfs(0, 0, m, n, dungeon, dp)) + 1;
+        return abs(dfs(0, 0, m, n, dungeon, dp)) + 1;*/
     }
 
     int dfs(int row, int col, int m, int n, vector<vector<int>>& dungeon, vector<vector<int>>& dp){
