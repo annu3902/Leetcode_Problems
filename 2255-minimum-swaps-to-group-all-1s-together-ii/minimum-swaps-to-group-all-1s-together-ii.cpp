@@ -19,7 +19,7 @@ public:
         int maxi = INT_MIN;
 
         while(i < n){
-            j = j % n;
+            if(j == n) j = j % n;
             if(nums[j] == 1){
                 cntOnes++;
             }
