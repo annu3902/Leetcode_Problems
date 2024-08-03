@@ -1,62 +1,21 @@
-// class Solution {
-// public:
-//     int minHeightShelves(vector<vector<int>>& books, int shelfWidth) {
-
-//         int n = books.size();
-//         vector<vector<int>> dp(n, vector<int> (shelfWidth + 1, -1));
-
-//         return dfs(n-1, shelfWidth, shelfWidth, 0, books, dp);        
-//     }
-
-//     int dfs(int index, int remWidth, int shelfWidth, int maxHeight, vector<vector<int>>& books, vector<vector<int>>& dp){
-//             if(index < 0){
-//                 return maxHeight;
-//             }
-
-//             if(dp[index][remWidth] != -1) return dp[index][remWidth];
-
-//             int bookWidth = books[index][0];
-//             int bookHeight = books[index][1];
-
-//             int pick = 1e9;
-//             if(bookWidth <= remWidth){
-//                 pick = dfs(index-1, remWidth - bookWidth, shelfWidth, max(maxHeight, bookHeight), books, dp);
-//             }
-
-//             int notPick = maxHeight + dfs(index-1, shelfWidth - bookWidth, shelfWidth, bookHeight, books, dp);     
-
-//             return dp[index][remWidth] = min(pick, notPick);
-//     }
-// };
-
-
 class Solution {
 public:
     int minHeightShelves(vector<vector<int>>& books, int shelfWidth) {
         int n = books.size();
-        vector<vector<int>> dp(n, vector<int> (shelfWidth + 1, -1));
-        return dfs(n-1, shelfWidth, shelfWidth, 0, books, dp);        
-    }
+        vector<int> dp(n + 1, INT_MAX);
+        dp[0] = 0; // Base case: no books, no height needed
 
-    int dfs(int index, int remWidth, int shelfWidth, int maxHeight, vector<vector<int>>& books, vector<vector<int>>& dp) {
-        if (index < 0) {
-            return maxHeight;
+        for (int i = 1; i <= n; ++i) {
+            int width = 0, height = 0;
+            // Try to place books[i-1], books[i-2], ..., books[0] on the current shelf
+            for (int j = i - 1; j >= 0; --j) {
+                width += books[j][0];
+                if (width > shelfWidth) break;
+                height = max(height, books[j][1]);
+                dp[i] = min(dp[i], dp[j] + height);
+            }
         }
 
-        if (dp[index][remWidth] != -1) {
-            return dp[index][remWidth];
-        }
-
-        int bookWidth = books[index][0];
-        int bookHeight = books[index][1];
-
-        int pick = 1e9;
-        if (bookWidth <= remWidth) {
-            pick = dfs(index - 1, remWidth - bookWidth, shelfWidth, max(maxHeight, bookHeight), books, dp);
-        }
-
-        int notPick = maxHeight + dfs(index - 1, shelfWidth - bookWidth, shelfWidth, bookHeight, books, dp);     
-
-        return dp[index][remWidth] = min(pick, notPick);
+        return dp[n];
     }
 };
