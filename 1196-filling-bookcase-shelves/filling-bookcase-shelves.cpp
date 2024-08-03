@@ -1,20 +1,30 @@
 class Solution {
 public:
-    int minHeight(int i,vector<vector<int>> &books,int remWidth,int shelf, int height,vector<vector<int>> &dp){
-        if (i==books.size()) return height;
-        if (dp[i][remWidth]!=-1) return dp[i][remWidth];
-        int currWidth=books[i][0];
-        int currHeight=books[i][1];
-        int pick=INT_MAX;
-        if (remWidth>=currWidth){
-            pick=minHeight(i+1,books,remWidth-currWidth,shelf,max(height,currHeight),dp);
-        }
-        int notpick=height+minHeight(i+1,books,shelf-currWidth,shelf,currHeight,dp);
-        return dp[i][remWidth]=min(pick,notpick);
-    }
     int minHeightShelves(vector<vector<int>>& books, int shelfWidth) {
-        int n=books.size();
-        vector<vector<int>> dp(n,vector<int>(shelfWidth+1,-1));
-        return minHeight(0,books,shelfWidth,shelfWidth,0,dp);
+        int n = books.size();
+
+        // vector<vector<int>> dp(n, vector<int>(selfWidth, -1));
+        vector<vector<int>> dp(n, vector<int> (shelfWidth + 1, -1));
+        return dfs(0, shelfWidth, shelfWidth, 0, books, dp);
+    }
+
+    int dfs(int index, int remWidth, int selfWidth, int maxHeight, vector<vector<int>>& books, vector<vector<int>>& dp){
+        if(index >= books.size()){
+            return maxHeight;
+        }
+
+        if(dp[index][remWidth] != -1) return dp[index][remWidth];
+
+        int bookWidth = books[index][0];
+        int bookHeight = books[index][1];
+
+        int place = 1e9;
+        if(bookWidth <= remWidth){
+            place = dfs(index + 1, remWidth - bookWidth, selfWidth, max(maxHeight, bookHeight), books, dp);
+        }
+
+        int notPlace = maxHeight + dfs(index+1, selfWidth - bookWidth, selfWidth, bookHeight, books, dp);
+
+        return dp[index][remWidth] = min(place , notPlace);
     }
 };
