@@ -12,36 +12,29 @@
 class Solution {
 public:
     bool isBalanced(TreeNode* root) {
-
-        pair<bool, int> ans = dfs(root);
-        return ans.first;
-
+        return dfs(root);
     }
 
 
-    pair<bool, int> dfs(TreeNode* root){
+    bool dfs(TreeNode* & root){
+        if(!root) return true;
 
-        if(root == NULL){
-            pair<bool, int> p = {true, 0};
-            return p;
-        }
+        if(abs(height(root->left)- height(root->right)) > 1) return false;
 
-        pair<bool, int> leftPair = dfs(root->left);
-        pair<bool, int> rightPair = dfs(root->right);
+        bool leftSide = dfs(root->left);
+        bool rightSide = dfs(root->right);
 
-        bool leftAns = leftPair.first;
-        bool rightAns = rightPair.first;
-
-        bool heightDiff = abs(leftPair.second - rightPair.second) <= 1;
-
-        pair<bool, int> ans;
-        ans.second = max(leftPair.second, rightPair.second) + 1;
+        return leftSide & rightSide;
         
-        if(leftAns && rightAns && heightDiff) ans.first = true;
-        else{
-            ans.first = false;
-        }
-        return ans;
     }
 
+    int height(TreeNode* & root){
+
+        if(!root) return 0;
+
+        int leftHeight = height(root->left);
+        int rightHeight = height(root->right);
+
+        return max(leftHeight, rightHeight) + 1;
+    }
 };
