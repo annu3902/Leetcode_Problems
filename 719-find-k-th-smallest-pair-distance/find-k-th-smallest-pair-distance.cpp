@@ -1,43 +1,51 @@
 class Solution {
+public:
 
-    int sliding(int diff, vector<int>& nums) {
+    int slidingWindow(vector<int>& nums, int mid){
 
-        // how many pairs are having absolute difference less than or equal to
-        // dif;
+        int n = nums.size();
         int i = 0;
-        int count = 0;
-        for (int j = 0; j < nums.size(); j++) {
+        int j = i+1;
+        int countPairs = 0;
 
-            while (nums[j] - nums[i] > diff)
+        while(j < n){
+
+            while(i<n && abs(nums[j] - nums[i]) > mid){
                 i++;
-            count += j - i;
+            }
+            
+            countPairs += (j-i);
+            j++;
         }
-
-        return count;
+        return countPairs;
     }
 
-public:
     int smallestDistancePair(vector<int>& nums, int k) {
-        sort(nums.begin(), nums.end()); // nlog n
-        int high = nums[nums.size() - 1] - nums[0];
-        int low = INT_MAX;
-        for (int i = 1; i < nums.size(); i++) {
-            if (nums[i] - nums[i - 1] < low) {
-                low = nums[i] - nums[i - 1];
+        int n = nums.size();
+
+        sort(begin(nums), end(nums));
+
+        int lowDist = 0;
+        int highDist = nums[n-1] - nums[0];
+
+        int ans = 0;
+
+        while(lowDist <= highDist){
+
+            int mid = lowDist + (highDist - lowDist)/2;
+
+            int pairCount = slidingWindow(nums, mid);
+
+            if(pairCount < k){
+                lowDist = mid + 1;
             }
+            else{
+                ans = mid; // mid stores that kth - distance
+                highDist = mid-1;
+            }
+
         }
 
-        while (low < high) {
-            int mid = (low + high) / 2;
-            int ans = sliding(mid, nums); // mid = 5
-            // checking that how many pairs are having absolute difference less
-            // than or equal to 5;
-            if (ans < k) {
-                low = mid + 1;
-            } else
-                high = mid;
-        }
-
-        return low;
+        return ans;
     }
 };
