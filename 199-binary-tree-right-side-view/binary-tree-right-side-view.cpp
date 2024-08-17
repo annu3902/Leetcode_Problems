@@ -14,19 +14,27 @@ public:
     vector<int> rightSideView(TreeNode* root) {
         vector<int> result;
 
-        dfs(root, 1, result);
-        return result;  
+        dfs(root, 0, result);
+
+        return result;
     }
 
-    void dfs(TreeNode* root, int level, vector<int> &result){
+    void dfs(TreeNode* &root, int level, vector<int>& result){
 
-        if(root == NULL) return;
+        if(!root) return ;
 
-        if(result.size() < level){
-            result.push_back(root -> val);
+        if(result.size() == level){
+            result.push_back(root->val);
         }
-        
-        dfs(root -> right, level + 1, result);
-        dfs(root -> left, level + 1, result);
+
+        if(root->right){
+            dfs(root->right, level+1, result);
+        }
+
+        if(root->left){
+            dfs(root->left, level+1, result);
+        }
+
+        return;
     }
 };
