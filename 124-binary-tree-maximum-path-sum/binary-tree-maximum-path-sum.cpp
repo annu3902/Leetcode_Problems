@@ -12,30 +12,25 @@
 class Solution {
 public:
     int maxPathSum(TreeNode* root) {
-        
-        int maxSum = INT_MIN;
-
-        solve(root, maxSum);
-
+        int maxSum = -1e9;
+        maxSum = max(maxSum, dfs(root, maxSum));
         return maxSum;
     }
 
-    int solve(TreeNode* root, int& maxSum){
-        if(root == NULL) return 0;
+    int dfs(TreeNode* &root, int& maxSum){
+        if(!root) return -1e9;
 
-        int left_bacche_ka_Sum = solve(root->left, maxSum);
-        int right_bacche_ka_Sum = solve(root->right, maxSum);
+        if(root->left == NULL && root->right == NULL){
+            return root->val;
+        }
 
-        int niche_answer_mil_gya = left_bacche_ka_Sum + right_bacche_ka_Sum + root->val;
+        int leftSum = dfs(root->left, maxSum);
+        int rightSum = dfs(root->right, maxSum);
 
-        int koii_ek_acha_hai = max(left_bacche_ka_Sum, right_bacche_ka_Sum) + root->val;
+        int nicheAnsMilRha = leftSum + rightSum + root->val;
 
-        int sirf_root_acha_hai = root->val;
+        maxSum = max({maxSum, nicheAnsMilRha, leftSum, rightSum, root->val});
 
-        maxSum = max({maxSum, niche_answer_mil_gya, koii_ek_acha_hai, sirf_root_acha_hai});
-
-        return max(koii_ek_acha_hai, sirf_root_acha_hai);
-
+        return max(max(leftSum, rightSum) + root->val , root->val);
     }
-
 };
