@@ -1,26 +1,43 @@
 class Solution {
 public:
-    int minDifficulty(vector<int>& complexity, int days) {
-        int n = complexity.size();
-    if (n < days) return -1; // If tasks are fewer than days, it's impossible to split
-
-    vector<vector<long long>> dp(n + 1, vector<long long>(days + 1, INT_MAX));
-    dp[0][0] = 0;
-
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= days; j++) {
-            int maxComplexity = 0;
-            for (int k = i; k > 0; k--) {
-                maxComplexity = max(maxComplexity, complexity[k-1]);
-                dp[i][j] = min(dp[i][j], dp[k-1][j-1] + maxComplexity);
-            }
-        }
+    int minDifficulty(vector<int>& jobDifficulty, int d) {
+        int n  = jobDifficulty.size();
+        if(n < d) return -1;
+        vector<vector<int>> dp(n+1, vector<int> (d+1, -1));
+        return dfs(n-1, d, jobDifficulty, dp);
     }
 
-    return dp[n][days];
+    int dfs(int index, int days, vector<int>& nums, vector<vector<int>> &dp){
+        
+        // Base Case
+        if(days == 1 && index >= 0){
+            int maxi = INT_MIN;
+            for(int i=index; i>=0; i--){
+                maxi = max(maxi, nums[i]);
+            }
+            return maxi;
+        }
+
+        if(index < 0){
+            return 1e9;
+        }
+
+        if(dp[index][days] != -1) return dp[index][days];
+
+        int mini = 1e9;
+
+        for(int i=index; i>=0; i--){
+            int maxi = INT_MIN;
+
+            for(int j=index; j>=i; j--){
+                maxi = max(maxi, nums[j]);
+            }
+
+           int ans = maxi + dfs(i-1, days-1, nums, dp);
+
+           mini = min(mini, ans);
+        }
+
+        return dp[index][days] = mini;
     }
 };
-
-// int findMinComplexity() {
-   
-// }
