@@ -3,7 +3,7 @@ public:
     int minDifficulty(vector<int>& jobDifficulty, int d) {
         int n  = jobDifficulty.size();
         if(n < d) return -1;
-        vector<vector<int>> dp(n+1, vector<int> (d+1, -1));
+        vector<vector<int>> dp(n, vector<int> (d+1, -1));
         return dfs(n-1, d, jobDifficulty, dp);
     }
 
