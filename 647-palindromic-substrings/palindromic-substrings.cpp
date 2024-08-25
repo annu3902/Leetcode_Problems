@@ -1,33 +1,27 @@
 class Solution {
 public:
-    int count = 0;
-
     int countSubstrings(string s) {
-        count = 0;
-
         int n = s.size();
+        // vector<vector<int>> dp(n, vector<int> (n, -1));
+
+        int count = 0;
         for(int i=0; i<n; i++){
-
-            checkPalindrome(i, i, s, n);
-            checkPalindrome(i, i+1, s, n);
-
+            for(int j=i; j<n; j++){
+                if(dfs(i, j, s)){
+                    count++;
+                }
+            }
         }
-
         return count;
-
     }
 
-    void checkPalindrome(int i, int j, string& s, int n){
-
-        if(i > j) return;
-
-        while(i >= 0 && j < n && s[i] == s[j]){
-            count++;
-            i--;
-            j++;
+    bool dfs(int start, int end, string& s){
+        if(start > end){
+            return true;
         }
 
-        return;
+        if(s[start] != s[end]) return false;
 
+        return dfs(start+1, end-1, s);
     }
 };
