@@ -64,6 +64,8 @@ public:
         int high = n-1;
 
         start = findStart(nums, target, start);
+
+        if(start == -1) return {-1, -1};
         end = findEnd(nums, target, end);
 
         result.push_back(start);
