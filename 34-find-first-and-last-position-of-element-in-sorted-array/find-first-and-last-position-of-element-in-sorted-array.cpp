@@ -1,53 +1,74 @@
 class Solution {
 public:
 
-int last (vector<int>& nums, int target){
-    int low = 0;
-    int high = nums.size()-1;
-    int ans = -1;
-    while(low <= high){
-        int mid = (low+high)/2;
-        if(nums[mid] == target){
-            ans = mid;
-            low = mid+1;
-        }else if(nums[mid] < target){
-            low =mid+1;
-        }else{
-            high = mid-1;
-        }
-    }
-    return ans;
-}
+    int findStart(vector<int>& nums, int target, int start){
+        int n = nums.size();
+        int low = 0;
+        int high = n-1;
 
-int first (vector<int>& nums,int target){
-        int low =0;
-        int high = nums.size()-1;
-        int ans = -1;
         while(low <= high){
-            int mid = (low+high)/2;
-            if(nums[mid] == target){
-                ans = mid;
-                high = mid-1;
+            int mid = low + (high - low)/2;
+
+            if(nums[mid] < target){
+                low = mid + 1;
             }
-            else if(nums[mid] < target){
-                low = mid+1;
+
+            else if(nums[mid] > target){
+                high = mid - 1;
             }
+
             else{
-                high = mid-1;
+                start = mid;
+                high = mid - 1;
+                // [8 8 8 8 8]
             }
         }
-        return ans;
-    }
-vector<int> searchRange(vector<int>& nums, int target) {
-        // if(binary_search(nums.begin(),nums.end(),target)){
-        //     int start = lower_bound(nums.begin(),nums.end(),target)-nums.begin();
-        //     int end = upper_bound(nums.begin(),nums.end(),target)-nums.begin() -1;
-        //     return {start,end};
-        // }
-        // else{
-        //     return{-1,-1};
-        // }
-        return{first(nums,target),last(nums,target)};
 
+        return start;
+    }
+
+    int findEnd(vector<int>& nums, int target, int end){
+        int n = nums.size();
+        int low = 0;
+        int high = n-1;
+
+        while(low <= high){
+            int mid = low + (high - low)/2;
+
+            if(nums[mid] < target){
+                low = mid + 1;
+            }
+
+            else if(nums[mid] > target){
+                high = mid - 1;
+            }
+
+            else{
+                end = mid;
+                low = mid + 1;
+                // [8 8 8 8 8]
+            }
+        }
+
+        return end;
+    }
+
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> result;
+
+        int start = -1;
+        int end = -1;
+        int n = nums.size();
+
+        int low = 0;
+        int high = n-1;
+
+        start = findStart(nums, target, start);
+        end = findEnd(nums, target, end);
+
+        result.push_back(start);
+        result.push_back(end);
+
+        return result;
     }
 };
