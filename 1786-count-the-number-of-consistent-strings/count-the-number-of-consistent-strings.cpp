@@ -1,22 +1,26 @@
 class Solution {
 public:
     int countConsistentStrings(string allowed, vector<string>& words) {
-         unordered_set<char> set(allowed.begin(),allowed.end());
-         int count=0;
+        int count = 0;
 
-         for(auto& word:words){
-            bool isConsistent=true;
+        unordered_map<char, int> mp;
+        for(int i=0; i<allowed.size(); i++){
+            mp[allowed[i]]++;
+        }
 
-            for(auto& ch:word){
-                if(set.find(ch)==set.end()){
-                    isConsistent=false;
-                    break;
-                }
+        for(auto st : words){
+
+            bool flag = true;
+            for(auto c : st){
+                if(mp.count(c) == 0){
+                    flag = false;
+                    continue;
+                } 
             }
-            if(isConsistent){
-                count++;
-            }
-         }
+
+            if(flag) count++;
+        }
+
         return count;
     }
 };
