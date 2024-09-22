@@ -1,27 +1,27 @@
 class Solution {
 public:
-    vector<int> lexicalOrder(int n) {
-        int speed = []() {ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL); return 0; }();
+    void dfs(int currNumber, vector<int>& result, int n){
 
-        vector<int> sol(n);
-        int idx = 0;
-        int cur = 1;
-        while (idx < n) {
-            // if cur is in range take it 
-            if (cur <= n) sol[idx++] = cur;
+        if(currNumber > n) return;
 
-            // if it's possible to dive deeper into lexi numbers
-            // e.g 101 -> 1010
-            if (cur*10 <= n) cur *= 10;
-            else {
-                cur += 1;
-                // get to the origin where we have to proceed
+        result.push_back(currNumber);
 
-                // e.g last cur += 1: 10019 -> 10020
-                // now we have to make step: 10020 -> 1002
-                while (cur % 10 == 0) cur /= 10;
-            }
+        for(int num=0; num<=9; num++){
+            currNumber = currNumber*10 + num;
+            if(currNumber > n) return;
+            dfs(currNumber, result, n);
+            currNumber = currNumber/10;
         }
-       return sol; 
+
+    }
+
+    vector<int> lexicalOrder(int n) {
+        vector<int> result;
+
+        for(int i=1; i<=9; i++){
+            dfs(i, result, n);
+        }
+
+        return result;
     }
 };
