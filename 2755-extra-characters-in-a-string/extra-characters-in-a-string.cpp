@@ -1,29 +1,32 @@
 class Solution {
 public:
-    int dfs(int ind, string& s, unordered_set<string>& st, vector<int>& dp){
 
-        if(ind >= s.size()) return 0;
+    int dfs(int i, string &s, unordered_set<string>& st, vector<int>& dp){
 
-        if(dp[ind] != -1) return dp[ind];
+        if(i < 0) return 0;
 
-        int result = 1 + dfs(ind + 1, s, st, dp);
+        if(dp[i] != -1) return dp[i];
 
-        for(int j=ind; j<s.size(); j++){
-            string temp = s.substr(ind, j-ind+1);
+        int result = 1 + dfs(i-1, s, st, dp);
+
+        for(int j=i; j>=0; j--){
+            string temp = s.substr(j, i-j+1);
+
             if(st.count(temp)){
-                result = min(result, dfs(j+1, s, st, dp));
+                result = min(result, dfs(j-1, s, st, dp));
             }
         }
 
-        return dp[ind] = result;
+        return dp[i] = result;
+
     }
 
-    int minExtraChar(string s, vector<string>& nums) {
-        int n = nums.size();
+    int minExtraChar(string s, vector<string>& dictionary) {
+        unordered_set<string> st(begin(dictionary), end(dictionary));
+        int n = s.size();
 
-        unordered_set<string> st (begin(nums), end(nums));
-        vector<int> dp(s.size(), -1);
+        vector<int> dp(n, -1);
 
-        return dfs(0, s, st, dp);        
+        return dfs(n-1, s, st, dp);
     }
 };
