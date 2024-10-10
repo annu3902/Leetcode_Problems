@@ -22,10 +22,11 @@ public:
 
         int m = str.size();
 
-        if(m & 1 == 1){
-            return m/2 + 1;
+        if((m & 1 )== 0){
+            return m/2;
         }
-        return m/2;
+
+        return m/2 + 1;
 
     }
 };
