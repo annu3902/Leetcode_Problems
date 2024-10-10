@@ -2,21 +2,21 @@ class Solution {
 public:
     int rob(vector<int>& nums) {
         int n = nums.size();
-        if(n == 1) return nums[0];
-        return max(solve(nums, 0, n-2), solve(nums, 1, n-1));
+        if(n==1) return nums[0];
+        return max(dfs(0, n-2, nums), dfs(1, n-1, nums));
     }
 
-    int solve(vector<int> &nums, int start, int end){
-        vector<int> dp(end-start+1, 0);
-        int n = dp.size();
-        if(n==1) return nums[start];
+    int dfs(int start, int end, vector<int>& nums){
+        int n = nums.size();
+        vector<int> dp(n-1, 0);
 
         dp[0] = nums[start];
-        dp[1] = max(nums[start], nums[start+1]);
 
-        for(int i=2; i<n; i++){
-            dp[i] = max(dp[i-1], dp[i-2] + nums[i+start]);
+        for(int i=start+1; i<=end; i++){
+            int op1 = dp[i-1-start];
+            int op2 = ((i-2 >= start) ? dp[i-2-start] : 0) + nums[i];
+            dp[i - start] = max(op1, op2);
         }
-        return dp[n-1];
+        return dp[n-2];
     }
 };
