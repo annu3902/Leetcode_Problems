@@ -6,12 +6,12 @@ public:
         // cout<<n<<" ";
 
         int targetArrivalTime = times[targetFriend][0]; // Since the arrival time of every friend are distinct each friend will have unique arrival time
-        cout<<targetArrivalTime<<" "<<endl;
+        // cout<<targetArrivalTime<<" "<<endl;
 
         sort(begin(times), end(times));
-        for(vector<int> &vec : times){
-            cout<<vec[0]<<" "<<vec[1]<<endl;
-        }
+        // for(vector<int> &vec : times){
+        //     cout<<vec[0]<<" "<<vec[1]<<endl;
+        // }
 
         for(int i=0; i<n; i++){
             int arrivalTime = times[i][0];
