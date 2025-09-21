@@ -1,14 +1,19 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        int n = nums.size();
-        for(int i = 0; i < n; i++){
-            int firstElement = nums[i];
-            int diff = target - firstElement;
-            for(int j = i + 1; j < n; j++){
-                if(nums[j] == diff) return{i, j};
+        vector<int> ans;
+
+            for(int i=0; i<nums.size(); i++){
+
+                int secondNum = target - nums[i];
+
+                for(int j = i+1; j<nums.size(); j++){
+                    if(nums[j] == secondNum){
+                        return {i, j};
+                    }
+                }
             }
-        }
-        return {-1,-1};
+
+        return ans;
     }
 };
