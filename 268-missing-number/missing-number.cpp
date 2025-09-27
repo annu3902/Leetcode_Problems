@@ -3,14 +3,10 @@ public:
     int missingNumber(vector<int>& nums) {
         int n = nums.size();
 
-        sort(begin(nums), end(nums));
+        int ans = n * (n + 1)/2;
 
-        for(int i=0; i<n; i++){
-            if(nums[i] != i){
-                return i;
-            }
-        }
+        int sum = accumulate(begin(nums), end(nums), 0);
 
-        return n;
+        return (ans - sum);
     }
 };
