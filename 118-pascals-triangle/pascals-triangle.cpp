@@ -1,16 +1,19 @@
 class Solution {
 public:
-    vector<vector<int>> generate(int n) {
+    vector<vector<int>> generate(int numRows) {
         vector<vector<int>> ans;
-        
-        for(int i=0; i<n; i++){
-            vector<int> vec(i+1, 1);
-            for(int j=1; j<vec.size()-1; j++){
-                vec[j] = ans[i-1][j] + ans[i-1][j-1];
-            } 
-            ans.push_back(vec);
-        }
 
+        for(int i=1; i<=numRows; i++){
+            vector<int> res(i, 1);
+            ans.push_back(res);
+
+            for(int j=1; j<i-1; j++){
+                ans[i-1][j] = ans[i-2][j-1] + ans[i-2][j];
+                // ans[i][j] = ((i>=1) ? ans[i-1][j] : 0) + ((i>=1 && j <= i) ? ans[i-1][j+1] : 0);
+            }
+
+        }
+        
         return ans;
     }
 };
