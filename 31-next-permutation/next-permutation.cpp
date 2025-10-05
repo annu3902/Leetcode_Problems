@@ -4,6 +4,8 @@ public:
         int n = nums.size();
         int index = -1;
 
+        // Find if the element on the left side of the current element is smaller or not. When we get save that element.
+
         for(int i=n-1; i>0; i--){
             if(nums[i] > nums[i-1]){
                 index = i-1;
@@ -11,8 +13,9 @@ public:
             }
         }
 
-        for(int j=n-1; j>index; j--){
-            if(index != -1 && nums[j] > nums[index]){
+        // Search for an element in the right side of saved element that is just greater than the saved element
+        for(int j=n-1; j>index && index != -1; j--){
+            if(nums[j] > nums[index]){
                 swap(nums[index], nums[j]);
                 break;
             }
