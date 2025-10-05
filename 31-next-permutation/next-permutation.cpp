@@ -1,32 +1,24 @@
 class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
-        int ind = -1;
         int n = nums.size();
+        int index = -1;
 
-        // Find the breakpoint
-        for(int i=n-2; i>=0; i--){
-            if(nums[i] < nums[i+1]){
-                ind = i;
-                break;
-            }
-        }
-        // cout<<ind<<" ";
-
-        if(ind == -1){
-            reverse(begin(nums), end(nums));
-            return;
-        }
-
-        // Find the number just greater than the nums[ind]
-        for(int i=n-1; i>ind; i--){
-            if(nums[i] > nums[ind]){
-                swap(nums[i], nums[ind]);
+        for(int i=n-1; i>0; i--){
+            if(nums[i] > nums[i-1]){
+                index = i-1;
                 break;
             }
         }
 
-        // arrange the remaining in the sorted order
-        reverse(nums.begin()+ind+1, nums.end());
+        for(int j=n-1; j>index; j--){
+            if(index != -1 && nums[j] > nums[index]){
+                swap(nums[index], nums[j]);
+                break;
+            }
+        }
+
+        reverse(nums.begin()+index+1, nums.end());
+
     }
 };
