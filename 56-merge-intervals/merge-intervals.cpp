@@ -1,55 +1,36 @@
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-
+        sort(begin(intervals), end(intervals));
         int n = intervals.size();
+        if(n == 1) return intervals;
 
-        sort(intervals.begin(), intervals.end());
-        vector<vector<int>> result;
+        vector<vector<int>> ans;
 
-        // BRUTE FORCE
-        // for(int i=0; i<n; i++){
+        for(int i=0; i<n; i++){
             
-        //     if(!result.empty()){
-        //         if(result.back()[1] >= intervals[i][0])
-        //             continue;
-        //     }
+            int start = intervals[i][0];
+            int end = intervals[i][1];
+            int j = i+1;
 
-        //     vector<int> temp = intervals[i];
-        //     for(int j=i+1; j<n; j++){
+            while(j < n){
+                int start1 = intervals[j][0];
+                int end1 = intervals[j][1];
 
-        //         if(intervals[j][0] <= temp[1]){
-        //             temp[1] = max(temp[1], intervals[j][1]);
-        //         }
-
-        //         else{
-        //             break;
-        //         }
-
-
-        //     }
-
-        //     result.push_back(temp);
-
-        // }
-
-        // OPTIMAL Solution
-        vector<int> temp = intervals[0];
-
-        for(int i=1; i<n; i++){
-
-            if(intervals[i][0] <= temp.back()){
-                temp.back() = max(temp.back(), intervals[i][1]);
+                if(end >= start1 ){
+                    if(end <= end1)
+                        end = end1;
+                }
+                else{
+                    break;
+                }
+                j++;
             }
-            else{
-                result.push_back(temp);
-                temp = intervals[i];
-            }
+            ans.push_back({start, end});
+            i = j-1;
+
         }
 
-        result.push_back(temp);
-
-        return result;
-
+        return ans;
     }
 };
