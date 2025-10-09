@@ -31,16 +31,20 @@ public:
         int top = 0;
         int bottom = n-1;
         int mid;
+        bool flag = false;
 
         while(top <= bottom){
             mid = (top + bottom)/2;
-            if(mid == top){
+
+            if(mid == top && target > nums[mid][m-1]){
+                mid = bottom;
                 break;
+                // break;
             }
 
             if(target > nums[mid][0]){
                 top = mid;
-                if(target < nums[mid][m-1]) break;
+                if(target <= nums[mid][m-1]) break;
             }
 
             else if(target < nums[mid][0]){
@@ -50,9 +54,9 @@ public:
             else return true;
         }
 
-        return binarySearch(nums[mid], target) | ((mid+1 < n) ? binarySearch(nums[mid+1], target) : 0);
+        // return binarySearch(nums[mid], target) | ((mid+1 < n) ? binarySearch(nums[bottom], target) : 0);
 
-        // return binarySearch(nums[mid], target);
+        return binarySearch(nums[mid], target);
 
     }
 };
