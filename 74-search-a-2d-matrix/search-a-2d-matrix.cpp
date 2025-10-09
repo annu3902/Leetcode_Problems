@@ -1,55 +1,58 @@
 class Solution {
 public:
-
-    bool searchMatrix(vector<vector<int>>& matrix, int target) {
-
-        int m = matrix.size();
-        int n = matrix[0].size();
+    bool binarySearch(vector<int>& nums, int num){
+        int n = nums.size();
+        for(int n : nums)cout<<n<<" ";
 
         int left = 0;
-        int right = m-1;
-
-        int ans = -1;
+        int right = n-1;
+        // int mid=-1;
 
         while(left <= right){
-            int mid = left + (right - left)/2;
+            int mid = (left + right)/2;
 
-            if(matrix[mid][0] == target){
-                return true;
-            }
-
-            if(matrix[mid][0] > target){
-                right = mid-1;
-            }
-
-            else{
-                ans = mid;
+            if(nums[mid] == num) return true;
+            else if(num > nums[mid]){
                 left = mid+1;
             }
-        }
-
-        if(ans == -1) return false;
-
-        int low = 0;
-        int high = n-1;
-
-        while(low <= high){
-            int mid = low + (high - low)/2;
-
-            if(matrix[ans][mid] > target){
-                high = mid-1;
-            }
-
-            else if(matrix[ans][mid] < target){
-                low = mid+1;
-            }
-
             else{
-                return true;
+                right = mid-1;
             }
         }
 
         return false;
-    
+
+    }
+
+    bool searchMatrix(vector<vector<int>>& nums, int target) {
+        int n=nums.size();
+        int m=nums[0].size();
+
+        int top = 0;
+        int bottom = n-1;
+        int mid;
+
+        while(top <= bottom){
+            mid = (top + bottom)/2;
+            if(mid == top){
+                break;
+            }
+
+            if(target > nums[mid][0]){
+                top = mid;
+                if(target < nums[mid][m-1]) break;
+            }
+
+            else if(target < nums[mid][0]){
+                bottom = mid-1;
+            }
+
+            else return true;
+        }
+
+        return binarySearch(nums[mid], target) | ((mid+1 < n) ? binarySearch(nums[mid+1], target) : 0);
+
+        // return binarySearch(nums[mid], target);
+
     }
 };
