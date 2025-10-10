@@ -11,24 +11,22 @@
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        if(head == NULL || head->next == NULL) return head;
+        if(!head || !head->next) return head;
         
         ListNode* curr = head;
+        ListNode* next = curr->next;
         ListNode* prev = NULL;
-        solve(head, curr, prev);
 
-        return head;
-    }
+        while(next){
 
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+            next = next->next;
 
-    void solve(ListNode*& head, ListNode*& curr, ListNode*& prev){
-        // Base Case
-        if(curr == NULL){
-            head=prev;
-            return;
         }
 
-        solve(head, curr->next, curr);
         curr->next = prev;
+        return curr;
     }
 };
