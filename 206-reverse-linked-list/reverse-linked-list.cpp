@@ -10,23 +10,21 @@
  */
 class Solution {
 public:
-    ListNode* reverseList(ListNode* head) {
-        if(!head || !head->next) return head;
-        
-        ListNode* curr = head;
-        ListNode* next = curr->next;
-        ListNode* prev = NULL;
-
-        while(next){
-
-            curr->next = prev;
-            prev = curr;
-            curr = next;
-            next = next->next;
-
+    void dfs(ListNode*& head, ListNode*& prev, ListNode*& curr){
+        if(curr == nullptr){
+            head = prev;    
+            return;
         }
 
+        dfs(head, curr, curr->next);
         curr->next = prev;
-        return curr;
+        
+    }
+
+    ListNode* reverseList(ListNode* head) {
+        ListNode* curr = head;
+        ListNode* prev = NULL;
+        dfs(head, prev, curr);
+        return head;
     }
 };
