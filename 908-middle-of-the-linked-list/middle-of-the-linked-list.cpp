@@ -9,16 +9,25 @@
  * };
  */
 class Solution {
+private :
+    ListNode* ans = NULL;
+
+    void dfs(ListNode*& fast, ListNode* & slow){
+        if(!fast || !fast->next){
+            ans = slow;
+            return;
+        }
+
+        dfs(fast->next->next, slow->next);
+        return;
+    }
 public:
     ListNode* middleNode(ListNode* head) {
         ListNode* fast = head;
         ListNode* slow = head;
-        
-        while(fast && fast->next){
-            slow = slow->next;
-            fast = fast->next->next;
-        }
 
-        return slow;
+        dfs(fast, slow);
+        
+        return ans;
     }
 };
