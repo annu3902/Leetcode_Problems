@@ -1,40 +1,41 @@
 class Solution {
 public:
+    void dfs(vector<vector<char>>& grid, int i, int j, vector<vector<bool>>& visited){
+        visited[i][j] = true;
+
+        vector<vector<int>> neighbours{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+        for(auto &neighbour : neighbours){
+            int x = neighbour[0] + i;
+            int y = neighbour[1] + j;
+            cout<<x<<" "<<y<<endl;
+
+            if(x < 0 || y < 0 || x >= grid.size() || y >= grid[0].size()) continue;
+
+            else if(grid[x][y] == '1' && !visited[x][y]){
+                dfs(grid, x, y, visited);
+            }
+        }
+
+        return;
+    }
+
     int numIslands(vector<vector<char>>& grid) {
-
-        int cntIslands = 0;
-
         int m = grid.size();
         int n = grid[0].size();
 
-        vector<vector<int>> directions = {{-1,0}, {0,1}, {1,0}, {0,-1}};
-
-        // 1 -> grid[0][1]
+        vector<vector<bool>> visited(m, vector<bool>(n, false));
+        int count = 0;
 
         for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){   
-                char currNode = grid[i][j];
-                if(currNode == '1'){
-                    dfs(i, j, grid, m, n, directions);
-                    cntIslands++;
+            for(int j=0; j<n; j++){
+                if(grid[i][j] == '1' && !visited[i][j]){
+                    dfs(grid, i, j, visited);
+                    count++;
                 }
             }
         }
-        return cntIslands;
-    }
 
-    void dfs(int i, int j, vector<vector<char>> &grid, int m, int n, vector<vector<int>> &directions){
-        grid[i][j] = 'e';
-
-        
-        for(vector<int> &direction : directions){
-
-            int new_i = i + direction[0];
-            int new_j = j + direction[1];
-
-            if(new_i >= 0 && new_i < m && new_j >= 0 && new_j < n && grid[new_i][new_j] == '1'){
-                dfs(new_i, new_j, grid, m, n, directions);
-            }
-        }
+        return count;
     }
 };
