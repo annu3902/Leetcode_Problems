@@ -8,7 +8,6 @@ public:
         for(auto &neighbour : neighbours){
             int x = neighbour[0] + i;
             int y = neighbour[1] + j;
-            cout<<x<<" "<<y<<endl;
 
             if(x < 0 || y < 0 || x >= grid.size() || y >= grid[0].size()) continue;
 
