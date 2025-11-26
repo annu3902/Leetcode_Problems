@@ -18,12 +18,28 @@ public:
         vector<bool> visited(n, 0);
         int count=0;
 
-        for(int i=0; i<n; i++){
-            if(!visited[i]){
-                dfs(isConnected, i, visited);
-                count++;
+        queue<int> q;
+    for(int i=0; i<n; i++){
+        if(visited[i]) continue;
+        else if(!visited[i]){
+            q.push(i);
+        }
+
+        while(!q.empty()){
+            int u = q.front();
+            visited[0] = true;
+            q.pop();
+            for(int v=0; v<n; v++){
+                if(!visited[v] && isConnected[u][v] == 1){
+                    visited[v] = true;
+                    q.push(v);
+                }
             }
         }
+
+        count++;
+    }
+        
 
         return count;
     }
