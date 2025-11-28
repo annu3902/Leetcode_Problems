@@ -3,15 +3,15 @@ public:
     int orangesRotting(vector<vector<int>>& grid) {
         int m = grid.size();
         int n = grid[0].size();
-        int count = 0;
+        int time = 0;
 
         vector<vector<int>> ans = grid; // Also works as a visited vector
 
-        queue<pair<int, int>> q;
+        queue<pair<pair<int, int>, int> > q;
         for(int i=0; i<m; i++){
             for(int j=0; j<n; j++){
                 if(ans[i][j] == 2){
-                    q.push({i, j});
+                    q.push({{i, j}, 0});
                 }
             }
         }
@@ -21,11 +21,12 @@ public:
         while(!q.empty()){
             flag = true;
             int size = q.size();
-            count++;
             while(size --){
-                pair<int, int> p = q.front();
+                pair<int, int> p = q.front().first;
                 int x = p.first;
                 int y = p.second;
+                int t = q.front().second;
+                time = t;
                 q.pop();
 
                 for(int i=0; i<4; i++){
@@ -34,14 +35,13 @@ public:
 
                     if(x1<0 || y1<0 || x1>=m || y1>=n) continue;
                     if(ans[x][y] == 2 && ans[x1][y1] == 1){
-                        q.push({x1, y1});
+                        q.push({{x1, y1}, t+1});
                         ans[x1][y1] = 2;
                     }
                 }
 
             }
         }
-        // if(!flag) return 0;
 
         for(int i=0; i<m; i++){
             for(int j=0; j<n; j++){
@@ -51,7 +51,6 @@ public:
             }
         }
 
-        if(flag == false) return 0;
-        return count-1;
+        return time;
     }
 };
