@@ -1,92 +1,43 @@
 class Solution {
 public:
-    // if all the courses can be read in that can be visited or not -> Kahn's Algorithm
-
-    bool canFinish(int n, vector<vector<int>>& prerequisites) {
-        int edges = prerequisites.size();
-
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         unordered_map<int, vector<int>> adj;
-        vector<int> inDegree(n, 0);
-        for(int i=0; i<edges; i++){
-            int u = prerequisites[i][0];
-            int v = prerequisites[i][1];
-            adj[v].push_back(u);
-        // 1. inDegree Calculation
-            inDegree[u]++;
-        } 
+        vector<int> inDegree(numCourses, 0);
 
-        // Kahn's Algorithm
+        for(vector<int>& prerequisite : prerequisites){
+            int first = prerequisite[1];
+            int second = prerequisite[0];
+
+            adj[first].push_back(second);
+            inDegree[second]++;
+        }
+
         queue<int> q;
-        for(int u=0; u<n; u++){
-            if(inDegree[u] == 0){
-                q.push(u);
+        for(int i=0; i<numCourses; i++){
+            if(inDegree[i] == 0){
+                q.push(i);
             }
         }
 
-        // bfs
-        int cnt=0;
+        int count = 0;
+
         while(!q.empty()){
-            int u = q.front();
+            
+            int course = q.front();
             q.pop();
-            cnt++;
-        
-            for(auto &v : adj[u]){
+            for(auto &v : adj[course]){
                 inDegree[v]--;
                 if(inDegree[v] == 0){
                     q.push(v);
                 }
             }
+            count++;
+
         }
-        
-        cout<<cnt<<" ";
-        if(cnt != n) return false;
+
+        if(count != numCourses) return false;
+
         return true;
 
     }
 };
-
-/* Cycle Detection using DFS 
-class Solution{
-public:
-    bool canFinish(int n, vector<vector<int>>& prerequisites){
-    
-        int m = prerequisites.size();
-        // Graph form
-        unordered_map<int, vector<int>> adj;
-
-        for(int i=0; i<m; i++){
-            int u = prerequisites[i][0];
-            int v = prerequisites[i][1];
-            adj[u].push_back(v);
-        }
-
-        vector<bool> visited(n, false);
-        vector<bool> inRecurssion(n, false);
-        int cnt=0;
-
-        for(int i=0; i<n; i++){
-            if(!visited[i] && dfs(adj, i, visited, inRecurssion)){
-                return false; // if cycle is present we can not visit all, the nodes
-            }
-        }
-        return true;
-    }
-
-    bool dfs(unordered_map<int, vector<int>> &adj, int node, vector<bool> &visited, vector<bool> &inRecurssion){
-
-        visited[node] = true;
-        inRecurssion[node] = true;
-
-        for(auto &v : adj[node]){
-            if(!visited[v] && dfs(adj, v, visited, inRecurssion)){
-                return true;
-            }
-            else if(inRecurssion[v]){
-                return true;
-            }
-        }
-        inRecurssion[node] = false;
-        return false;
-    }   
-};
-*/
