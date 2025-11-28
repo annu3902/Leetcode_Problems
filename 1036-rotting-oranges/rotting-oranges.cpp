@@ -1,63 +1,57 @@
 class Solution {
 public:
-    int orangesRotting(vector<vector<int>>& grid) {  
+    int orangesRotting(vector<vector<int>>& grid) {
         int m = grid.size();
         int n = grid[0].size();
+        int count = 0;
+
+        vector<vector<int>> ans = grid; // Also works as a visited vector
 
         queue<pair<int, int>> q;
-        vector<vector<int>> freshLocations;
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(ans[i][j] == 2){
+                    q.push({i, j});
+                }
+            }
+        }
+
+        vector<int> vicinity = {-1, 0, 1, 0, -1};
+        bool flag=false;
+        while(!q.empty()){
+            flag = true;
+            int size = q.size();
+            count++;
+            while(size --){
+                pair<int, int> p = q.front();
+                int x = p.first;
+                int y = p.second;
+                q.pop();
+
+                for(int i=0; i<4; i++){
+                    int x1 = x + vicinity[i];
+                    int y1 = y + vicinity[i+1];
+
+                    if(x1<0 || y1<0 || x1>=m || y1>=n) continue;
+                    if(ans[x][y] == 2 && ans[x1][y1] == 1){
+                        q.push({x1, y1});
+                        ans[x1][y1] = 2;
+                    }
+                }
+
+            }
+        }
+        // if(!flag) return 0;
 
         for(int i=0; i<m; i++){
             for(int j=0; j<n; j++){
-
-                if(grid[i][j] == 2){
-                    q.push(make_pair(i,j));
-                }
-                else if(grid[i][j] == 1){
-                    freshLocations.push_back({i, j});
+                if(ans[i][j] == 1){
+                    return -1;
                 }
             }
         }
 
-        vector<vector<int>> directions = {{-1,0}, {1,0}, {0, -1}, {0, 1}};
-
-        int levels = 0;
-        while(!q.empty()){
-            int size = q.size();
-
-            while(size -- ){
-
-                pair<int, int> curr = q.front();
-                int u = curr.first;
-                int v = curr.second;
-                grid[u][v] = 2;
-
-                q.pop();
-
-                for(vector<int> &dir : directions){
-
-                    int i = curr.first + dir[0];
-                    int j = curr.second + dir[1];
-
-                    if(i >= 0 && i <= m-1 && j >= 0 && j <= n-1 && grid[i][j] == 1){
-
-                        q.push({i, j});
-                        grid[i][j] = 2;
-
-                    }
-
-                }
-            }
-            if(!q.empty())
-                levels++;
-        }
-
-        for(vector<int> vec : freshLocations){
-            if(grid[vec[0]][vec[1]] == 1) return -1;
-        }
-        
-        int ans = (levels == 0) ? 0 : levels;
-        return ans;
-
+        if(flag == false) return 0;
+        return count-1;
     }
 };
