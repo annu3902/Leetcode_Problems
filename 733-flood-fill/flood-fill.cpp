@@ -1,49 +1,34 @@
 class Solution {
 public:
-    vector<vector<int>> neighbours{{0,1}, {0,-1}, {1,0}, {-1,0}};
-    vector<int> offsets{-1, 0, 1, 0, -1};
-    int m, n;
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int x, int y, int color) {
+        int m = image.size();
+        int n = image[0].size();
 
-    void dfs(vector<vector<int>>& image, int row, int col, int color, vector<vector<bool>>& visited){
-        visited[row][col] = true;
+        queue<pair<int, int>> q;
+        vector<vector<bool>> visited(m, vector<bool> (n, false));
+        vector<int> offsets = {-1, 0, 1, 0, -1};
 
-    //    [-1, 0, 1, 0, -1];
-        for(int i=0; i<4; i++){
-            // for(int j=0; j<i; j++){
-                int x = offsets[i] + row;
-                int y = offsets[i+1] + col;
+        q.push({x, y});
 
-                if(x < 0 || y < 0 || x >= image.size() || y >= image[0].size()) continue;
+        while(!q.empty()){
+            pair<int, int> p = q.front();
+            int x0 = p.first;
+            int y0 = p.second;
+            q.pop();
 
-                else if(image[x][y] == image[row][col] && visited[x][y] == 0){
-                    dfs(image, x, y, color, visited);
-                }
-            // }
+            for(int i=0; i<4; i++){
+                int x1 = x0 + offsets[i];
+                int y1 = y0 + offsets[i+1];
+
+                if(x1 < 0 || y1 < 0 || x1 >= m || y1 >= n) continue;
+
+                if(image[x1][y1] == image[x0][y0] && !visited[x1][y1]){
+                    q.push({x1, y1});
+                    visited[x1][y1] = true;
+                } 
+            }
+            image[x0][y0] = color;
         }
-
-        
-        image[row][col] = color;
-
-
-        // for(auto &neighbour : neighbours){
-        //     int x = neighbour[0] + row;
-        //     int y = neighbour[1] + col;
-
-        //     if(x < 0 || y < 0 || x >= image.size() || y >= image[0].size()) continue;
-        //     if(image[x][y] == image[row][col] && visited[x][y] == 0){
-        //         dfs(image, x, y, color, visited);
-        //     }
-        // }
-
-    }
-
-    vector<vector<int>> floodFill(vector<vector<int>>& image, int row, int col, int color) {
-        m = image.size();
-        n = image[0].size();
-        vector<vector<bool>> visited(m, vector<bool>(n, false));
-
-        visited[row][col] = true;
-        dfs(image, row, col, color, visited);
 
         return image;
     }
