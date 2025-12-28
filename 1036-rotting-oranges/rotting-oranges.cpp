@@ -1,56 +1,64 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
+        // Level Order Traversal
         int m = grid.size();
         int n = grid[0].size();
-        int time = 0;
+        bool flag = false;
 
-        vector<vector<int>> ans = grid; // Also works as a visited vector
-
-        queue<pair<pair<int, int>, int> > q;
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
-                if(ans[i][j] == 2){
-                    q.push({{i, j}, 0});
+        queue<pair<int, int>> q;
+        for(int i=0; i<grid.size(); i++){
+            for(int j=0; j<grid[0].size(); j++){
+                if(grid[i][j] == 2){
+                    q.push({i, j});
+                    flag = true;
                 }
             }
         }
 
-        vector<int> vicinity = {-1, 0, 1, 0, -1};
-        bool flag=false;
+        
+
+        vector<int> neighbour = {-1, 0, 1, 0, -1};
+        vector<vector<int>> matrix = grid;
+
+        int ans = 0;
         while(!q.empty()){
-            flag = true;
             int size = q.size();
-            while(size --){
-                pair<int, int> p = q.front().first;
+
+            while(size--){
+                pair<int, int> p = q.front();
+                q.pop();
                 int x = p.first;
                 int y = p.second;
-                int t = q.front().second;
-                time = t;
-                q.pop();
 
                 for(int i=0; i<4; i++){
-                    int x1 = x + vicinity[i];
-                    int y1 = y + vicinity[i+1];
+                    int nx = neighbour[i] + x;
+                    int ny = neighbour[i+1] + y;
 
-                    if(x1<0 || y1<0 || x1>=m || y1>=n) continue;
-                    if(ans[x][y] == 2 && ans[x1][y1] == 1){
-                        q.push({{x1, y1}, t+1});
-                        ans[x1][y1] = 2;
+                    if(nx < 0 || nx >= m || ny < 0 || ny >= n) continue;
+                    else{
+                        if(matrix[nx][ny] == 1){
+                            matrix[nx][ny] = 2;
+                            q.push({nx, ny});
+                        }
                     }
                 }
+            }
+            ans++;
+            
+        }
 
+        for(int i=0; i<matrix.size(); i++){
+            for(int j=0; j<matrix[0].size(); j++){
+                if(matrix[i][j] == 1) return -1;
             }
         }
 
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
-                if(ans[i][j] == 1){
-                    return -1;
-                }
-            }
+        if(flag == false){
+            // if flag is false i do not need to go inside processor
+            return 0;
         }
 
-        return time;
+        return ans-1;
     }
 };
