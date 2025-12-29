@@ -24,13 +24,33 @@ public:
         m = board.size();
         n = board[0].size();
 
+        // for(int i=0; i<m; i++){
+        //     for(int j=0; j<n; j++){
+        //         if(i == 0 || j == 0 || i == m-1 || j == n-1){
+        //             if(board[i][j] == 'O'){
+        //                 dfs(i, j, board);
+        //             }
+        //         }
+        //     }
+        // }
+
+        // Code for boundary traversal in a matrix
         for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
-                if(i == 0 || j == 0 || i == m-1 || j == n-1){
-                    if(board[i][j] == 'O'){
-                        dfs(i, j, board);
-                    }
-                }
+            if(board[i][0] == 'O'){
+                dfs(i, 0, board);
+            }
+            if(board[i][n-1] == 'O'){
+                dfs(i, n-1, board);
+            }
+        }
+
+        for(int j=0; j<n; j++){
+            if(board[0][j] == 'O'){
+                dfs(0, j, board);
+            }
+
+            if(board[m-1][j] == 'O'){
+                dfs(m-1, j, board);
             }
         }
 
