@@ -1,9 +1,8 @@
 class Solution {
-public:
+private:
     vector<int> neighbour = {-1, 0, 1, 0, -1};
-    int m, n;
     void dfs(int x, int y, vector<vector<int>>& matrix){
-        matrix[x][y] = 2;
+        matrix[x][y] = -1;
 
         for(int i=0; i<4; i++){
             int nx = x + neighbour[i];
@@ -14,33 +13,45 @@ public:
                 dfs(nx, ny, matrix);
             }
         }
-
+        return;
     }
-public:
-    int numEnclaves(vector<vector<int>>& grid) {
-        m = grid.size();
-        n = grid[0].size();
-        vector<vector<int>> matrix = grid;
 
+public:
+    int m, n;
+    int numEnclaves(vector<vector<int>>& grid) {
+        vector<vector<int>> matrix = grid;
+        m = matrix.size();
+        n = matrix[0].size();
+
+        // Boundary Traversal
         for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
-                if(i == 0 || j == 0 || i == m-1 || j == n-1){
-                    if(grid[i][j] == 1 && matrix[i][j] == 1){
-                        dfs(i, j, matrix);
-                    }
-                }
+            if(matrix[i][0] == 1){
+                dfs(i, 0, matrix);
+            }
+            if(matrix[i][n-1] == 1){
+                dfs(i, n-1, matrix);
             }
         }
 
-        int cnt = 0;
+        for(int i=0; i<n; i++){
+            if(matrix[0][i] == 1){
+                dfs(0, i, matrix);
+            }
+            if(matrix[m-1][i] == 1){
+                dfs(m-1, i, matrix);
+            }
+        }
+        int cnt=0;
+
         for(int i=0; i<m; i++){
             for(int j=0; j<n; j++){
+                cout<<matrix[i][j]<<" ";
                 if(matrix[i][j] == 1){
                     cnt++;
                 }
             }
+            cout<<endl;
         }
-
         return cnt;
     }
 };
