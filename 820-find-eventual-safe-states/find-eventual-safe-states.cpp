@@ -1,30 +1,46 @@
 class Solution {
-public:
-    vector<bool> notCycled;
-    bool dfs(vector<int> &color, int u, vector<vector<int>> &adj){
-        color[u] = 1;
-        for(auto v: adj[u]){
-            if(color[v] == -1 && dfs(color, v, adj) == true) return true;
-            else if(color[v] == 1) return true;
+private:
+    bool dfs(int node, vector<vector<int>>& graph, vector<int>& visited, vector<int>& inRecurssion){
+        if(visited[node] == 0){
+            return false;
         }
-        color[u] = 0;
-        notCycled[u] = true;
+        
+        visited[node] = 1;
+        inRecurssion[node] = 1;
+
+        for(auto &v : graph[node]){
+            if(inRecurssion[v] == -1 && dfs(v, graph, visited, inRecurssion) == true){
+               return true;
+            }
+            else if(inRecurssion[v] == 1){
+                return true;
+            } 
+        }
+
+        inRecurssion[node] = -1;
+        visited[node] = 0;
         return false;
     }
+public:
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         int n = graph.size();
-        vector<int> color(n, -1);
-        notCycled.assign(n, false);
+        vector<int> visited(n, -1);
+        vector<int> inRecurssion(n, -1);
+        vector<int> ans;
 
         for(int i=0; i<n; i++){
-            if(color[i] == -1){
-                dfs(color, i, graph);
+            if(visited[i] == -1){
+                dfs(i, graph, visited, inRecurssion);
+            }
+            
+        }
+
+        for(int i=0; i<n; i++){
+            if(visited[i] == 0){
+                ans.push_back(i);
             }
         }
-        vector<int> ans;
-        for(int i=0; i<n; i++){
-            if(notCycled[i]) ans.push_back(i);
-        }
+
         return ans;
     }
 };
