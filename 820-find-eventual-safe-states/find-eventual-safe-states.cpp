@@ -1,46 +1,45 @@
 class Solution {
-private:
-    bool dfs(int node, vector<vector<int>>& graph, vector<int>& visited, vector<int>& inRecurssion){
-        if(visited[node] == 0){
-            return false;
-        }
-        
-        visited[node] = 1;
-        inRecurssion[node] = 1;
-
-        for(auto &v : graph[node]){
-            if(inRecurssion[v] == -1 && dfs(v, graph, visited, inRecurssion) == true){
-               return true;
-            }
-            else if(inRecurssion[v] == 1){
-                return true;
-            } 
-        }
-
-        inRecurssion[node] = -1;
-        visited[node] = 0;
-        return false;
-    }
 public:
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         int n = graph.size();
-        vector<int> visited(n, -1);
-        vector<int> inRecurssion(n, -1);
-        vector<int> ans;
+        vector<int> inDegree(n, 0);
+        unordered_map<int, vector<int>> adj;
 
         for(int i=0; i<n; i++){
-            if(visited[i] == -1){
-                dfs(i, graph, visited, inRecurssion);
+            inDegree[i] += graph[i].size();
+            for(int j=0; j<graph[i].size(); j++){
+                adj[graph[i][j]].push_back(i);
             }
-            
+        }
+        queue<int> q;
+        vector<int> visited(n, 0);
+
+        for(int i=0; i<n; i++){
+            if(inDegree[i] == 0){
+                q.push(i);
+                visited[i] = 1;
+            }
         }
 
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+
+            for(auto&v: adj[node]){
+                inDegree[v]--;
+                if(inDegree[v] == 0){
+                    q.push(v);
+                    visited[v] = 1;
+                }
+            }
+        }
+
+        vector<int> ans;
         for(int i=0; i<n; i++){
-            if(visited[i] == 0){
+            if(visited[i] == 1){
                 ans.push_back(i);
             }
         }
-
         return ans;
     }
 };
