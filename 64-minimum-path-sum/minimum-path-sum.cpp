@@ -1,35 +1,27 @@
 class Solution {
 public:
-    int minPathSum(vector<vector<int>>& points) {
-        int m = points.size();
-        int n = points[0].size();
-        // vector<vector<int>> dp(m, vector<int> (n, 0));
-        vector<int> prev(n, 0);
-        prev[0] = points[0][0];
+    int minPathSum(vector<vector<int>>& grid) {
+        // dp[i][j] -> min path sum at position ith row and jth col
+        int m = grid.size();
+        int n =grid[0].size();
 
-        for(int row=0; row<m; row++){
-            vector<int> curr(n, 0);
-            for(int col=0; col<n; col++){
-                if(row == 0 && col == 0) continue;
-                curr[col] = points[row][col] + min(((row>=1) ? prev[col] : 1e9), ((col>=1 ? curr[col-1] : 1e9)));
-            }
-            prev = curr;
+        vector<vector<int>> dp(m, vector<int>(n, 0));
+        dp[0][0] = grid[0][0];
+
+        for(int i=1; i<m; i++){
+            dp[i][0] = grid[i][0] + dp[i-1][0];
         }
-        return prev[n-1] + points[0][0];
-    }
 
-  // Memoization
-    int dfs(int row, int col, vector<vector<int>>& points, vector<vector<int>>& dp){
+        for(int j=1; j<n; j++){
+            dp[0][j] = dp[0][j-1] + grid[0][j];
+        }
 
-        if(row == 0 && col == 0) return points[0][0];
+        for(int i=1; i<m; i++){
+            for(int j=1; j<n; j++){
+                dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1]);
+            }
+        }
 
-        else if(row < 0 || col < 0) return 1e9;
-
-        if(dp[row][col] != -1) return dp[row][col];
-
-        int up = dfs(row-1, col, points, dp);
-        int left = dfs(row, col-1, points, dp);
-
-        return dp[row][col] = points[row][col] + min(left, up);
+        return dp[m-1][n-1];
     }
 };
