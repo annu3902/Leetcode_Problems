@@ -17,23 +17,23 @@ public:
         int n = nums.size();
         int sum = accumulate(begin(nums), end(nums), 0);
 
-        if(sum & 1 == 1) return 0;
+        if((sum & 1) == 1) return 0;
 
-        vector<vector<bool>> dp(n, vector<bool>(sum + 1, 0));
-        for(int i=0; i<n; i++){
-            dp[i][0] = true;
-        }
-
-        dp[0][nums[0]] = true;
+        vector<bool> prev(sum+1, 0);
+        vector<bool> curr(sum+1, 0);
+        prev[0] = true;
+        curr[0] = true;
+        prev[nums[0]] = true;
         for(int i=1; i<n; i++){
             for(int j=1; j<=sum; j++){
-                bool pick = (j >= nums[i]) ? dp[i-1][j - nums[i]] : 0;
-                bool notPick = dp[i-1][j];
+                bool pick = (j >= nums[i]) ? prev[j - nums[i]] : 0;
+                bool notPick = prev[j];
 
-                dp[i][j] = pick || notPick;
+                curr[j] = pick || notPick;
             }
+            prev = curr;
         }
 
-        return dp[n-1][sum/2];
+        return prev[sum/2];
     }
 };
