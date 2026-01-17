@@ -20,7 +20,19 @@ public:
 
         if(abs(target) > sum) return 0;
 
-        vector<vector<int>>dp(n, vector<int>(2*sum + 1 , -1));
-        return dfs(n-1, target, nums, dp, sum);
+        vector<vector<int>> dp(n, vector<int>(2*sum+1, 0));
+        dp[0][nums[0] + sum] += 1;
+        dp[0][-nums[0] + sum] += 1;
+
+        for(int i=1; i<n; i++){
+            for(int j=-sum; j <=sum; j++){
+                int plus = (abs(j - nums[i]) <= sum) ? dp[i-1][j - nums[i] + sum] : 0;
+                int minus = (abs(j + nums[i]) <= sum) ? dp[i-1][j + nums[i] + sum] : 0;
+
+                dp[i][j+sum] = plus+minus;
+            }
+        }        
+
+        return dp[n-1][target+sum];
     }
 };
