@@ -19,20 +19,21 @@ public:
         int sum = accumulate(begin(nums), end(nums), 0);
 
         if(abs(target) > sum) return 0;
+        target += sum;
 
         vector<vector<int>> dp(n, vector<int>(2*sum+1, 0));
         dp[0][nums[0] + sum] += 1;
         dp[0][-nums[0] + sum] += 1;
 
         for(int i=1; i<n; i++){
-            for(int j=-sum; j <=sum; j++){
-                int plus = (abs(j - nums[i]) <= sum) ? dp[i-1][j - nums[i] + sum] : 0;
-                int minus = (abs(j + nums[i]) <= sum) ? dp[i-1][j + nums[i] + sum] : 0;
+            for(int j=0; j <=2*sum; j++){
+                int plus = (j - nums[i] >= 0) ? dp[i-1][j - nums[i]] : 0;
+                int minus = (j + nums[i] <= 2*sum) ? dp[i-1][j + nums[i]] : 0;
 
-                dp[i][j+sum] = plus+minus;
+                dp[i][j] = plus+minus;
             }
         }        
 
-        return dp[n-1][target+sum];
+        return dp[n-1][target];
     }
 };
