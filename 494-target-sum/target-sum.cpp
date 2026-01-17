@@ -1,22 +1,26 @@
 class Solution {
 private:
-    int dfs(int index, int target, vector<int>& nums, unordered_map<string, int>& mp){
+    int dfs(int index, int target, vector<int>& nums, vector<vector<int>>& dp, int sum){
         if(index < 0){
             return target == 0;
         }
+        if(abs(target) > sum) return 0;
 
-        string st = to_string(index) + " " + to_string(target);
-        if(mp.count(st)) return mp[st];
+        if(dp[index][target + sum] != -1) return dp[index][target + sum];
 
-        int plus = dfs(index - 1, target - nums[index], nums, mp);
-        int minus = dfs(index - 1, target + nums[index], nums, mp);
+        int plus = dfs(index - 1, target - nums[index], nums, dp, sum);
+        int minus = dfs(index - 1, target + nums[index], nums, dp, sum);
 
-        return mp[st] = plus + minus;
+        return dp[index][target + sum] = plus + minus;
     }
 public:
     int findTargetSumWays(vector<int>& nums, int target) {
         int n = nums.size();
-        unordered_map<string, int> mp;
-        return dfs(n-1, target, nums, mp);
+        int sum = accumulate(begin(nums), end(nums), 0);
+
+        if(abs(target) > sum) return 0;
+
+        vector<vector<int>>dp(n, vector<int>(2*sum + 1 , -1));
+        return dfs(n-1, target, nums, dp, sum);
     }
 };
