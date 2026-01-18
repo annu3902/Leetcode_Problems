@@ -26,9 +26,40 @@ public:
             cnt2[px] = (cnt2[px] + dp2[i]) % mod;
         }
         return (dp1[n-1] + dp2[n-1]) % mod;
-    }
 
-    
+        unordered_map<int, vector<int>> mp;
+
+        for(int i=0; i<n; i++){
+            px = px^nums[i];
+
+            if(px == t1){
+                dp1[i] = 1;
+            }
+            dp1[i] = dp1[i];
+            // cnt2[px ^ t1] = dp2[j-1] + dp2[j-2] + dp2[j-3] + ...
+            for(auto it: mp){
+                int t5 = it.first ^ px;
+                vector<int> loc = it.second;
+                for(int j=0; j<loc.size(); j++){
+                    dp1[i] = (dp1[i] + dp2[j]) % mod;
+                }
+            }
+
+            dp2[i] = dp2[i];
+            for(auto it : mp){
+                int t4 = it.first ^ px;
+                vector<int> loc = it.second;
+                for(int k=0; k<loc.size(); k++){
+                    dp2[i] = (dp2[i] + dp1[k]) % mod;
+                }
+            }
+            mp[px].push_back(i);
+            // cnt1[px ^ t2] = dp1[k-1] + dp1[k-2] + ...
+
+            // cnt1[px] = cnt1[px] + dp1[i];
+            // cnt2[px] = cnt[px] + dp2[i];
+        }
+    }
 
 
 };
