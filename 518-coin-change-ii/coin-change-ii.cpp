@@ -1,53 +1,27 @@
-// class Solution {
-// public:
-//     int change(int amount, vector<int>& coins) {
-//         int n=coins.size();
-//         // STATE -> NUMBER OF WAYS TO PRODUCE SUM, FROM THE ith INDEX
-//         vector<vector<int>> dp(n+1, vector<int> (amount+1)); // No of ways to produce sum from 0 to amount by taking the coins form 0th index till the nth index 
-
-//         for(int i=0; i<n; ++i){
-//             dp[i][0]=1; // No of ways to produce sum =0 from any index=1
-//         }
-
-//         // Since the current state dp[i][sum] depends upon the value of dp[i+1][sum] so the limit goes from (n-1) to 0;
-//         for(int i=n-1; i>=0; i--){
-//             // dp[i][sum] = dp[i+1][sum] + dp[i][sum-ci];
-//             for(int sum=1; sum<=amount; sum++){
-//                 // Skipping the ith index
-//                 int skip = dp[i+1][sum];
-//                 // Picking the ith index
-//                 int pick = 0; // if {sum < coins[i]} --> We can not make the sum.
-//                 if(sum >= coins[i])
-//                 pick = dp[i][sum-coins[i]];
-//                 dp[i][sum] = skip+pick; // dp[i][sum] = dp[i+1][sum]+dp[i][sum-ci] :{sum >= ci}
-//             }
-//         }
-//         return dp[0][amount];
-//     }
-// };
-
-// Space Optimization
-class Solution{
+class Solution {
 public:
-    int change(int amount, vector<int>& coins){
-        int n=coins.size();
-        vector<int> nextState(amount+1);
+    int change(int amount, vector<int>& coins) {
+        // dp[i][j] -> no. of ways to make an amount j;
 
-        for(int i=n-1; i>=0; i--){
-            vector<int> currentState (amount+1);
-            currentState[0] = 1; // No. of ways to produce sum == 0
-            for(int sum=1; sum<=amount; sum++){
-                // Skip the ith index --> Moves to the nextRow
-                int skip = nextState[sum];
-                // Pick the ith index
-                int pick = 0;
-                if(sum>=coins[i])
-                    pick = currentState[sum-coins[i]];
-                // dp[i][sum] = pick + skip
-                currentState[sum] = pick + skip;
-            }
-            nextState = currentState;
+        int n = coins.size();
+        vector<vector<long long>> dp(n, vector<long long>(amount+1, 0));
+        for(int i=0; i<n; i++){
+            dp[i][0] = 1;
         }
-        return nextState[amount];
+
+        for(int j=1; j*coins[0]<=amount; j++){
+            dp[0][coins[0]*j] = 1;
+        }
+
+        for(int i=1; i<n; i++){
+            for(int j=1; j<=amount; j++){
+                long long pick = (j >= coins[i]) ? (dp[i][j - coins[i]] % INT_MAX) : 0;
+                long long notPick = dp[i-1][j] % INT_MAX;
+
+                dp[i][j] = (pick + notPick) % INT_MAX;
+            }
+        }
+
+        return dp[n-1][amount];
     }
 };
