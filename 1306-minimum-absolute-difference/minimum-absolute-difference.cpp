@@ -1,30 +1,24 @@
 class Solution {
 public:
-    vector<vector<int>> minimumAbsDifference(vector<int>& arr) {
-        sort(begin(arr), end(arr));
-        int n = arr.size();
+    vector<vector<int>> minimumAbsDifference(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
 
-        int i=0;
-        int j=1;
-        int mini = INT_MAX;
-        map<int, vector<vector<int>>> mp;
+        int miniDiff = INT_MAX;
 
-        while(j < n){
-            if(mini > abs(arr[j] - arr[i])){
-                mini = abs(arr[j] - arr[i]);
-                mp[mini].push_back({arr[i], arr[j]});
-            }else if(mini = abs(arr[j] - arr[i])){
-                mp[mini].push_back({arr[i], arr[j]});
+        for(int i=1; i<n; i++){
+            int diff = nums[i] - nums[i-1];
+            miniDiff = min(miniDiff, diff);
+        }
+        vector<vector<int>>ans;
+        for(int i=1; i<n; i++){
+            int diff = nums[i] - nums[i-1];
+
+            if(diff == miniDiff){
+                ans.push_back({nums[i-1], nums[i]});
             }
-            i++; j++;
         }
-
-        auto it = mp.begin();
-        vector<vector<int>> ans;
-        for(auto v : mp.begin()->second){
-            ans.push_back(v);
-        }
-
         return ans;
+
     }
 };
