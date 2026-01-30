@@ -1,44 +1,61 @@
 class Solution {
 public:
-    long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost) {
-        int n= original.size();
-        map<char, vector<pair<char,int>>> mpp;
-        for(int i=0; i<n; i++){
-            mpp[original[i]].push_back({changed[i], cost[i]});
-        }
-        vector<vector<int>> dp(26, vector<int>(26, -1));
+    typedef pair<int, char> PA;
+    typedef pair<char, int> P;
+    vector<int> solve(unordered_map<char, vector<P>>& mp, char s){
+        vector<int> nums(26, 1E9);
+        nums[s - 'a'] = 0;
 
-        priority_queue<pair<int, char>, vector<pair<int, char>>, greater<pair<int, char>>> pq;
-        long long res=0;
-        for(int i=0; i<source.size(); i++){
-            if(source[i]==target[i]) continue;
-            if(dp[source[i]-'a'][target[i]-'a'] != -1){
-                res+= dp[source[i]-'a'][target[i]-'a'];
-                cout<<"l";
-                continue;
-            }
-            vector<int> dis(26, 1e8);
-            pq.push({0, source[i]});
-            while(!pq.empty()){
-                int dist= pq.top().first;
-                int node= pq.top().second;
-                pq.pop();
-                for(auto it: mpp[node]){
-                    int wt= it.second;
-                    int adjnode= it.first;
-                    if(dist+wt<dis[adjnode-'a']){
-                        dis[adjnode-'a']= dist+wt;
-                        pq.push({dist+wt, adjnode});
-                    }
+        priority_queue<PA, vector<PA>, greater<PA>> pq;
+        pq.push({0, s});
+
+        while(!pq.empty()){
+            int cost = pq.top().first;
+            char c = pq.top().second;
+            pq.pop();
+
+            for(auto & neighbour : mp[c]){
+                char temp = neighbour.first;
+                int cst = neighbour.second;
+
+                if(cost + cst < nums[temp - 'a']){
+                    nums[temp - 'a'] = cost + cst;
+                    pq.push({cost + cst, temp});
                 }
             }
-            for(int j=0; j<26; j++){
-                if(dis[j] != 1e8)
-                dp[source[i]-'a'][j]= dis[j];
-            }
-            if(dis[target[i]-'a'] != 1e8) res+= dis[target[i]-'a'];
-            else return -1;
         }
-        return res;
+
+        return nums;
+    }
+public:
+    long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost) {
+        int n = source.size();
+        int m = original.size();
+        long long totalCost = 0;
+
+        unordered_map<char, vector<P>> mp;
+        for(int i=0; i<m; i++){
+            mp[original[i]].push_back({changed[i], cost[i]});
+        }
+
+        unordered_map<char, vector<int>> list;
+
+        for(int i=0; i<26; i++){
+            char s = 'a' + i;
+            list[s] = solve(mp, s);
+        }
+        
+        for(int i=0; i<n; i++){
+            char s = source[i];
+            char d = target[i];
+
+            if(s == d) continue;
+            else if(list[s][d-'a'] == 1e9) return -1;
+            else{
+                totalCost += list[s][d-'a'];
+            }
+        }
+
+        return totalCost;
     }
 };
