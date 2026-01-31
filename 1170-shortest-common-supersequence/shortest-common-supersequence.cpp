@@ -4,64 +4,71 @@ public:
         int m = s1.size();
         int n = s2.size();
 
-        vector<vector<int>> dp(m+1, vector<int> (n+1, 0));
+        vector<vector<int>> dp(m+1, vector<int>(n+1, 0));
 
-        for(int col=0; col <= n; col++){
-            dp[0][col] = col;
-        }
-
-        for(int row = 0; row <= m; row++){
-            dp[row][0] = row;
-        }
-
-        // dp[i][j] -> shortest Common Super-sequence when the string1 is of length i and the string2 is of length j
-
-        for(int i=1; i <= m; i++){
+        for(int i=1; i<=m; i++){
             for(int j=1; j<=n; j++){
-                if(s1[i-1] != s2[j-1]){
-                    dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1]);
-                }
-                else{
+                if(s1[i-1] == s2[j-1]){
                     dp[i][j] = 1 + dp[i-1][j-1];
+                }else{
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
                 }
             }
         }
 
-        string ans="";
+        string lcs="";
+
         int i=m;
         int j=n;
 
-        while(i > 0 && j > 0){
-
+        while(i >= 1 && j >= 1){
             if(s1[i-1] == s2[j-1]){
-                ans.push_back(s1[i-1]);
-                i--;
-                j--;
+                lcs += s1[i-1];
+                i--; j--;
             }
 
-            else if(dp[i][j-1] > dp[i-1][j]){
-                ans.push_back(s1[i-1]);
-                i--;
-            }
             else{
-                ans.push_back(s2[j-1]);
-                j--;
+                if(dp[i-1][j] > dp[i][j-1]){
+                    i--;
+                }else{
+                    j--;
+                }
             }
-
         }
 
-        while(i > 0){
-            ans.push_back(s1[i-1]);
-            i--;
+        reverse(begin(lcs), end(lcs));
+        i = 0;
+        j = 0;
+        int k = 0;
+
+        string ans="";
+
+        while(k < lcs.size()){
+            if(s1[i] == s2[j]){
+                ans += s1[i];
+                i++; j++; k++;
+            }else if(s1[i] == lcs[k]){
+                ans += s2[j];
+                j++;
+            }else if(s2[j] == lcs[k]){
+                ans += s1[i];
+                i++;
+            }else{
+                ans += s1[i];
+                ans += s2[j];
+                i++; j++;
+            }
         }
 
-        while(j > 0){
-            ans.push_back(s2[j-1]);
-            j--;
+        while(i < s1.size()){
+            ans += s1[i];
+            i++;
         }
 
-        reverse(ans.begin(), ans.end());
+        while(j < s2.size()){
+            ans += s2[j];
+            j++;
+        }
         return ans;
-
     }
 };
