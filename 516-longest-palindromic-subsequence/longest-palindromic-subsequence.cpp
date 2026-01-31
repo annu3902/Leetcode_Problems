@@ -1,22 +1,29 @@
 class Solution {
 public:
-    int longestPalindromeSubseq(string s1) {
-        int n = s1.size();
-        string s2 = s1;
-        reverse(begin(s2), end(s2));
+    int longestPalindromeSubseq(string s) {
+        int n = s.size();
 
-        vector<vector<int>> dp(n+1, vector<int>(n+1, 0));
+        // dp[i][j] -> Longest Palindromic Subsequence length in substring  s[i..j] (starting from i to j)
 
-        for(int i=1; i<=n; i++){
-            for(int j=1; j<=n; j++){
-                if(s1[i-1] == s2[j-1]){
-                    dp[i][j] = 1 + dp[i-1][j-1];
+        vector<vector<int>> dp(n, vector<int>(n, 0));
+
+        for(int i=0; i<n; i++){
+            dp[i][i] = 1; // single character in a substring is palindrome of length 1
+        }
+
+        for(int length = 2; length <= n; length++){
+            for(int i=0; i + length <= n; i++){
+                int j = i + length - 1;
+
+                if(s[i] == s[j]){
+                    dp[i][j] = 2 + dp[i+1][j-1];
                 }else{
-                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+                    dp[i][j] = max(dp[i+1][j], dp[i][j-1]);
                 }
+
             }
         }
 
-        return dp[n][n];
+        return dp[0][n-1];
     }
 };
