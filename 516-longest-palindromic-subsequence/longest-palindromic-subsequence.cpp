@@ -1,17 +1,16 @@
 class Solution {
 public:
     int longestPalindromeSubseq(string s) {
-        int n = s.size();
-
-        // dp[i][j] -> Longest Palindromic Subsequence length in substring  s[i..j] (starting from i to j)
+        int n=s.size();
 
         vector<vector<int>> dp(n, vector<int>(n, 0));
-
+        // dp[i][j] -> Length of Loongest Palindromic Subsequence in substring s[i...j]
+        //  Base Case
         for(int i=0; i<n; i++){
-            dp[i][i] = 1; // single character in a substring is palindrome of length 1
+            dp[i][i] = 1;
         }
 
-        for(int length = 2; length <= n; length++){
+        for(int length=2; length <= n; length++){
             for(int i=0; i + length <= n; i++){
                 int j = i + length - 1;
 
@@ -24,6 +23,6 @@ public:
             }
         }
 
-        return dp[0][n-1];
+    return dp[0][n-1];
     }
 };
