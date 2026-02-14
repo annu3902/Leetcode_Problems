@@ -28,26 +28,26 @@ public:
 
         // dp[n][0] = dp[n][1] = 0;
 
-        vector<int> curr(2, 0);
-        vector<int> prev(2, 0);
-        prev[0] = 0;
-        prev[1] = 0;
+      
+        int flag = 0; // it tells if i have the choice to buy the stock or not
+        int cost1 = 0;
+        int cost2 = 0;
 
         for(int i=n-1; i>=0; i--){
             int profit = 0;
             for(int j=0; j<=1; j++){
                 if(j == 1){
-                   profit = max(-prices[i] + prev[0], 0 + prev[1]);
+                   profit = max(-prices[i] + cost1, 0 + cost2);
+                   cost2 = profit;
                 }
                 else{
-                    profit = max(prices[i] + prev[1], 0 + prev[0]);
+                    profit = max(prices[i] + cost2, 0 + cost1);
+                    cost1 = profit;
                 }
-                curr[j] = profit;
-            }  
-            prev = curr;          
+            }           
         }
 
-        return prev[1];
+        return cost2;
     }
 
 };
