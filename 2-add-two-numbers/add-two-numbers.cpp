@@ -11,62 +11,56 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        // Jab tak k carry h tab tak addition chlega
-        // Agar node khtam ho jaye t nyi node lekr ans store krte h
-        int carry=0;
-        ListNode *temp1 = l1;
-        ListNode *temp2 = l2;
-        ListNode *head = NULL;
-        ListNode *prev = head;
-        ListNode *curr;
+        ListNode* head = nullptr;
+        ListNode* curr = nullptr;
+
+        ListNode* temp1 = l1;
+        ListNode* temp2 = l2;
+        int carry = 0;
 
         while(temp1 && temp2){
             int sum = temp1->val + temp2->val + carry;
-            int value = sum % 10;
-            
-            carry=(sum>=10)?1:0;
-            ListNode* node = new ListNode(value);
-            curr = node;
-            if(prev==NULL){
-                head = node;
-                prev = head;
-            }
-            else{
-                prev->next = curr;
-                prev=curr;
-                cout<<prev->val<<" ";
+            carry = sum/10;
+            sum %= 10;
+            ListNode* temp = new ListNode(sum);
+            if(head == NULL){
+                head = temp;
+                curr = temp;
+            }else{
+                curr->next = temp;
+                curr = temp;
             }
             temp1 = temp1->next;
             temp2 = temp2->next;
         }
-        
+
         while(temp1){
             int sum = temp1->val + carry;
-            int value = sum % 10;
-            ListNode *node = new ListNode(value);
-            curr = node;
-            prev->next=curr;
-            prev=curr;
-            carry = (sum>=10)?1:0;
-            temp1=temp1->next;
+            carry = sum/10;
+            sum %= 10;
+            ListNode* temp = new ListNode(sum);
+            curr->next = temp;
+            curr = temp;
+            temp1 = temp1->next;
         }
 
         while(temp2){
             int sum = temp2->val + carry;
-            int value = sum % 10;
-            ListNode *node = new ListNode(value);
-            curr = node;
-            prev->next=curr;
-            prev=curr;
-            carry = (sum>=10)?1:0;
-            temp2=temp2->next;
+            carry = sum/10;
+            sum %= 10;
+            ListNode* temp = new ListNode(sum);
+            curr->next = temp;
+            curr = temp;
+            temp2 = temp2->next;
         }
-        if(carry){
-            ListNode* node = new ListNode(1);
-            curr = node;
-            prev -> next = curr;
-            prev=curr;
+
+        if(carry == 1){
+            ListNode* temp = new ListNode(carry);
+            curr->next = temp;
+            curr = temp;
         }
+
         return head;
+
     }
 };
