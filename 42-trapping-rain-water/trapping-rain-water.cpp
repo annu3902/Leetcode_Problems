@@ -3,23 +3,30 @@ public:
     int trap(vector<int>& height) {
         int n = height.size();
         int totalWater = 0;
+        int leftMax = 0;
+        int rightMax = 0;
 
-        vector<int> leftMax(n, 0);
-        vector<int> rightMax(n, 0);
+        int left = 0;
+        int right = n-1;
 
-        leftMax[0] = height[0];
-        rightMax[n-1] = height[n-1];
+        while(left < right){
+            if(height[left] <= height[right]){
+                if(leftMax > height[left]){
+                    totalWater += leftMax - height[left];
+                }else{
+                    leftMax = height[left];
+                }
+                left = left + 1;
+            }
 
-        for(int i=1; i<n; i++){
-            leftMax[i] = max(leftMax[i-1], height[i]);
-        }
-
-        for(int i=n-2; i>=0; i--){
-            rightMax[i] = max(rightMax[i+1], height[i]);
-        }
-
-        for(int i=1; i<n-1; i++){
-            totalWater += min(leftMax[i], rightMax[i]) - height[i];
+            else{
+                if(rightMax > height[right]){
+                    totalWater += rightMax - height[right]; 
+                }else{
+                    rightMax = height[right];
+                }
+                right = right - 1;
+            }
         }
 
         return totalWater;
