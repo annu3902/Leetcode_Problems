@@ -1,35 +1,101 @@
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        vector<int> nums;
         int m = nums1.size();
         int n = nums2.size();
+
         int i = 0;
         int j = 0;
+        priority_queue<int> leftMaxHeap;
+        priority_queue<int, vector<int>, greater<int>> rightMinHeap;
 
         while(i < m && j < n){
             if(nums1[i] <= nums2[j]){
-                nums.push_back(nums1[i]);
+                int num = nums1[i];
+                
+                if(leftMaxHeap.empty()){
+                    leftMaxHeap.push(num);
+                }else if(leftMaxHeap.top() < num) {
+                    rightMinHeap.push(num);
+                    if(rightMinHeap.size() > leftMaxHeap.size()){
+                        leftMaxHeap.push(rightMinHeap.top());
+                        rightMinHeap.pop();
+                    }
+                }else if(leftMaxHeap.top() >= num){
+                    leftMaxHeap.push(num);
+                    if(leftMaxHeap.size() - rightMinHeap.size() > 1){
+                        rightMinHeap.push(leftMaxHeap.top());
+                        leftMaxHeap.pop();
+                    }
+                }
+
                 i++;
+
             }else {
-                nums.push_back(nums2[j]);
+                int num = nums2[j];
+                
+                if(leftMaxHeap.empty()){
+                    leftMaxHeap.push(num);
+                }else if(leftMaxHeap.top() < num) {
+                    rightMinHeap.push(num);
+                    if(rightMinHeap.size() > leftMaxHeap.size()){
+                        leftMaxHeap.push(rightMinHeap.top());
+                        rightMinHeap.pop();
+                    }
+                }else if(leftMaxHeap.top() >= num){
+                    leftMaxHeap.push(num);
+                    if(leftMaxHeap.size() - rightMinHeap.size() > 1){
+                        rightMinHeap.push(leftMaxHeap.top());
+                        leftMaxHeap.pop();
+                    }
+                }
+
                 j++;
+
             }
         }
 
         while(i < m){
-            nums.push_back(nums1[i]);
-            i++;
+            int num = nums1[i];
+                if(leftMaxHeap.empty()){
+                    leftMaxHeap.push(num);
+                }else if(leftMaxHeap.top() < num) {
+                    rightMinHeap.push(num);
+                    if(rightMinHeap.size() > leftMaxHeap.size()){
+                        leftMaxHeap.push(rightMinHeap.top());
+                        rightMinHeap.pop();
+                    }
+                }else if(leftMaxHeap.size() - rightMinHeap.size() > 1){
+                    rightMinHeap.push(leftMaxHeap.top());
+                    leftMaxHeap.pop();
+                }
+
+                i++;
         }
 
         while(j < n){
-            nums.push_back(nums2[j]);
-            j++;
+            int num = nums2[j];
+                
+                if(leftMaxHeap.empty()){
+                    leftMaxHeap.push(num);
+                }else if(leftMaxHeap.top() < num) {
+                    rightMinHeap.push(num);
+                    if(rightMinHeap.size() > leftMaxHeap.size()){
+                        leftMaxHeap.push(rightMinHeap.top());
+                        rightMinHeap.pop();
+                    }
+                }else if(leftMaxHeap.size() - rightMinHeap.size() > 1){
+                    rightMinHeap.push(leftMaxHeap.top());
+                    leftMaxHeap.pop();
+                }
+
+                j++;
         }
 
-        int k = nums.size();
+        if(leftMaxHeap.size() == rightMinHeap.size()){
+            return (leftMaxHeap.top() + rightMinHeap.top()) / 2.0;
+        }
 
-        if((nums.size() & 1) == 0) return (double)(nums[k/2] + nums[(k / 2 - 1)])/2;
-        else return nums[k / 2];
+        return leftMaxHeap.top();
     }
 };
