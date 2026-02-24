@@ -2,26 +2,32 @@ class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
         int n = nums.size();
-        int index = -1;
 
-        // Find if the element on the left side of the current element is smaller or not. When we get save that element.
-
-        for(int i=n-1; i>0; i--){
-            if(nums[i] > nums[i-1]){
-                index = i-1;
+        bool flag = true;
+        int k = -1;
+        for(int i = n-2; i >= 0; i--){
+            int curr = nums[i];
+            int prev = nums[i+1];
+            if(curr < prev){
+                flag = false;
+                k = i + 1;
                 break;
             }
         }
 
-        // Search for an element in the right side of saved element that is just greater than the saved element
-        for(int j=n-1; j>index && index != -1; j--){
-            if(nums[j] > nums[index]){
-                swap(nums[index], nums[j]);
-                break;
+        if(!flag){
+            for(int i = n-1; i >= k; i--){
+                if(nums[i] > nums[k-1]){
+                    swap(nums[k-1], nums[i]);
+                    break;
+                }
             }
+
+            sort(nums.begin() + k, nums.end());
         }
 
-        reverse(nums.begin()+index+1, nums.end());
-
+        if(flag == true){
+            reverse(begin(nums), end(nums));
+        }
     }
 };
