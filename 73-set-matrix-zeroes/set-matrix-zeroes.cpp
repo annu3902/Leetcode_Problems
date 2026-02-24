@@ -4,30 +4,52 @@ public:
         int m = matrix.size();
         int n = matrix[0].size();
 
-        vector<int> row;
-        vector<int> col;
+        bool rowZ = 0;
+        bool colZ = 0;
+
+        for(int j = 0; j < n; j++){
+            if(matrix[0][j] == 0){
+                rowZ = 1;
+                break;
+            }
+        }
 
         for(int i = 0; i < m; i++){
-            for(int j = 0; j < n; j++){
+            if(matrix[i][0] == 0){
+                colZ = 1;
+                break;
+            }
+        }
+
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
                 if(matrix[i][j] == 0){
-                    row.push_back(i);
-                    col.push_back(j);
+                    matrix[0][j] = 0;
+                    matrix[i][0] = 0;
                 }
             }
         }
 
-        for(int r : row){
-            for(int j=0; j<n; j++){
-                matrix[r][j] = 0;
+        for(int i = 1; i<m; i++){
+            for(int j = 1; j < n; j++){
+                if(matrix[i][0] == 0 || matrix[0][j] == 0){
+                    matrix[i][j] = 0;
+                }
             }
         }
 
-        for(int c : col){
-            for(int i=0; i<m; i++){
-                matrix[i][c] = 0;
+        if(rowZ == true){
+            for(int j = 0; j < n; j++){
+                matrix[0][j] = 0;
             }
         }
 
-        // Space Complexity - O(M + N)
+        if(colZ == true){
+            
+            for(int i = 0; i < m; i++){
+                matrix[i][0] = 0;
+            }
+        }
+        
     }
 };
