@@ -21,7 +21,7 @@ public:
                 break;
             }
         }
-            sort(nums.begin() + breakPoint+1, nums.end());
+            reverse(nums.begin() + breakPoint+1, nums.end());
         }
     }
 };
