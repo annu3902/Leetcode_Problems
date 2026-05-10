@@ -1,21 +1,42 @@
 class MyHashSet {
 private:
-    vector<int> hashTable;
+    vector<list<int>> ls;
+    int M;
+
+    int getIndex(int key){
+        return key % M;
+    }
+
 public:
     MyHashSet() {
-        hashTable.resize(1e6+1, 0);
+        M = 12000;
+        ls.resize(M, list<int>{});
     }
     
     void add(int key) {
-        hashTable[key] = true;
+        int index = getIndex(key);
+
+        auto it = find(ls[index].begin(), ls[index].end(), key);
+
+        if(it == ls[index].end()){
+            ls[index].push_back(key);
+        }
     }
     
     void remove(int key) {
-        hashTable[key] = false;
+        int index = getIndex(key);
+
+        auto it = find(ls[index].begin(), ls[index].end(), key);
+
+        if(it != ls[index].end()){
+            ls[index].erase(it);
+        }
     }
     
     bool contains(int key) {
-        return hashTable[key];
+        int index = getIndex(key);
+        auto it = find(ls[index].begin(), ls[index].end(), key);
+        return it != ls[index].end();
     }
 };
 
