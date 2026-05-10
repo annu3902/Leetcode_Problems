@@ -1,26 +1,34 @@
 class Solution {
 public:
     int characterReplacement(string s, int k) {
-        int left = 0, right = 0, n = s.size();
-        int ans = 0;
-        vector<int> cnt(26,0);
+        // Data Declarations
+        int i = 0;
+        int j = 0;
+        int maxLength = 0;
+        unordered_map<int, int> mp;
+        int maxFrequency = 0;
 
-        for(; right < n; right++){
-            cnt[s[right] - 'A']++;
-            int maxi = *max_element(cnt.begin(), cnt.end());
-
-            // while((right - left + 1) - *max_element(cnt.begin(), cnt.end()) > k){
-            //     cnt[s[left] - 'A']--;
-            //     left++;
-            // }
-
-        for(; (right - left + 1) - maxi > k; left++){
-            cnt[s[left] - 'A']--;
-            // maxi =  *max_element(cnt.begin(), cnt.end());
+        // Algorithm
+        while(i < s.size()){
+            mp[s[i]]++;
+            maxFrequency = max(maxFrequency, mp[s[i]]);
+            int currLength = i - j + 1;
+            if(currLength - maxFrequency <= k){
+                maxLength = max(maxLength, currLength);
+            }else{
+                while(j < s.size() && currLength - maxFrequency > k){
+                    mp[s[j]]--;
+                    currLength--;
+                    // maxFrequency = max(maxFrequency , mp[s[j]])
+                    if(mp[s[j]] == 0){
+                        mp.erase(s[j]);
+                    }
+                    j++;
+                }
+            }
+            i++;
         }
 
-            ans = max(ans, (right - left + 1));
-        }
-        return ans;
+        return maxLength;
     }
 };
