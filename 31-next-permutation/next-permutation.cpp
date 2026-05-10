@@ -2,32 +2,26 @@ class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
         int n = nums.size();
+        int breakPoint = -1;
 
-        bool flag = true;
-        int k = -1;
-        for(int i = n-2; i >= 0; i--){
-            int curr = nums[i];
-            int prev = nums[i+1];
-            if(curr < prev){
-                flag = false;
-                k = i + 1;
+        for(int i=n-1; i>=1; i--){
+            if(nums[i] > nums[i-1]){
+                breakPoint = i-1;
                 break;
             }
         }
-
-        if(!flag){
-            for(int i = n-1; i >= k; i--){
-                if(nums[i] > nums[k-1]){
-                    swap(nums[k-1], nums[i]);
-                    break;
-                }
-            }
-
-            sort(nums.begin() + k, nums.end());
-        }
-
-        if(flag == true){
+        
+        if(breakPoint == -1){
             reverse(begin(nums), end(nums));
+        } 
+        else{
+        for(int i=n-1; i>breakPoint; i--){
+            if(nums[breakPoint] < nums[i]){
+                swap(nums[breakPoint], nums[i]);
+                break;
+            }
+        }
+            sort(nums.begin() + breakPoint+1, nums.end());
         }
     }
 };
