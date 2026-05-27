@@ -8,7 +8,7 @@ class Solution {
         while(left <= right){
             int leftElement = nums[left];
             int rightElement = nums[right];
-            if(leftElement*leftElement >= rightElement*rightElement){
+            if(Math.abs(leftElement) >= Math.abs(rightElement)){
                 ans[k]= leftElement*leftElement;
                 left++;
             }
