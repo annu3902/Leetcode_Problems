@@ -1,53 +1,33 @@
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> ans;
         int n = nums.size();
 
-        vector<vector<int>> result;
         sort(begin(nums), end(nums));
 
         for(int i=0; i<n; i++){
+            if(i > 0 && nums[i] == nums[i-1]) continue;
 
-            if(i > 0 && nums[i] == nums[i-1]){
-                continue;
-            }
+            int left = i+1;
+            int right = n-1;
 
-            int target = -nums[i];
-
-            vector<vector<int>> ans = twoSum(nums, target, i);
-
-            if(ans.size() > 0){
-                for(int j=0; j<ans.size(); j++){
-                    ans[j].push_back(nums[i]);
-                    result.push_back(ans[j]);
+            while(left < right){
+                int sum = nums[i] + nums[left] + nums[right]; 
+                if(sum == 0){
+                    ans.push_back({nums[i], nums[left], nums[right]});
                 }
-                
+
+                while(sum < 0 && left < right && nums[left] == nums[left + 1]) left++;
+                while(sum >= 0 && left < right && nums[right] == nums[right-1]) right--;
+
+                if(sum < 0){
+                    left++;
+                }else{
+                    right--;
+                }
             }
-
         }
-        return result;
-    }
-
-    vector<vector<int>> twoSum(vector<int> &nums, int target, int index){
-        int n = nums.size();
-
-        vector<vector<int>> result;
-        vector<int> ans;
-        unordered_map<int, int> mp;
-
-        for(int i=index+1; i<n; i++){
-
-            if(mp.count(target - nums[i])){
-                ans.push_back(target-nums[i]);
-                ans.push_back(nums[i]);
-                result.push_back(ans);
-                ans.clear();
-                while (i + 1 < n && nums[i] == nums[i + 1]) i++; // skipping the similar numbers
-            }
-
-            
-            mp[nums[i]] = i;
-        }
-        return result;
+        return ans;
     }
 };
