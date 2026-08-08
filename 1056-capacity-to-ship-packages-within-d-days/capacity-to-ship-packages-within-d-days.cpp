@@ -1,44 +1,41 @@
 class Solution {
 public:
-
-    bool is_possible(vector<int> weights, int days, long long mid){
+    bool canHandleWeight(vector<int>& weights, int maxWeight, int days){
         int n = weights.size();
-        int day_count = 1;
-        int weight_count = 0;
 
-        for(int i=0; i<n; i++)
-        {
-            if(weight_count + weights[i] <= mid){
-                weight_count += weights[i];
-            }else{
-                day_count++;
-                if(day_count > days || weights[i] > mid){
-                    return false;
-                }
-                weight_count = weights[i];
+        int dayCount = 1;
+        int shipWeight = 0;
+
+        for(int i=0; i<n; i++){
+            if(shipWeight + weights[i] <= maxWeight){
+                shipWeight += weights[i];
             }
+            else{
+                dayCount++;
+                shipWeight = weights[i];
+            }
+            if(dayCount > days) return false;
         }
-        if(day_count <= days){
-            return true;
-        }
-        return false;
+
+        return true;
     }
 
     int shipWithinDays(vector<int>& weights, int days) {
         int n = weights.size();
-        int low = 1;
-        int high = accumulate(weights.begin(), weights.end(),0);
 
-        while(low <= high){
-            long long int mid = (low + high)/2;
+        int left = *max_element(begin(weights), end(weights));
+        int right = accumulate(begin(weights), end(weights), 0);
 
-            if(is_possible(weights,days, mid)){
-                // ans = mid;
-                high = mid - 1;
+        while(left < right){
+            int mid = left + (right - left)/2;
+
+            if(canHandleWeight(weights, mid, days)){
+                right = mid;
             }else{
-                low = mid + 1;
+                left = mid + 1;
             }
         }
-        return low;
+
+        return left;
     }
 };
