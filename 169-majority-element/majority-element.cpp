@@ -1,22 +1,28 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        int cnt = 0;
-        int maxElement;
-        unordered_map<int, int> mpp;
-
-        for(int x: nums){
-            mpp[x]++;
-        }
-
-        for(pair<int, int> x : mpp){
-            int element = x.first;
-            int frequency = x.second;
-            if(x.second > cnt){
-                cnt = x.second;
-                maxElement = element;
+        int cnt = 1;
+        int currMax = nums[0];
+        for(int i=1; i<nums.size(); i++){
+            if(nums[i] == currMax){
+                cnt++;
+            }else{
+                cnt--;
+            }
+            if(cnt == 0){
+                cnt = 1;
+                currMax = nums[i];
             }
         }
-        return maxElement;
+
+        int maxCnt = 0;
+        for(int i=0; i<nums.size(); i++){
+            if(nums[i] == currMax){
+                maxCnt++;
+            }
+        }
+
+        if(maxCnt > nums.size()/2) return currMax;
+        return -1; 
     }
 };
