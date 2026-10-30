@@ -1,31 +1,27 @@
 class Solution {
 private:
-    void solve(vector<int>& candidates, int ind, vector<int>& temp, int sum,
-               int target, vector<vector<int>>& ans) {
-        // Base Case
-        if (sum > target || ind >= candidates.size()) {
-            return;
-        }
-        if (sum == target) {
+    void dfs(int currPos, int sum, int target, vector<int>& candidates, vector<int>& temp, vector<vector<int>>& ans){
+        if(sum == target){
             ans.push_back(temp);
             return;
         }
+        else if((sum > target) || (currPos == candidates.size())){
+            return;
+        }
 
-        // Processing
-        sum += candidates[ind];
-        temp.push_back(candidates[ind]);
-        solve(candidates, ind, temp, sum, target, ans);
-        sum -= candidates[ind];
+        temp.push_back(candidates[currPos]);
+        dfs(currPos, sum + candidates[currPos], target, candidates, temp, ans);
+
         temp.pop_back();
-        solve(candidates, ind + 1, temp, sum, target, ans);
+        dfs(currPos + 1, sum, target, candidates, temp, ans);
     }
 
 public:
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        sort(candidates.begin(), candidates.end());
-        vector<int> temp;
+        sort(begin(candidates), end(candidates));
         vector<vector<int>> ans;
-        solve(candidates, 0, temp, 0, target, ans);
+        vector<int> temp;
+        dfs(0, 0, target, candidates, temp, ans);
         return ans;
     }
 };
