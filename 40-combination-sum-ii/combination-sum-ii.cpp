@@ -1,35 +1,34 @@
 class Solution {
 private:
-    void solve(int ind, vector<int>& candidates, vector<int>& temp,
-               vector<vector<int>>& ans, int sum, int target){
-                   // Base Case;
-                   if(sum > target) {
-                       return;
-                   }
-                   if(sum == target){
-                        ans.push_back(temp);
-                        return;
-                   }
+    void dfs(int currPos, int sum, int target, vector<int>& temp, vector<int>& candidates, vector<vector<int>>& ans){
+        if(sum == target){
+            ans.push_back(temp);
+            return;
+        }
 
-                   // Processing
-                    for(int i = ind; i < candidates.size(); i++){
-                        if(candidates[i] > target) break;
-                        if(i != ind && candidates[i] == candidates[i-1]) continue;
-                        temp.push_back(candidates[i]);
-                        sum += candidates[i];
+        if((sum > target) || (currPos == candidates.size())){
+            return;
+        }
 
-                        solve(i+1, candidates, temp, ans, sum, target);
-                        sum -= candidates[i];
-                        temp.pop_back();
-                    }
-               } 
+        for(int i=currPos; i<candidates.size(); i++){
+            if(i != currPos && candidates[i] == candidates[i - 1])continue;
+
+            temp.push_back(candidates[i]);
+            dfs(i+1, sum + candidates[i], target, temp, candidates, ans);
+
+            temp.pop_back();
+        }
+
+    }
+
 public:
-    vector<vector<int>> combinationSum2(vector<int>& candidates,
-                                              int target) {
-        sort(candidates.begin(), candidates.end());
-        vector<int> temp;
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        int n = candidates.size();
+        sort(begin(candidates), end(candidates));
         vector<vector<int>> ans;
-        solve(0, candidates, temp, ans, 0, target);
-        return ans;
+        vector<int> temp;
+
+        dfs(0, 0, target, temp, candidates, ans);
+        return ans; 
     }
 };
